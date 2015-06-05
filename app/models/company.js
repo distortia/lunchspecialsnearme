@@ -41,7 +41,7 @@ var companySchema = new Schema({
 	},
 	closed: {
 		type: String
-	}
+	},
 	deliver: {
 		type: Boolean
 	}
