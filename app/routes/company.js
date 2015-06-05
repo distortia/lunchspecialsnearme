@@ -21,7 +21,11 @@ module.exports = (function(){
 				city: 		req.body.city,
 				state: 		req.body.state,
 				zip: 		req.body.zip,
-				email: 		req.body.email
+				email: 		req.body.email,
+				website: 	req.body.website,
+				background: 	req.body.background,
+				phone: 	req.body.phone,
+				owner: 		req.body.owner
 			};
 			//Create company from attributes above
 			var company = new Company(companyObj);
@@ -54,7 +58,11 @@ module.exports = (function(){
 				city: 		req.body.city,
 				state: 		req.body.state,
 				zip: 		req.body.zip,
-				email: 		req.body.email
+				email: 		req.body.email,
+				website: 	req.body.website,
+				background: 	req.body.background,
+				phone: 	req.body.phone,
+				owner: 		req.body.owner
 			};
 			//Find company and update it with new attributes
 			Company.findByIdAndUpdate(req.params.company_id, companyObj, function(err, company){
