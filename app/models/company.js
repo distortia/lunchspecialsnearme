@@ -23,6 +23,27 @@ var companySchema = new Schema({
 	email: {
 		type: String,
 		unique: true
+	},
+	website: {
+		type: String
+	},
+	background: {
+		type: String
+	},
+	phone: {
+		type: String
+	},
+	owner: {
+		type: String
+	},
+	opened: {
+		type: String
+	},
+	closed: {
+		type: String
+	}
+	deliver: {
+		type: Boolean
 	}
 });
 

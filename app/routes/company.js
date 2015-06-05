@@ -25,7 +25,10 @@ module.exports = (function(){
 				website: 	req.body.website,
 				background: 	req.body.background,
 				phone: 	req.body.phone,
-				owner: 		req.body.owner
+				owner: 		req.body.owner,
+				opened: 	req.body.opened,
+				closed: 	req.body.closed,
+				deliver: 	req.body.deliver
 			};
 			//Create company from attributes above
 			var company = new Company(companyObj);
@@ -62,7 +65,10 @@ module.exports = (function(){
 				website: 	req.body.website,
 				background: 	req.body.background,
 				phone: 	req.body.phone,
-				owner: 		req.body.owner
+				owner: 		req.body.owner,
+				opened: 	req.body.opened,
+				closed: 	req.body.closed,
+				deliver: 	req.body.deliver
 			};
 			//Find company and update it with new attributes
 			Company.findByIdAndUpdate(req.params.company_id, companyObj, function(err, company){
