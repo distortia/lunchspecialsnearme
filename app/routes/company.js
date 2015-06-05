@@ -28,7 +28,8 @@ module.exports = (function(){
 				owner: 		req.body.owner,
 				opened: 	req.body.opened,
 				closed: 	req.body.closed,
-				deliver: 	req.body.deliver
+				deliver: 	req.body.deliver,
+				category: 	req.body.category
 			};
 			//Create company from attributes above
 			var company = new Company(companyObj);
@@ -68,7 +69,8 @@ module.exports = (function(){
 				owner: 		req.body.owner,
 				opened: 	req.body.opened,
 				closed: 	req.body.closed,
-				deliver: 	req.body.deliver
+				deliver: 	req.body.deliver,
+				category: 	req.body.category
 			};
 			//Find company and update it with new attributes
 			Company.findByIdAndUpdate(req.params.company_id, companyObj, function(err, company){
