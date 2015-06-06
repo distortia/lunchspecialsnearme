@@ -1,6 +1,8 @@
+
+     //----------\\
    // Server.js \\
   //Base Setup\\
- //==========\\ yay pyramid
+ // yay pyramid \\
 
 //Import our dependencies and packages
 var express = require('express');

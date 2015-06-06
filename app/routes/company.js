@@ -73,13 +73,13 @@ module.exports = (function(){
 				category: 	req.body.category
 			};
 			//Find company and update it with new attributes
-			Company.findByIdAndUpdate(req.params.company_id, companyObj, function(err, company){
+			Company.findByIdAndUpdate(req.params.company_id, companyObj, function (err){
 				if (err) res.send(err);
 				res.json({message: 'Company Updated'});
 			});
 		}) // End Put
 		.delete(function(req, res){
-			Company.remove({_id: req.params.company_id}, function (err, company){
+			Company.remove({_id: req.params.company_id}, function (err){
 					if (err) res.send(err);
 					res.json({message: 'Company Deleted'});
 			}) ;
