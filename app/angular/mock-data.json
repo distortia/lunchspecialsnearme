@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Sloan",
+    "stars": 3,
+    "description": "Dolore cillum laborum in officia ex dolore eiusmod irure non dolore incididunt sunt cillum.",
+    "distance": 3.41,
+    "companyName": "Netropic",
+    "images": {
+      "full": "dodecahedron-01-full.jpg"
+    }
+  },
+  {
+    "title": "Jaclyn",
+    "stars": 5,
+    "description": "Cillum nulla do labore enim.",
+    "distance": 1.58,
+    "companyName": "Podunk",
+    "images": {
+      "full": "dodecahedron-01-full.jpg"
+    }
+  },
+  {
+    "title": "Bianca",
+    "stars": 4,
+    "description": "Officia pariatur in aliqua sunt id.",
+    "distance": 1.63,
+    "companyName": "Zaggles",
+    "images": {
+      "full": "dodecahedron-01-full.jpg"
+    }
+  },
+  {
+    "title": "Catalina",
+    "stars": 1,
+    "description": "Do magna ipsum cillum ex eiusmod labore nostrud.",
+    "distance": 3.48,
+    "companyName": "Cormoran",
+    "images": {
+      "full": "dodecahedron-01-full.jpg"
+    }
+  },
+  {
+    "title": "Deidre",
+    "stars": 4,
+    "description": "Eu culpa laboris consequat minim ipsum nostrud sit esse.",
+    "distance": 1.15,
+    "companyName": "Krag",
+    "images": {
+      "full": "dodecahedron-01-full.jpg"
+    }
+  },
+  {
+    "title": "Mari",
+    "stars": 3,
+    "description": "Ad cillum consectetur dolor consectetur ullamco sit.",
+    "distance": 1.12,
+    "companyName": "Plexia",
+    "images": {
+      "full": "dodecahedron-01-full.jpg"
+    }
+  },
+  {
+    "title": "Anastasia",
+    "stars": 4,
+    "description": "Proident dolor do cillum consequat mollit amet cupidatat.",
+    "distance": 1.84,
+    "companyName": "Rodeocean",
+    "images": {
+      "full": "dodecahedron-01-full.jpg"
+    }
+  }
+]

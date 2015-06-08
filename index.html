@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="lsnm">
+<head>
+	<meta charset="UTF-8">
+	<title>LSNM DEMO</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="app/angular/style.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+	<script src="app/angular/app.js"></script>
+	<script src="app/angular/specials.js"></script>
+
+</head>
+<body ng-controller="LsnmController as lsnm">
+	<header>
+		<h1 class="text-center">LSNM DEMO</h1>
+		<h2 class="text-center">Lets Break stuff</h2>
+		<p class="text-center">angular is {{"working"}}</p>
+	</header>
+	<div class="col-md-6">
+		<ul class="list-group">			
+			<li class="list-group-item" ng-repeat="special in lsnm.specials">
+				<special-tile></special-tile>
+			</li>		
+		</ul>
+	</div>
+</body>
+</html>
