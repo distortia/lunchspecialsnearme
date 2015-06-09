@@ -14,7 +14,7 @@
 	app.directive('specialTile', function (){
 		return {
 			restrict: 'E',
-			templateUrl: 'modules/special-tile.html',
+			templateUrl: 'js/directives/special-tile.html',
 		};
 	});
 })();
