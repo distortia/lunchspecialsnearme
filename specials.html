@@ -1,0 +1,40 @@
+<div class="row" style="margin-top: 15%">
+	<div class="one-third column">
+		<h4>Specials Page</h4>
+		<p>Lets go to another page </p>
+		<p><a class="button button-primary u-full-width" href="#/">Home</a></p>
+		<p><a class="button button-primary u-full-width" href="#profile">Profile</a></p>
+		<p>{{message}}</p>
+	</div>
+
+	<div class="two-thirds column">
+		<h3>Search</h3>
+		<hr>
+		<p>Title: <input type="text" ng-model="title"> Desc: <input type="text" ng-model="desc"></p>
+		<p>Dist: <input type="text" ng-model="dist"> Stars: <input type="text" ng-model="stars"></p>
+	</div>
+
+</div><!-- end row -->
+<hr>
+<div class="row">
+	<table class="u-full-width">
+		<thead>
+			<tr>
+				<th>Company</th>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Distance</th>
+				<th>Stars</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="special in specials | limitTo:10 | filter:{}">
+				<td>{{special.company}}</td>
+				<td>{{special.title}}</td>
+				<td>{{special.description}}</td>
+				<td>{{special.distance}}</td>
+				<td>{{special.stars}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

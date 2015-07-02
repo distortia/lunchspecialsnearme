@@ -1,0 +1,20 @@
+<table class="u-full-width">
+	<thead>
+		<tr>
+			<th>Company</th>
+			<th>Special</th>
+			<th>Description</th>
+			<th>Distance</th>
+			<th>Stars</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="special in specials | limitTo:10">
+			<td>{{special.company}}</td>
+			<td>{{special.title}}</td>
+			<td>{{special.description}}</td>
+			<td>{{special.distance}}</td>
+			<td>{{special.stars}}</td>
+		</tr>
+	</tbody>
+</table>
