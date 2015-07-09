@@ -1,4 +1,4 @@
-<div class="row" style="margin-top: 15%">
+<div class="row" style="margin-top: 5%">
 	<div class="one-third column">
 		<h4>Specials Page</h4>
 		<p>Lets go to another page </p>
@@ -6,15 +6,31 @@
 		<p><a class="button button-primary u-full-width" href="#profile">Profile</a></p>
 		<p>{{message}}</p>
 	</div>
-
-	<div class="two-thirds column">
-		<h3>Search</h3>
-		<hr>
-		<p>Title: <input type="text" ng-model="title"> Desc: <input type="text" ng-model="desc"></p>
-		<p>Dist: <input type="text" ng-model="dist"> Stars: <input type="text" ng-model="stars"></p>
+	<h3>Search</h3>
+	<hr>
+	<div class="one-third column">
+		<label for="company">Company:</label>
+		<input type="text" ng-model="search.company" id="company">
+		<label for="title">Title:</label>
+		<input type="text" ng-model="search.title" id="title">
+		<label for="stars">Stars</label>
+		<select ng-model="stars" id="stars">
+			<option value="">Any</option>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
 	</div>
-
-</div><!-- end row -->
+	<div class="one-third column">
+		<label for="description">Description:</label>
+		<input type="text" ng-model="description" id="description">
+		<label for="distance">Distance:</label>
+		<input type="text" ng-model="distance" id="distance">
+	</div>
+</div>
 <hr>
 <div class="row">
 	<table class="u-full-width">
@@ -28,11 +44,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="special in specials | limitTo:10 | filter:{}">
+			<tr ng-repeat="special in specials | filter:search.company">
 				<td>{{special.company}}</td>
 				<td>{{special.title}}</td>
 				<td>{{special.description}}</td>
-				<td>{{special.distance}}</td>
+				<td>{{special.distance | number:2}}</td>
 				<td>{{special.stars}}</td>
 			</tr>
 		</tbody>
