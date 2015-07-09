@@ -1,0 +1,29 @@
+<div class="one-half column" style="margin-top: 5%">
+	<h4>Login Page</h4>
+	<p>{{message}}</p>
+	<p>Please log in or sign up </p>
+	<form>
+		<div class="row">
+			<div class="twelve columns">
+				<label for="email">Email</label>
+				<input type="email" placeholder="Email" id="email" class="u-full-width">
+			</div>
+		</div>
+		<div class="row">
+			<div class="twelve columns">
+				<label for="password">Password</label>
+				<input type="{{inputType}}" placeholder="Password" id="password" class="u-full-width">
+			</div>
+		</div>
+		<div class="row">
+			<div class="twelve columns">
+				<label><input type="checkbox" id="checkbox" ng-model="passwordCheckbox" ng-click="hideShowPassword()">
+					  <span ng-if="passwordCheckbox" class="label-body">Hide password</span>
+					  <span ng-if="!passwordCheckbox" class="label-body">Show password</span>
+				</label>
+				<a href="#" class="button button-primary u-full-width">Log in!</a>
+			</div>
+		</div>
+	</form>
+
+</div>
