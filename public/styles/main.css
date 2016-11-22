@@ -1,0 +1,232 @@
+@import url("https://fonts.googleapis.com/css?family=Cantata+One|Roboto");
+#error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+html, body {
+  font-size: 1em;
+  font-family: "Roboto", sans-serif; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cantata One", serif; }
+
+body {
+  font-size: 100%; }
+
+body, h1, h2, h3, h4, h5, h6 {
+  font-size-adjust: 0.5; }
+
+/* Body Content */
+section {
+  font-size: 1em;
+  /* equivalent to 16px */
+  line-height: 1.25;
+  /* equivalent to 20px */ }
+
+@media (min-width: 43.75em) {
+  section {
+    font-size: 1em;
+    /* equivalent to 16px */
+    line-height: 1.375;
+    /* equivalent to 22px */ } }
+
+h1 {
+  font-size: 2em;
+  /* 2x body copy size = 32px */
+  line-height: 1.25;
+  /* 45px / 36px */ }
+
+@media (min-width: 43.75em) {
+  h1 {
+    font-size: 2.5em;
+    /* 2.5x body copy size = 40px */
+    line-height: 1.125; } }
+
+@media (min-width: 56.25em) {
+  h1 {
+    font-size: 3em;
+    /* 3x body copy size = 48px */
+    line-height: 1.05;
+    /* keep to a multiple of the 20px line height 
+    and something more appropriate for display headings */ } }
+
+h2 {
+  font-size: 1.625em;
+  /* 1.625x body copy size = 26px */
+  line-height: 1.15384615;
+  /* 30px / 26px */ }
+
+@media (min-width: 43.75em) {
+  h2 {
+    font-size: 2em;
+    /* 2x body copy size = 32px */
+    line-height: 1.25; } }
+
+@media (min-width: 56.25em) {
+  h2 {
+    font-size: 2.25em;
+    /* 2.25x body copy size = 36px */
+    line-height: 1.25; } }
+
+h3 {
+  font-size: 1.375em;
+  /* 1.375x body copy size = 22px */
+  line-height: 1.13636364;
+  /* 25px / 22px */ }
+
+@media (min-width: 43.75em) {
+  h3 {
+    font-size: 1.5em;
+    /* 1.5x body copy size = 24px */
+    line-height: 1.25; } }
+
+@media (min-width: 56.25em) {
+  h3 {
+    font-size: 1.75em;
+    /* 1.75x body copy size = 28px */
+    line-height: 1.25; } }
+
+h4 {
+  font-size: 1.125em;
+  /* 1.125x body copy size = 18px */
+  line-height: 1.11111111; }
+
+@media (min-width: 43.75em) {
+  h4 {
+    line-height: 1.22222222;
+    /* (22px / 18px */ } }
+
+#logo-text, .logo-text-body {
+  font-weight: 700; }
+
+.dark-blue-color {
+  color: #009B95 !important; }
+
+.green-color {
+  color: #55b585; }
+
+.maroon-color {
+  color: #b55585; }
+
+.tan-orange-color {
+  color: #b58555; }
+
+.black-color {
+  color: #4A4A4A; }
+
+.dark-blue-background {
+  background-color: #009B95;
+  color: white; }
+
+.generic-hover:hover {
+  color: #53A8B6 !important; }
+
+#twitter-hover:hover {
+  color: #55acee !important; }
+
+#facebook-hover:hover {
+  color: #3b5998 !important; }
+
+#gitlab-hover:hover {
+  color: #ff5a00 !important; }
+
+.nav-toggle:hover {
+  background-color: transparent !important; }
+
+.menu-color-white {
+  background-color: white !important; }
+
+#custom-website-border {
+  border-color: #55b585; }
+
+#content-management-border {
+  border-color: #009B95; }
+
+#e-commerce-border {
+  border-color: #b55585; }
+
+#email-icon {
+  color: #009B95; }
+
+input.input:active, input.input:focus {
+  border-color: #009B95 !important; }
+
+#heart {
+  color: #ED6C63; }
+
+img {
+  border-radius: 15px; }
+
+.title, .subtitle, p {
+  color: #f4f4f4; }
+
+.main-image-header {
+  background-image: url(/images/bg.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover; }
+
+.main-section {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center; }
+  .main-section .container form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; }
+    .main-section .container form input.button {
+      background-image: linear-gradient(141deg, #006853 0%, #009B95 71%, #009db5 100%);
+      color: #f4f4f4;
+      border-color: #009B95; }
+      .main-section .container form input.button:hover, .main-section .container form input.button:focus, .main-section .container form input.button:active, .main-section .container form input.button.is-active {
+        background-image: linear-gradient(141deg, #009b7b 0%, #00cec6 71%, #00cae8 100%);
+        border-color: #00cec6; }
+
+.floating-button {
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 48px);
+  top: calc(100% - 61.5px);
+  background-image: linear-gradient(141deg, #cc5800 0%, #FF9800 71%, #ffc91a 100%);
+  border-color: #FF9800;
+  color: #f4f4f4;
+  border-radius: 25px; }
+  .floating-button:hover, .floating-button:active, .floating-button:focus, .floating-button.is-active {
+    background-image: linear-gradient(141deg, #ff6e00 0%, #ffad33 71%, #ffd54d 100%);
+    border-color: #ffad33; }
+
+.help-section {
+  text-align: center;
+  background-image: linear-gradient(141deg, #006853 0%, #009B95 71%, #009db5 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center; }
+  .help-section form .label {
+    color: #f4f4f4; }
+  .help-section form input.button {
+    background-image: linear-gradient(141deg, #cc5800 0%, #FF9800 71%, #ffc91a 100%);
+    border-color: #FF9800;
+    color: #f4f4f4; }
+    .help-section form input.button:hover, .help-section form input.button:focus, .help-section form input.button:active, .help-section form input.button.is-active {
+      background-image: linear-gradient(141deg, #ff6e00 0%, #ffad33 71%, #ffd54d 100%);
+      border-color: #ffad33;
+      color: #f4f4f4; }
+  .help-section #made-with-love {
+    color: #f4f4f4;
+    padding: 2.5% 0; }
+    .help-section #made-with-love a {
+      color: #FF9800; }
+      .help-section #made-with-love a:hover, .help-section #made-with-love a:focus, .help-section #made-with-love a:active, .help-section #made-with-love a.is-active {
+        color: #ffad33;
+        border-color: #ffad33; }
+
+nav.transparent {
+  background: transparent; }

@@ -1,0 +1,82 @@
+.title, .subtitle, p {
+    color: $text-white;
+}
+.main-image-header {
+   background-image: url(/images/bg.jpg) ;
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-attachment: fixed;
+    background-size:  cover;
+}
+.main-section {
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    .container form {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        input.button {
+            @include color-gradient($brand-primary);
+            color: $text-white;
+            border-color: $brand-primary;
+            &:hover, &:focus, &:active, &.is-active {
+                @include color-gradient(lighten($brand-primary, 10%));
+                border-color: lighten($brand-primary, 10%);
+            }
+        }
+    }
+}
+.floating-button {
+    position: absolute;
+    z-index: 2;
+    left: calc(50% - 48px);
+    top: calc(100% - 61.5px);
+    @include color-gradient($brand-accent);
+    border-color: $brand-accent;
+    color: $text-white;
+    border-radius: 25px;
+    &:hover, &:active, &:focus, &.is-active {
+        @include color-gradient(lighten($brand-accent, 10%));
+        border-color: lighten($brand-accent, 10%);
+    }
+}
+
+.help-section {
+    text-align: center;
+    @include color-gradient($brand-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;
+    form {
+        .label {
+            color: $text-white;
+        }
+        input.button {
+            @include color-gradient($brand-accent);
+            border-color: $brand-accent;
+            color: $text-white;
+            &:hover, &:focus, &:active, &.is-active {
+                @include color-gradient(lighten($brand-accent, 10%));
+                border-color: lighten($brand-accent, 10%);
+                color: $text-white;
+            }
+        }
+    }
+    #made-with-love {
+        color: $text-white;
+        padding: 2.5% 0;
+        a {
+            color: $brand-accent;
+            &:hover, &:focus, &:active, &.is-active {
+                color: lighten($brand-accent, 10%);
+                border-color: lighten($brand-accent, 10%);
+            }
+        }
+    }
+}
