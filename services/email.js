@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
-	service: 'MailGun',
+	host: 'smtp.mailgun.org',
+    port: 2525,
 	auth: {
 		user: 'postmaster@bluegatr.com',
 		pass: '8b1f2bf2da9dbda433830211bbf1d72c'
