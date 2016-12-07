@@ -34,11 +34,9 @@ function shouldCompress(req, res) {
 
 // Routes
 app.get('/', function(req, res){
+  let status = req.query && req.query.internalError ? 500 : 200;
+  res.status(status);
 	res.render('index');
-});
-
-app.get('/services', function(req, res){
-  res.render('services');
 });
 
 //Used to checkReCaptchas for queries that are done through script.js (i.e, data that is requiring
@@ -65,8 +63,13 @@ app.post('/recaptcha', function(req, res){
 EmailService = require('./services/email');
 
 app.post('/help', function(req, res){
-		EmailService.sendMail({location: req.body.location, restaurants: req.body.restaurants});
-			res.redirect('/?thankyou=thanks');
+		EmailService.sendMail({location: req.body.location, restaurants: req.body.restaurants}, function(error, info){
+      if(error){
+        res.redirect('/?internalError=An unknown error has occured, please try the request again');
+      } else {
+        res.redirect('/?thankyou=thanks');
+      }
+    });
 });
 
 // 404 handler

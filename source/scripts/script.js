@@ -6,7 +6,7 @@ $(function(){
 });
 
 $(function(){
-    var error = location.search.split('error=')[1];
+    var error = location.search.split('error=')[1] || location.search.split('internalError=')[1];
     if(error){
         genericErrorMessage(decodeURI(error));
     }

@@ -1,7 +1,8 @@
-var nodemailer = require('nodemailer');
-var transporter = nodemailer.createTransport({
+const nodemailer = require('nodemailer');
+const logger = require('./logger');
+let transporter = nodemailer.createTransport({
 	host: 'smtp.mailgun.org',
-    port: 2525,
+  port: 2525,
 	auth: {
 		user: 'postmaster@bluegatr.com',
 		pass: '8b1f2bf2da9dbda433830211bbf1d72c'
@@ -9,29 +10,28 @@ var transporter = nodemailer.createTransport({
 });
 
 module.exports = {
-
-    sendMail: function(options) {
-		var mailOptions = {
-			from: 'LSNM <alphaity+lsnm@alphaity.io>',
-            // to: 'Nick Stalter <nickstalter@gmail.com>',
-			to: 'Alphaity <alphaity@alphaity.io>',
-			bcc: '',
-			subject: 'New LSNM!', 
-			html: '<html><body>' + 
-                  '<p>Location: ' +  options.location + '</p>' + 
-                  '<p>Resaurant(s): ' + options.restaurants + '</p>' +
-                  '</body></html>'
-		};
-
-		sendEmailMessage(mailOptions);
+    sendMail: function(options, callback) {
+  		let mailOptions = {
+  			from: 'LSNM <alphaity+lsnm@alphaity.io>',
+  			to: 'Alphaity <alphaity@alphaity.io>',
+  			bcc: '',
+  			subject: 'New LSNM!', 
+  			html: `<html><body>
+                    <p>Location:  ${options.location} </p>
+                    <p>Resaurant(s):  ${options.restaurants} </p>
+                    </body></html>`
+  		};
+  		sendEmailMessage(mailOptions, options, callback);
     }
 };
-//Add error logging and correct flash messages
-function sendEmailMessage(mailOptions){
+
+function sendEmailMessage(mailOptions, options, callback){
 	transporter.sendMail(mailOptions, function(error, info){
     	if(error){
-        	return console.log(error);
-    	}
-    	console.log('Message sent: ' + info.response);
+        logger.log.error(`An error occured when sending an email to Alphaity.  They were requesting the location of ${options.location} and the restaurants of ${options.restaurants}`, error);
+        callback(error, info); 
+      } else{
+        callback(null, info);
+      }
 	});
 }
