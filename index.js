@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var db = require('./server/db');
+// var db = require('./server/db');
 
 // Handlebars setup
 // Using the Main.handlebars as our main layout

@@ -1,4 +1,4 @@
-.title, .subtitle, p {
+.title, .subtitle, p, label.label {
     color: $text-white;
 }
 .main-image-header {
@@ -16,10 +16,17 @@
     align-items: center;
     text-align: center;
     .container form {
+        width: 100%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        p.control {
+            width: 75%;
+             input {
+                width: 100%;
+            }
+        }
         input.button {
             @include color-gradient($brand-primary);
             color: $text-white;
@@ -31,52 +38,7 @@
         }
     }
 }
-.floating-button {
-    position: absolute;
-    z-index: 2;
-    left: calc(50% - 48px);
-    top: calc(100% - 61.5px);
-    @include color-gradient($brand-accent);
-    border-color: $brand-accent;
+.made-with-love {
     color: $text-white;
-    border-radius: 25px;
-    &:hover, &:active, &:focus, &.is-active {
-        @include color-gradient(lighten($brand-accent, 10%));
-        border-color: lighten($brand-accent, 10%);
-    }
-}
-
-.help-section {
-    text-align: center;
-    @include color-gradient($brand-primary);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items:center;
-    form {
-        .label {
-            color: $text-white;
-        }
-        input.button {
-            @include color-gradient($brand-accent);
-            border-color: $brand-accent;
-            color: $text-white;
-            &:hover, &:focus, &:active, &.is-active {
-                @include color-gradient(lighten($brand-accent, 10%));
-                border-color: lighten($brand-accent, 10%);
-                color: $text-white;
-            }
-        }
-    }
-    #made-with-love {
-        color: $text-white;
-        padding: 2.5% 0;
-        a {
-            color: $brand-accent;
-            &:hover, &:focus, &:active, &.is-active {
-                color: lighten($brand-accent, 10%);
-                border-color: lighten($brand-accent, 10%);
-            }
-        }
-    }
+    padding: 2.5% 0;
 }

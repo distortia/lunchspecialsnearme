@@ -159,7 +159,7 @@ input.input:active, input.input:focus {
 img {
   border-radius: 15px; }
 
-.title, .subtitle, p {
+.title, .subtitle, p, label.label {
   color: #f4f4f4; }
 
 .main-image-header {
@@ -177,10 +177,15 @@ img {
   align-items: center;
   text-align: center; }
   .main-section .container form {
+    width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center; }
+    .main-section .container form p.control {
+      width: 75%; }
+      .main-section .container form p.control input {
+        width: 100%; }
     .main-section .container form input.button {
       background-image: linear-gradient(141deg, #006853 0%, #009B95 71%, #009db5 100%);
       color: #f4f4f4;
@@ -189,44 +194,9 @@ img {
         background-image: linear-gradient(141deg, #009b7b 0%, #00cec6 71%, #00cae8 100%);
         border-color: #00cec6; }
 
-.floating-button {
-  position: absolute;
-  z-index: 2;
-  left: calc(50% - 48px);
-  top: calc(100% - 61.5px);
-  background-image: linear-gradient(141deg, #cc5800 0%, #FF9800 71%, #ffc91a 100%);
-  border-color: #FF9800;
+.made-with-love {
   color: #f4f4f4;
-  border-radius: 25px; }
-  .floating-button:hover, .floating-button:active, .floating-button:focus, .floating-button.is-active {
-    background-image: linear-gradient(141deg, #ff6e00 0%, #ffad33 71%, #ffd54d 100%);
-    border-color: #ffad33; }
-
-.help-section {
-  text-align: center;
-  background-image: linear-gradient(141deg, #006853 0%, #009B95 71%, #009db5 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center; }
-  .help-section form .label {
-    color: #f4f4f4; }
-  .help-section form input.button {
-    background-image: linear-gradient(141deg, #cc5800 0%, #FF9800 71%, #ffc91a 100%);
-    border-color: #FF9800;
-    color: #f4f4f4; }
-    .help-section form input.button:hover, .help-section form input.button:focus, .help-section form input.button:active, .help-section form input.button.is-active {
-      background-image: linear-gradient(141deg, #ff6e00 0%, #ffad33 71%, #ffd54d 100%);
-      border-color: #ffad33;
-      color: #f4f4f4; }
-  .help-section #made-with-love {
-    color: #f4f4f4;
-    padding: 2.5% 0; }
-    .help-section #made-with-love a {
-      color: #FF9800; }
-      .help-section #made-with-love a:hover, .help-section #made-with-love a:focus, .help-section #made-with-love a:active, .help-section #made-with-love a.is-active {
-        color: #ffad33;
-        border-color: #ffad33; }
+  padding: 2.5% 0; }
 
 nav.transparent {
   background: transparent; }
