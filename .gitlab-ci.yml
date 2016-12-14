@@ -1,0 +1,12 @@
+build_job:
+  stage: build
+  script:
+    - cd src/server
+    - yarn install
+    
+deploy:
+  stage: deploy
+  script:
+    - nodemon .
+
+    
