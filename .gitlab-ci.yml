@@ -1,4 +1,4 @@
-build_job:
+build:
   stage: build
   script:
     - cd src/server
@@ -9,4 +9,6 @@ deploy:
   script:
     - nodemon .
 
-    
+stages:
+  - build
+  - deploy
