@@ -29,7 +29,6 @@
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
-    "express-status-monitor": "0.0.6",
     "global": "^4.3.1",
     "imagemin": "^5.2.2",
     "knex": "^0.12.1",
