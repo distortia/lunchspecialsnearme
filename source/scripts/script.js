@@ -1,7 +1,7 @@
 $(function(){
     var thankyou = location.search.split('thankyou=')[1];
     if(thankyou){
-        genericMessage("We got your Suggestion! Follow our newsletter for more updates!");
+        genericMessage("We got your Special! Follow @alphaity_io on twitter to get updates as we get further along!");
     }
 });
 

@@ -60,7 +60,7 @@ app.post('/recaptcha', function(req, res){
 EmailService = require('./services/email');
 
 app.post('/help', function(req, res){
-		EmailService.sendMail({location: req.body.location, restaurants: req.body.restaurants}, function(error, info){
+		EmailService.sendMail({location: req.body.location, restaurant: req.body.restaurant, day: req.body.day, special: req.body.special}, function(error, info){
       if(error){
         res.redirect('/?internalError=An unknown error has occured, please try the request again');
       } else {

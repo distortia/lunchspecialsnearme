@@ -17,8 +17,10 @@ module.exports = {
   			bcc: '',
   			subject: 'New LSNM!', 
   			html: `<html><body>
+                    <p>Resaurant:  ${options.restaurant} </p>
                     <p>Location:  ${options.location} </p>
-                    <p>Resaurant(s):  ${options.restaurants} </p>
+                    <p>Day of week: ${options.day} <p>
+                    <p>Special ${options.special} <p>
                     </body></html>`
   		};
   		sendEmailMessage(mailOptions, options, callback);

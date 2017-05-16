@@ -1,32 +1,98 @@
 <div class="main-image-header">
-    <section class="hero is-fullheight main-section">
-        <div class="container">
-            <h1 class="title is-1">Lunch Specials Near Me</h1>
-            <h2 class="subtitle is-3">Linking Local Restaurants with Local Stomachs</h2>
+  <section class="hero is-fullheight main-section">
+    <div class="container">
+      <h1 class="title is-1">Lunch Specials Near Me</h1>
+      <h2 class="subtitle is-3">Linking Local Restaurants with Local Stomachs</h2>
+    </div>
+    <div class="container">
+      <h3 class="title is-3" style="color:#e8df00">Hey there! Thanks for checking out Lunch Specials Near me. </h3>
+      <h5 class="subtitle is-5">We are currently looking to collect lunch specials and happy hours local to your area. Help us by filling out the form!</h5>   
+      <form action="/help" method="post" class="is-fullwidth" id="help">
+        <div class="field">
+          <p class="control">
+            <label class="label">Restaurant</label>
+            <input class="input" type="text" name="restaurant" placeholder="Wolf's Ridge Brewery" required autofocus>
+          </p>
         </div>
-        <div class="container">
-            <h3 class="title is-3" style="color:#e8df00">Hey! We need your help!</h3>
-            <h5 class="subtitle is-5">We are seeking local foodies for their favorite places to eat.</h5>   
-            <form action="/help" method="post" class="is-fullwidth">
-              <label for="#restaurants" class="label">Restaurants</label>
-                <p class="control">
-                    <input type="text" class="input" name="restaurants" id="restaurants" placeholder="Wolf's Ridge Brewery, Thai's Asian Bistro, Da Levee" required>
-                </p>
-                <label for="locaton" class="label">Location</label>
-                <p class="control">
-                    <input type="text" class="input" name="location" id="location" placeholder="Columbus, OH or 43215" required>
-                </p>
-                <p class="control">
-                    <input class="button is-fullwidth" type="submit" value="Submit"/>
-                </p>
-            </form>
+        <div class="field">
+          <p class="control">
+            <label for="locaton" class="label">Location</label>
+            <input type="text" class="input" name="location" id="location" placeholder="Columbus, OH or 43215" required>
+          </p>
         </div>
-        <div class="made-with-love">
-            Made with 
-            <span class="icon">
-                <i class="fa fa-heart" id="heart"></i>
+        <div class="field">
+          <p class="control">
+            <label class="label">Day of Week</label>
+            <span class="select">
+              <select name="day" required>
+                <option>Select Day</option>
+                <option value="sunday">Sunday</option>
+                <option value="monday">Monday</option>
+                <option value="tuesday">Tuesday</option>
+                <option value="wednesday">Wednesday</option>
+                <option value="thursday">Thursday</option>
+                <option value="friday">Friday</option>
+                <option value="saturday">Saturday</option>
+              </select>
             </span>
-            by <a href="https://alphaity.io">Alphaity.io</a>
+          </p>
         </div>
-    </section>
+        <div class="field">
+          <p class="control">
+            <label class="label">Special</label>
+            <textarea class="textarea" name="special" placeholder="Buy one get one appetizers" required></textarea>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <input class="button is-fullwidth" type="submit" value="Submit"/>
+          </p>
+        </div>
+      </form>
+    </div>
+    <div class="made-with-love">
+      Made with 
+      <span class="icon">
+        <i class="fa fa-heart" id="heart"></i>
+      </span>
+      by <a href="https://alphaity.io">Alphaity.io</a>
+    </div>
+  </section>
 </div>
+<section class="section is-medium" id="about">
+  <div class="container">
+    <div class="heading">
+      <h1 class="title is-1">What is LSNM?</h1>
+      <h2 class="subtitle">
+        Lunch Specials Near Me aims to be the focal point of lunch and happy hour discovery.
+      </h2>
+    </div>
+    <div class="columns has-text-centered" id="about-columns">
+      <div class="column">
+        <span class="icon is-large">
+          <i class="fa fa-address-card" aria-hidden="true"></i>
+        </span>
+        <h1 class="title">Who we are?</h1>
+        <p>We are the team at <a href="https://alphaity.io" title="Alphaity.io">Alphaity.io</a>. We not only love creating wonderful user experiences, but we also love local foods. This idea stemmmed from our indecision on where to eat.</p>
+      </div>
+      <div class="column">
+        <span class="icon is-large">
+          <i class="fa fa-users" aria-hidden="true"></i>
+        </span>
+        <h1 class="title">Who is LSNM for?</h1>
+        <p>LSNM is for the 9 to 5 heroes looking to change up their daily routines and expand their culinary tastes. Explore the best of what your city has to offer. Share some of your favorite places so other can indulge in the same.</p>
+      </div>
+      <div class="column">
+        <span class="icon is-large">
+          <i class="fa fa-area-chart" aria-hidden="true"></i>
+        </span>
+        <h1 class="title">The Goals the LSNM?</h1>
+        <p>Our goal is to be a self sustaining lunch special and happy hour aggregator with recommendation engine and discovery service.
+        Right now we are in the data collection phase. As you can probably guess, this sort of venture is very data intensive. We can't collect and share specials without enlisting the help of others.</p>
+      </div>
+    </div>
+    <div class="has-text-centered">
+      <a href="#help" class="button is-warning">Help us out!</a>
+    </div>
+  </div>
+</section>
