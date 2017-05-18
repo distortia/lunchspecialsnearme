@@ -19,7 +19,9 @@ RUN /etc/init.d/postgresql start # starting the service \
 && sudo -u postgres sh -c 'createuser postgres & createdb alphaity_dev' # creating a root user \
 && sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';" # setting up the root password \
 && yarn install \
-&& echo "module.exports = {development: {client: 'postgresql', connection: {user : 'postgres', password: 'yourpasswordforthisuser', database: 'alphaity_dev'}}}" > knexfile.js
+&& echo "module.exports = {development: {client: 'postgresql', connection: {user : 'postgres', password: 'yourpasswordforthisuser', database: 'alphaity_dev'}}}" > knexfile.js \
+&& yarn 
+## TODO break down watch command and run things individually
 
 EXPOSE 3000
-CMD [ "yarn", "run", "watch"]
+CMD [ "yarn", "run", "server"]
