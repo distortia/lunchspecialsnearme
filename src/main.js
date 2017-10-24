@@ -11,8 +11,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
 
-// Vue.http.options.xhr = {withCredentials: false}
-
 Vue.config.productionTip = false
 // Google Places api key
 // AIzaSyDcr5TVxlv4QivDB2rd-pe3LzgpTQ6YwnE

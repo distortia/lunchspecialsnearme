@@ -2,6 +2,10 @@
 
 > A Vue.js project
 
+# USE THIS SHIT
+
+https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi/related
+
 ## Build Setup
 
 ``` bash
