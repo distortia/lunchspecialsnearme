@@ -8,13 +8,18 @@
       <div v-for="restaurant in restaurants">
           <b-card :title="restaurant.name"
                   :sub-title="restaurant.vicinity">
-              <p class="card-text">
-                  <div v-for="type in restaurant.types" style="display: block;">
+              <div style="display: block;">
+                <b-badge pill>Rating: {{restaurant.rating}}</b-badge>
+                <b-badge pill>Price Level: {{restaurant.price_level || 'unknown'}}</b-badge>
+              </div>
+              <p class="card-text" style="display: inline;"> Types: 
+                  <div v-for="type in restaurant.types" style="display: inline;">
                     {{type}}
                   </div>
+                </ul>
               </p>
-              <a :href="`https://www.google.com/maps/place/${restaurant.vicinity}`" target="_blank" 
-                 class="card-link">Directions</a>
+              <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`" target="_blank" 
+                 class="card-link" variant="primary">Directions</b-button>
               <b-link href="#"
                       class="card-link">Another link</b-link>
           </b-card>
