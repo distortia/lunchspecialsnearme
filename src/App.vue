@@ -13,7 +13,7 @@
           required></b-form-input>
         <b-form-input 
           id="keywords"
-          type="text" 
+          type="text"
           v-model="form.keywords"
           placeholder="Mexican"
           class="mr-sm-2"
