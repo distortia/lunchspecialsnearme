@@ -23,8 +23,6 @@
               </p>
               <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`" target="_blank" 
                  class="card-link" variant="primary"><i class="fa fa-map-marker" aria-hidden="true"></i> Directions</b-button>
-              <b-link href="#"
-                      class="card-link">Another link</b-link>
           </b-card>
       </div>
     </div>
@@ -48,17 +46,20 @@ export default {
     }
   },
   methods: {
-    feedMe (address) {
+    feedMe () {
       this.loading = true
-      const geocoder = new google.maps.Geocoder()
+      // const geocoder = new google.maps.Geocoder()
       const map = new google.maps.Map(document.getElementById('map'), {
         setCenter: {lat: this.geocoords.lat, lng: this.geocoords.lng},
         zoom: 17
       })
       var service = new google.maps.places.PlacesService(map)
-      geocoder.geocode({ 'address': address }, (results, status) => {
-        this.geocoords.lat = results[0].geometry.location.lat()
-        this.geocoords.lng = results[0].geometry.location.lng()
+      // geocoder.geocode({ 'address': this.$route.query.location }, (results, status) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        // this.geocoords.lat = results[0].geometry.location.lat()
+        this.geocoords.lat = position.coords.latitude
+        // this.geocoords.lng = results[0].geometry.location.lng()
+        this.geocoords.lng = position.coords.longitude
         service.nearbySearch({
           location: {lat: this.geocoords.lat, lng: this.geocoords.lng},
           radius: this.$route.query.radius * 1509,
@@ -72,7 +73,7 @@ export default {
     }
   },
   mounted () {
-    this.feedMe(this.$route.query.location)
+    this.feedMe()
   },
   watch: {
     // call again the method if the route changes

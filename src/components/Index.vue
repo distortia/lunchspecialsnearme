@@ -1,6 +1,6 @@
 <template>
   <b-form @submit.prevent="submit">
-    <b-form-group
+<!--     <b-form-group
       id="locationGroup"
       label="Location"
       label-for="location">
@@ -13,7 +13,7 @@
       <b-input-group-button slot="right">
         <b-btn variant="info">Location</b-btn>
       </b-input-group-button>
-    </b-form-group>
+    </b-form-group> -->
     <b-form-group 
       id="radiusGroup"
       label="Search Radius(Miles)"
@@ -58,7 +58,7 @@
           this.$router.push({
             path: 'specials',
             query: {
-              location: this.form.location.replace(/ /g, '+'),
+              // location: this.form.location.replace(/ /g, '+'),
               keywords: encodeURIComponent(this.form.keywords),
               radius: this.form.radius
             }
