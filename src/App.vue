@@ -57,4 +57,10 @@ export default {
 </script>
 
 <style lang="scss">
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
 </style>

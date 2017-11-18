@@ -7,27 +7,31 @@
     <b-container fluid>
       <b-row>
         <b-col cols="7">
-          <div id="map"></div>
+          <div class="map-container">
+            <div id="map"></div>
+          </div>
         </b-col>
         <b-col cols="5">
-          <div v-for="restaurant in restaurants">
-              <b-card :title="restaurant.name"
-                      :sub-title="restaurant.vicinity">
-                  <div style="display: block;">
-                    <b-badge pill variant="warning">
-                      Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
-                    </b-badge>
-                    <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
-                  </div>
-                  <p class="card-text" style="display: inline;"> Types: 
-                      <div v-for="type in restaurant.types" style="display: inline;">
-                        {{type}}
-                      </div>
-                    </ul>
-                  </p>
-                  <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`" target="_blank" 
-                     class="card-link" variant="outline-primary"><i class="fa fa-map-marker" aria-hidden="true"></i> Directions</b-button>
-              </b-card>
+          <div class="restaurant-cards-list">
+            <div v-for="restaurant in restaurants">
+                <b-card :title="restaurant.name"
+                        :sub-title="restaurant.vicinity">
+                    <div style="display: block;">
+                      <b-badge pill variant="warning">
+                        Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
+                      </b-badge>
+                      <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
+                    </div>
+                    <p class="card-text" style="display: inline;"> Types: 
+                        <div v-for="type in restaurant.types" style="display: inline;">
+                          {{type}}
+                        </div>
+                      </ul>
+                    </p>
+                    <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`" target="_blank" 
+                       class="card-link" variant="outline-primary"><i class="fa fa-map-marker" aria-hidden="true"></i> Directions</b-button>
+                </b-card>
+            </div>            
           </div>
         </b-col>
       </b-row>
@@ -135,9 +139,27 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss">
+/* map sizing taken from https://www.labnol.org/internet/embed-responsive-google-maps/28333/ */
+.map-container {
+  position: relative;
+  padding-bottom: 80%; // This is the aspect ratio
+  height: 0;
+  overflow: hidden;
+}
 #map {
   height:  600px;
   width:  800px;
+}
+#map iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+.restaurant-cards-list {
+  max-height: 75vh;
+  overflow-y: scroll;
 }
 </style>
