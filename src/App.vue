@@ -22,11 +22,7 @@
         <b-button size="sm" type="submit" variant="outline-success">Search</b-button>
       </b-nav-form>
     </b-navbar>
-    <b-container fluid>
-      <b-row>
-        <router-view></router-view>
-      </b-row>
-    </b-container>
+    <router-view></router-view>
   </div>
 </template>
 
