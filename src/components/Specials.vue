@@ -57,7 +57,7 @@ export default {
       // const geocoder = new google.maps.Geocoder()
       // geocoder.geocode({ 'address': this.$route.query.location }, (results, status) => {
       navigator.geolocation.getCurrentPosition((position) => {
-        const myGeocoords = {lat: position.coords.latitude, lng: position.coords.longitude}
+        const myGeocoords = { lat: position.coords.latitude, lng: position.coords.longitude }
         // this.geocoords.lat = results[0].geometry.location.lat()
         this.geocoords.lat = position.coords.latitude
         // this.geocoords.lng = results[0].geometry.location.lng()
@@ -65,11 +65,14 @@ export default {
 
         let map = new google.maps.Map(document.getElementById('map'), {
           center: myGeocoords,
-          zoom: 15})
+          zoom: 13})
 
+        // This map marker is different because we pass our lat/lng into it
+        // instead of fetching it from the results
         // eslint-disable-next-line no-unused-vars
-        const myLocation = new google.maps.Marker({
+        const myLocationMarker = new google.maps.Marker({
           position: myGeocoords,
+          animation: google.maps.Animation.DROP,
           map: map
         })
 
@@ -83,8 +86,23 @@ export default {
         }, response => {
           this.loading = false
           this.restaurants = response
+          this.map = map
+          // Draw the markers for the places
+          response.forEach((place) => {
+            this.createMarker(place)
+          })
         }, error =>
         console.log(error))
+      })
+    },
+    createMarker (place) {
+      // eslint-disable-next-line no-unused-vars
+      let placeLoc = place.geometry.location
+      // eslint-disable-next-line no-unused-vars
+      let marker = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: place.geometry.location
       })
     }
   },
