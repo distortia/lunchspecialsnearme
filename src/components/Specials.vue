@@ -22,6 +22,7 @@
                       </b-badge>
                       <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
                     </div>
+                    <!-- This is probably temporary -->
                     <p class="card-text" style="display: inline;"> Types: 
                         <div v-for="type in restaurant.types" style="display: inline;">
                           {{type}}
@@ -31,8 +32,11 @@
                     <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`" target="_blank" 
                        class="card-link" variant="outline-primary"><i class="fa fa-map-marker" aria-hidden="true"></i> Directions</b-button>
                 </b-card>
-            </div>            
+            </div> 
           </div>
+            <div class="pagination-container" v-if="restaurants">
+              <b-pagination :total-rows="100" :limit=10 v-model="currentPage" :per-page="10" align="center" hide-ellipsis></b-pagination>
+            </div>
         </b-col>
       </b-row>
     </b-container>
@@ -52,7 +56,8 @@ export default {
         lat: null,
         lng: null
       },
-      restaurants: null
+      restaurants: null,
+      currentPage: 0
     }
   },
   methods: {
@@ -148,8 +153,8 @@ export default {
   overflow: hidden;
 }
 #map {
-  height:  600px;
-  width:  800px;
+  height: 600px;
+  width: 800px;
 }
 #map iframe {
   position: absolute;

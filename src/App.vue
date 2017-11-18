@@ -57,6 +57,8 @@ export default {
 </script>
 
 <style lang="scss">
+// https://stackoverflow.com/a/13172336
+// for full height browser window
 html {
   height: 100%;
 }
