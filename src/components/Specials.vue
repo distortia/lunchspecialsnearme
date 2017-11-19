@@ -7,7 +7,7 @@
     <h1 v-if="restaurants">Currently displaying {{restaurants.length}} place(s) near you </h1>
     <b-container fluid>
       <b-row>
-        <b-col cols="7">
+        <b-col cols="12" md="7">
           <div class="map-container">
             <div id="map"></div>
                 <b-modal ref="placeModal" hide-footer :title="placeModal.title" lazy>
@@ -46,7 +46,7 @@
               </b-modal>
           </div>
         </b-col>
-        <b-col cols="5">
+        <b-col md="5" cols="12">
           <div class="restaurant-cards-list">
             <div v-for="(restaurant, index) in restaurants">
                 <b-card :title="`${index + 1}: ${restaurant.name}`"

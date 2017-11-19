@@ -56,7 +56,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 /* https://stackoverflow.com/a/13172336*/
 /* for full height browser window*/
 html {
@@ -71,5 +71,10 @@ body {
   top: 50%;
   left: 50%;
   margin: -50px 0px 0px -50px;
+}
+@media(max-width: 767px) {
+  nav .btn {
+    width: 100%;
+  } 
 }
 </style>
