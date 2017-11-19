@@ -10,9 +10,9 @@
         <b-col cols="7">
           <div class="map-container">
             <div id="map"></div>
-                <b-modal ref="placeModal" hide-footer :title="placeModal.title">
+                <b-modal ref="placeModal" hide-footer :title="placeModal.title" lazy>
                   <div class="d-block text-center">
-                      <h3>{{ placeModal.bodyText }}</h3>
+                      <h3>{{ placeModal }}</h3>
                   </div>
                   <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-btn>
               </b-modal>
@@ -30,14 +30,25 @@
                       <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
                     </div>
                     <!-- This is probably temporary -->
-                    <p class="card-text" style="display: inline;"> Types: 
+<!--                     <p class="card-text" style="display: inline;"> Types: 
                         <div v-for="type in restaurant.types" style="display: inline;">
                           {{type}}
                         </div>
                       </ul>
-                    </p>
-                    <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`" target="_blank" 
-                       class="card-link" variant="outline-primary"><i class="fa fa-map-marker" aria-hidden="true"></i> Directions</b-button>
+                    </p> -->
+                    <div class="button-group">
+                      <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`"
+                                target="_blank" 
+                                class="card-link"
+                                variant="outline-primary">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        Directions
+                      </b-button>
+                       <b-button variant="outline-warning" @click="showModal(restaurant)">
+                          <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          Info
+                       </b-button>
+                    </div>
                 </b-card>
             </div> 
           </div>
@@ -67,10 +78,7 @@ export default {
       },
       restaurants: null,
       pagination: null,
-      placeModal: {
-        title: null,
-        bodyText: null
-      }
+      placeModal: {}
     }
   },
   methods: {
@@ -123,8 +131,6 @@ export default {
       })
 
       marker.addListener('click', () => {
-        this.placeModal.title = place.name
-        this.placeModal.bodyText = place.vicinity
         this.showModal(place)
       })
     },
@@ -146,11 +152,24 @@ export default {
     },
     placeDetails (placeId) {
       let service = new google.maps.places.PlacesService(this.map)
-      service.getDetails({ placeId: placeId }, response => {
-        return response
+      service.getDetails({ placeId: placeId }, place => {
+        console.log(place)
+        this.placeModal = {
+          phoneNumber: place.international_phone_number,
+          address: place.formatted_address,
+          title: place.name,
+          price: place.price_level,
+          rating: place.rating,
+          website: place.website,
+          reviews: place.reviews,
+          photos: place.photos,
+          url: place.url,
+          openingHours: place.opening_hours
+        }
       })
     },
     showModal (place) {
+      this.placeDetails(place.place_id)
       this.$refs.placeModal.show()
     },
     hideModal () {
@@ -217,5 +236,8 @@ export default {
 .restaurant-cards-list {
   max-height: 75vh;
   overflow-y: scroll;
+}
+.button-group {
+  margin-top: 2.5%;
 }
 </style>
