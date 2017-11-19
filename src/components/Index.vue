@@ -68,6 +68,6 @@
     }
   </script>
 
-  <style lang="sass" scoped>
-  @import './../assets/sass/index.scss';
+  <style>
+  /*@import './../assets/sass/index.scss';*/
   </style>

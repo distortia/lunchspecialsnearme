@@ -12,30 +12,37 @@
             <div id="map"></div>
                 <b-modal ref="placeModal" hide-footer :title="placeModal.title" lazy>
                   <div class="d-block text-center">
-                      <p>{{placeModal.address}}</p>
+                    <p>{{placeModal.address}}</p>
                       <p>
                         <b-badge pill variant="warning">
                           Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
                         </b-badge>
                         <b-badge pill variant="success">Price Level: {{placeModal.price_level | expensivity }}</b-badge>
                       </p>
-                      <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
-                        <i class="fa fa-mobile" aria-hidden="true"></i>
-                        Call
-                      </b-button>
-                      <b-button :href="placeModal.url"
-                                target="_blank" 
-                                variant="outline-primary">
-                        <i class="fa fa-map-marker" aria-hidden="true"></i>
-                        Directions
-                      </b-button>
-                      <b-button variant="outline-success" :href="placeModal.website" target="_blank">
-                        <i class="fa fa-globe" aria-hidden="true"></i>
-                        Website
-                      </b-button>
-                      <p>{{placeModal.openingHours}}</p>
+                      <h4>Hours</h4>
+                       <ul class="modal-address">
+                        <li v-for="hours in placeModal.openingHours">
+                          {{hours}}
+                        </li>
+                      </ul>
+                      <b-button-group class="modal-button-group">
+                        <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
+                          <i class="fa fa-mobile" aria-hidden="true"></i>
+                          Call
+                        </b-button>
+                        <b-button :href="placeModal.url"
+                                  target="_blank" 
+                                  variant="outline-primary">
+                          <i class="fa fa-map-marker" aria-hidden="true"></i>
+                          Directions
+                        </b-button>
+                        <b-button variant="outline-primary" :href="placeModal.website" target="_blank">
+                          <i class="fa fa-globe" aria-hidden="true"></i>
+                          Website
+                        </b-button>
+                    </b-button-group>
                   </div>
-                  <b-btn variant="outline-danger" block @click="hideModal">Close Me</b-btn>
+                  <b-btn variant="outline-danger" block @click="hideModal">Close</b-btn>
               </b-modal>
           </div>
         </b-col>
@@ -65,7 +72,7 @@
                         <i class="fa fa-map-marker" aria-hidden="true"></i>
                         Directions
                       </b-button>
-                       <b-button variant="outline-warning" @click="showModal(restaurant)">
+                       <b-button variant="outline-info" @click="showModal(restaurant)">
                           <i class="fa fa-info-circle" aria-hidden="true"></i>
                           Info
                        </b-button>
@@ -181,7 +188,7 @@ export default {
           reviews: place.reviews,
           photos: place.photos,
           url: place.url,
-          openingHours: place.opening_hours
+          openingHours: place.opening_hours.weekday_text
         }
       })
     },
@@ -231,11 +238,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 /* map sizing taken from https://www.labnol.org/internet/embed-responsive-google-maps/28333/ */
 .map-container {
   position: relative;
-  padding-bottom: 80%; // This is the aspect ratio
+  padding-bottom: 80%;
   height: 0;
   overflow: hidden;
 }
@@ -256,5 +263,14 @@ export default {
 }
 .button-group {
   margin-top: 2.5%;
+}
+.modal-address {
+  padding-left: 0;
+}
+.modal-address li {
+  list-style: none;
+}
+.modal-button-group {
+  margin-bottom: 5%;
 }
 </style>
