@@ -13,8 +13,8 @@
         </b-col>
         <b-col cols="5">
           <div class="restaurant-cards-list">
-            <div v-for="restaurant in restaurants">
-                <b-card :title="restaurant.name"
+            <div v-for="(restaurant, index) in restaurants">
+                <b-card :title="`${index + 1}: ${restaurant.name}`"
                         :sub-title="restaurant.vicinity">
                     <div style="display: block;">
                       <b-badge pill variant="warning">
@@ -34,9 +34,10 @@
                 </b-card>
             </div> 
           </div>
-            <div class="pagination-container" v-if="restaurants">
-              <b-pagination :total-rows="100" :limit=10 v-model="currentPage" :per-page="10" align="center" hide-ellipsis></b-pagination>
+            <div class="pagination-container" v-if="hasPagination">
+              <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
             </div>
+              <b-alert show v-else v-show="restaurants">All results are displayed</b-alert>
         </b-col>
       </b-row>
     </b-container>
@@ -57,12 +58,13 @@ export default {
         lng: null
       },
       restaurants: null,
-      currentPage: 0
+      pagination: null
     }
   },
   methods: {
     feedMe () {
       this.loading = true
+      this.restaurants = null
       // const geocoder = new google.maps.Geocoder()
       // geocoder.geocode({ 'address': this.$route.query.location }, (results, status) => {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -82,8 +84,10 @@ export default {
         const myLocationMarker = new google.maps.Marker({
           position: myGeocoords,
           animation: google.maps.Animation.DROP,
+          icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
           map: map
         })
+        this.map = map
 
         let service = new google.maps.places.PlacesService(map)
 
@@ -92,31 +96,48 @@ export default {
           radius: this.$route.query.radius * 1509,
           type: ['restaurant'],
           keyword: this.$route.query.keywords
-        }, response => {
-          this.loading = false
-          this.restaurants = response
-          this.map = map
-          // Draw the markers for the places
-          response.forEach((place) => {
-            this.createMarker(place)
-          })
-        }, error =>
-        console.log(error))
+        }, this.parsePlaces)
       })
     },
-    createMarker (place) {
+    createMarker (place, index) {
       // eslint-disable-next-line no-unused-vars
       let placeLoc = place.geometry.location
       // eslint-disable-next-line no-unused-vars
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
+        label: `${index + 1}`,
         position: place.geometry.location
       })
+    },
+    parsePlaces (places, status, pagination) {
+      this.loading = false
+      this.restaurants = (this.restaurants === null) ? places : this.restaurants.concat(places)
+      this.pagination = pagination
+      // Draw the markers for the places
+      places.forEach((place, index) => {
+        this.createMarker(place, index)
+      })
+    },
+    paginate () {
+      this.loading = true
+      if (this.pagination.hasNextPage) {
+        this.pagination.nextPage()
+      }
+      this.loading = false
     }
   },
   mounted () {
     this.feedMe()
+  },
+  computed: {
+    hasPagination () {
+      let result = false
+      if (this.restaurants) {
+        result = this.pagination.hasNextPage
+      }
+      return result
+    }
   },
   watch: {
     // call again the method if the route changes
