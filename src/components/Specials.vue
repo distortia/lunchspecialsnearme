@@ -12,9 +12,30 @@
             <div id="map"></div>
                 <b-modal ref="placeModal" hide-footer :title="placeModal.title" lazy>
                   <div class="d-block text-center">
-                      <h3>{{ placeModal }}</h3>
+                      <p>{{placeModal.address}}</p>
+                      <p>
+                        <b-badge pill variant="warning">
+                          Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
+                        </b-badge>
+                        <b-badge pill variant="success">Price Level: {{placeModal.price_level | expensivity }}</b-badge>
+                      </p>
+                      <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
+                        <i class="fa fa-mobile" aria-hidden="true"></i>
+                        Call
+                      </b-button>
+                      <b-button :href="placeModal.url"
+                                target="_blank" 
+                                variant="outline-primary">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        Directions
+                      </b-button>
+                      <b-button variant="outline-success" :href="placeModal.website" target="_blank">
+                        <i class="fa fa-globe" aria-hidden="true"></i>
+                        Website
+                      </b-button>
+                      <p>{{placeModal.openingHours}}</p>
                   </div>
-                  <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-btn>
+                  <b-btn variant="outline-danger" block @click="hideModal">Close Me</b-btn>
               </b-modal>
           </div>
         </b-col>
@@ -120,9 +141,6 @@ export default {
       })
     },
     createMarker (place, index) {
-      // eslint-disable-next-line no-unused-vars
-      let placeLoc = place.geometry.location
-      // eslint-disable-next-line no-unused-vars
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
@@ -153,12 +171,11 @@ export default {
     placeDetails (placeId) {
       let service = new google.maps.places.PlacesService(this.map)
       service.getDetails({ placeId: placeId }, place => {
-        console.log(place)
         this.placeModal = {
           phoneNumber: place.international_phone_number,
           address: place.formatted_address,
           title: place.name,
-          price: place.price_level,
+          price_level: place.price_level,
           rating: place.rating,
           website: place.website,
           reviews: place.reviews,
