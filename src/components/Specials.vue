@@ -1,14 +1,21 @@
 <template>
   <div>
-    <div class="loading" v-if="loading">
-      Loading...
+    <div class="loading" v-show="loading">
+      <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+      <span class="sr-only">Loading...</span>
     </div>
-    <h1 v-if="restaurants">Current places near you({{restaurants.length}}): </h1>
+    <h1 v-if="restaurants">Currently displaying {{restaurants.length}} place(s) near you </h1>
     <b-container fluid>
       <b-row>
         <b-col cols="7">
           <div class="map-container">
             <div id="map"></div>
+                <b-modal ref="placeModal" hide-footer :title="placeModal.title">
+                  <div class="d-block text-center">
+                      <h3>{{ placeModal.bodyText }}</h3>
+                  </div>
+                  <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-btn>
+              </b-modal>
           </div>
         </b-col>
         <b-col cols="5">
@@ -37,7 +44,8 @@
             <div class="pagination-container" v-if="hasPagination">
               <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
             </div>
-              <b-alert show v-else v-show="restaurants">All results are displayed</b-alert>
+              <!-- Only show if there are restaurants and there is no more pagination -->
+              <b-alert show v-else v-show="restaurants" variant="warning">All results are displayed</b-alert>
         </b-col>
       </b-row>
     </b-container>
@@ -58,7 +66,11 @@ export default {
         lng: null
       },
       restaurants: null,
-      pagination: null
+      pagination: null,
+      placeModal: {
+        title: null,
+        bodyText: null
+      }
     }
   },
   methods: {
@@ -92,7 +104,7 @@ export default {
         let service = new google.maps.places.PlacesService(map)
 
         service.nearbySearch({
-          location: {lat: position.coords.latitude, lng: position.coords.longitude},
+          location: { lat: position.coords.latitude, lng: position.coords.longitude },
           radius: this.$route.query.radius * 1509,
           type: ['restaurant'],
           keyword: this.$route.query.keywords
@@ -106,8 +118,14 @@ export default {
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
-        label: `${index + 1}`,
+        label: `${index + 1}`, // add 1 to make them user friendly numbers
         position: place.geometry.location
+      })
+
+      marker.addListener('click', () => {
+        this.placeModal.title = place.name
+        this.placeModal.bodyText = place.vicinity
+        this.showModal(place)
       })
     },
     parsePlaces (places, status, pagination) {
@@ -120,11 +138,23 @@ export default {
       })
     },
     paginate () {
-      this.loading = true
       if (this.pagination.hasNextPage) {
+        this.loading = true
         this.pagination.nextPage()
+        this.loading = false
       }
-      this.loading = false
+    },
+    placeDetails (placeId) {
+      let service = new google.maps.places.PlacesService(this.map)
+      service.getDetails({ placeId: placeId }, response => {
+        return response
+      })
+    },
+    showModal (place) {
+      this.$refs.placeModal.show()
+    },
+    hideModal () {
+      this.$refs.placeModal.hide()
     }
   },
   mounted () {

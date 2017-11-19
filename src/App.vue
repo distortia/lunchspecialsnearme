@@ -65,4 +65,11 @@ html {
 body {
   min-height: 100%;
 }
+.loading i, .loading span {
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -50px 0px 0px -50px;
+}
 </style>
