@@ -14,8 +14,8 @@
   overflow: hidden;
 }
 #map {
-  height: 600px;
-  width: 800px;
+  height: calc(85vh - 0px);
+  width: calc(70vw - 0px);
 }
 #map iframe {
   position: absolute;
@@ -25,7 +25,7 @@
   height: 100% !important;
 }
 .restaurant-cards-list {
-  max-height: 75vh;
+  max-height: 76vh;
   overflow-y: scroll;
 }
 .button-group {
