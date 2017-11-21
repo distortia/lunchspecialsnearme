@@ -1,18 +1,21 @@
 @import '_colors';
-#header {
+.index-image-wrapper {
  background-image: url(/static/bg.jpg) ;
  background-position: center center;
  background-repeat:  no-repeat;
  background-attachment: fixed;
  background-size: cover;
 }
-.main-section {
+.index-wrapper {
   height: 100vh;
-  width: 100vw;
   background-color: rgba(0,0,0,0.5);
 }
-
-h1, h3 {
-  color: $text-white;
-  text-align: center;
+.home-container {
+  height: 100vh;
+  .row {
+    height: 100%;
+  }
+  .home-content {
+    color: $text-white;
+  }
 }

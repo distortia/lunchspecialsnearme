@@ -1,5 +1,32 @@
 <template>
   <div>
+    <b-navbar toggleable="md" type="light" variant="light" sticky @submit.prevent="search">
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-navbar-brand href="/">LSNM</b-navbar-brand>
+      <b-collapse is-nav id="nav-collapse">
+        <b-navbar-nav class="ml-auto">
+          <b-nav-form>
+            <b-form-input
+              id="radius"
+              type="number"
+              v-model="form.radius"
+              placeholder="Radius(miles)"
+              size="sm"
+              class="mr-sm-2"
+              required></b-form-input>
+            <b-form-input 
+              id="keywords"
+              type="text"
+              v-model="form.keywords"
+              placeholder="Mexican"
+              class="mr-sm-2"
+              size="sm"
+              required></b-form-input>
+            <b-button size="sm" type="submit" variant="outline-success">Search</b-button>
+          </b-nav-form>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
     <div class="loading" v-show="loading">
       <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
       <span class="sr-only">Loading...</span>
@@ -106,7 +133,12 @@ export default {
       },
       restaurants: null,
       pagination: null,
-      placeModal: {}
+      placeModal: {},
+      form: {
+        location: null,
+        radius: null,
+        keywords: null
+      }
     }
   },
   methods: {
@@ -239,6 +271,14 @@ export default {
 </script>
 
 <style>
+@media(max-width: 767px) {
+  nav input {
+    width: 100% !important;
+  }
+  nav .btn {
+    width: 100%;
+  } 
+}
 /* map sizing taken from https://www.labnol.org/internet/embed-responsive-google-maps/28333/ */
 .map-container {
   position: relative;
