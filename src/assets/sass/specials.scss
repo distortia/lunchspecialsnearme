@@ -1,0 +1,42 @@
+@media(max-width: 767px) {
+  nav input {
+    width: 100% !important;
+  }
+  nav .btn {
+    width: 100%;
+  } 
+}
+/* map sizing taken from https://www.labnol.org/internet/embed-responsive-google-maps/28333/ */
+.map-container {
+  position: relative;
+  padding-bottom: 80%;
+  height: 0;
+  overflow: hidden;
+}
+#map {
+  height: 600px;
+  width: 800px;
+}
+#map iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+.restaurant-cards-list {
+  max-height: 75vh;
+  overflow-y: scroll;
+}
+.button-group {
+  margin-top: 2.5%;
+}
+.modal-address {
+  padding-left: 0;
+}
+.modal-address li {
+  list-style: none;
+}
+.modal-button-group {
+  margin-bottom: 5%;
+}

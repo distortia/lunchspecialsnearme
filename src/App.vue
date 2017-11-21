@@ -35,19 +35,5 @@ export default {
 </script>
 
 <style lang="scss">
-/* https://stackoverflow.com/a/13172336*/
-/* for full height browser window*/
-html {
-  height: 100%;
-}
-body {
-  min-height: 100%;
-}
-.loading i, .loading span {
-  z-index: 100;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -50px 0px 0px -50px;
-}
+@import './assets/sass/app.scss';
 </style>
