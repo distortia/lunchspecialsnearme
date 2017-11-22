@@ -10,6 +10,9 @@
               <p>
                 LSNM is for the 9 to 5 heroes looking to change up their daily routines and expand their culinary tastes. Explore the best of what your city has to offer. Share some of your favorite places so other can indulge in the same.
               </p>
+              <p>
+                What do your taste buds want to explore today?
+              </p>
             </div>
           </b-col>
           <b-col cols="12" md="6">

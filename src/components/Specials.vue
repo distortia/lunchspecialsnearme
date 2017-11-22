@@ -142,6 +142,16 @@ export default {
     }
   },
   methods: {
+    search () {
+      this.$router.push({
+        path: 'specials',
+        query: {
+          // location: this.form.location.replace(/ /g, '+'),
+          keywords: encodeURIComponent(this.form.keywords),
+          radius: this.form.radius
+        }
+      })
+    },
     feedMe () {
       this.loading = true
       this.restaurants = null
@@ -175,6 +185,7 @@ export default {
           location: { lat: position.coords.latitude, lng: position.coords.longitude },
           radius: this.$route.query.radius * 1509,
           type: ['restaurant'],
+          openNow: true,
           keyword: this.$route.query.keywords
         }, this.parsePlaces)
       })
@@ -201,11 +212,13 @@ export default {
       })
     },
     paginate () {
-      if (this.pagination.hasNextPage) {
-        this.loading = true
-        this.pagination.nextPage()
+      this.loading = true
+      setTimeout(() => {
+        if (this.pagination.hasNextPage) {
+          this.pagination.nextPage()
+        }
         this.loading = false
-      }
+      }, 2000)
     },
     placeDetails (placeId) {
       let service = new google.maps.places.PlacesService(this.map)
