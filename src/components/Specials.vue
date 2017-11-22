@@ -136,8 +136,8 @@ export default {
       placeModal: {},
       form: {
         location: null,
-        radius: null,
-        keywords: null
+        radius: this.$route.query.radius || null,
+        keywords: this.$route.query.keywords || null
       }
     }
   },
