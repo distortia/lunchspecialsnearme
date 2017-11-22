@@ -75,6 +75,19 @@
         </b-col>
         <b-col md="5" cols="12">
           <div class="restaurant-cards-list">
+            <div class="ad-container">
+              <p>
+                We try not to be intrusive with the ads.<br>Please consider disabling ad block.
+                <i class="fa fa-frown-o" aria-hidden="true"></i>
+              </p>
+              <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-1093990846577533"
+                data-ad-slot="9354044408"
+                data-ad-format="auto"
+                ref="googleAds">
+              </ins>
+            </div>
             <div v-for="(restaurant, index) in restaurants">
                 <b-card :title="`${index + 1}: ${restaurant.name}`"
                         :sub-title="restaurant.vicinity">
@@ -84,13 +97,6 @@
                       </b-badge>
                       <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
                     </div>
-                    <!-- This is probably temporary -->
-<!--                     <p class="card-text" style="display: inline;"> Types: 
-                        <div v-for="type in restaurant.types" style="display: inline;">
-                          {{type}}
-                        </div>
-                      </ul>
-                    </p> -->
                     <div class="button-group">
                       <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`"
                                 target="_blank" 
@@ -107,11 +113,11 @@
                 </b-card>
             </div> 
           </div>
-            <div class="pagination-container" v-if="hasPagination">
-              <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
-            </div>
-              <!-- Only show if there are restaurants and there is no more pagination -->
-              <b-alert show v-else v-show="restaurants" variant="warning">All results are displayed</b-alert>
+          <div class="pagination-container" v-if="hasPagination">
+            <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
+          </div>
+            <!-- Only show if there are restaurants and there is no more pagination -->
+            <b-alert show v-else v-show="restaurants" variant="warning">All results are displayed</b-alert>
         </b-col>
       </b-row>
     </b-container>
@@ -243,6 +249,9 @@ export default {
     },
     hideModal () {
       this.$refs.placeModal.hide()
+    },
+    adblocked () {
+      return this.$refs.googleAds.offsetHeight === 0
     }
   },
   mounted () {
