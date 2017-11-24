@@ -40,8 +40,13 @@
 .modal-button-group {
   margin-bottom: 5%;
 }
-.ad-container p {
-  position: absolute;
-  text-align: center;
-  width: 90%;
+.ad-container {
+  p {
+    position: absolute;
+    text-align: center;
+    width: 90%;
+  }
+  ins {
+    display: initial;
+  }
 }

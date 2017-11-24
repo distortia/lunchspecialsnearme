@@ -3,6 +3,7 @@
     <b-navbar toggleable="md" type="light" variant="light" sticky @submit.prevent="search">
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-navbar-brand href="/">LSNM</b-navbar-brand>
+      <b-button size="sm" class="my-2 my-sm-0" @click="feedbackModal = !feedbackModal" variant="outline-primary">Feedback</b-button>
       <b-collapse is-nav id="nav-collapse">
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
@@ -121,6 +122,19 @@
         </b-col>
       </b-row>
     </b-container>
+    <b-modal 
+      v-model="feedbackModal"
+      title="Feedback"
+      @ok="handleOk"
+      @shown="clearFeedback"
+      ref="feedbackModal">
+      <form @submit.stop.prevent="handleSubmit">
+        <b-form-textarea
+           v-model.trim="feedback"
+           placeholder="Enter Feedback"
+           :rows="3"></b-form-textarea>
+        </form>
+    </b-modal>
   </div>
 </template>
 
@@ -144,7 +158,9 @@ export default {
         location: null,
         radius: this.$route.query.radius || null,
         keywords: this.$route.query.keywords || null
-      }
+      },
+      feedbackModal: false,
+      feedback: ''
     }
   },
   methods: {
@@ -252,6 +268,22 @@ export default {
     },
     adblocked () {
       return this.$refs.googleAds.offsetHeight === 0
+    },
+    clearFeedback () {
+      this.feedback = ''
+    },
+    handleOk (evt) {
+      evt.preventDefault()
+      if (!this.feedback) {
+        alert('Please enter feedback')
+      } else {
+        this.handleSubmit()
+      }
+    },
+    handleSubmit () {
+      console.log(this.feedback)
+      this.clearFeedback()
+      this.$refs.feedbackModal.hide()
     }
   },
   mounted () {
