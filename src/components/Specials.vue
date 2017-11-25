@@ -140,6 +140,7 @@
 
 <script>
 /* global google */
+
 export default {
 
   name: 'Specials',
@@ -281,16 +282,12 @@ export default {
       }
     },
     handleSubmit () {
-      const msg = {
-        to: 'nickstalter@gmail.com',
-        from: 'feedback@lunchspecialsnearme.com',
-        subject: 'New Feedback',
-        text: this.feedback
-      }
-      this.$http.post('https://api.sendgrid.com/v3/mail/send', msg).then(success => {
-        console.log('message sent', success)
-      }, err => {
-        console.log('err', err)
+       // eslint-disable-next-line
+      emailjs.send('sendgrid', 'feedback', {
+        feedback: this.feedback
+      })
+      .then(response => {
+        console.log('SUCCESS', response)
       })
       this.clearFeedback()
       this.$refs.feedbackModal.hide()
