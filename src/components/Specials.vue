@@ -281,7 +281,17 @@ export default {
       }
     },
     handleSubmit () {
-      console.log(this.feedback)
+      const msg = {
+        to: 'nickstalter@gmail.com',
+        from: 'feedback@lunchspecialsnearme.com',
+        subject: 'New Feedback',
+        text: this.feedback
+      }
+      this.$http.post('https://api.sendgrid.com/v3/mail/send', msg).then(success => {
+        console.log('message sent', success)
+      }, err => {
+        console.log('err', err)
+      })
       this.clearFeedback()
       this.$refs.feedbackModal.hide()
     }
