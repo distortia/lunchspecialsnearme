@@ -33,6 +33,7 @@
       <span class="sr-only">Loading...</span>
     </div>
     <h1 v-if="restaurants">Currently displaying {{restaurants.length}} place(s) near you </h1>
+    <b-alert variant="success" :show="feedbackSent" dismissible>Thanks for your feedback! We appreciate it!</b-alert>
     <b-container fluid>
       <b-row>
         <b-col cols="12" md="7">
@@ -130,9 +131,10 @@
       ref="feedbackModal">
       <form @submit.stop.prevent="handleSubmit">
         <b-form-textarea
-           v-model.trim="feedback"
-           placeholder="Enter Feedback"
-           :rows="3"></b-form-textarea>
+          v-model.trim="feedback"
+          placeholder="Enter Feedback or recommendations"
+          rows="3">
+        </b-form-textarea>
         </form>
     </b-modal>
   </div>
@@ -161,7 +163,8 @@ export default {
         keywords: this.$route.query.keywords || null
       },
       feedbackModal: false,
-      feedback: ''
+      feedback: '',
+      feedbackSent: false
     }
   },
   methods: {
@@ -268,6 +271,7 @@ export default {
       this.$refs.placeModal.hide()
     },
     adblocked () {
+      // Simple chcek to see if the ad is displayed at all, kinda flakey, like biscuits
       return this.$refs.googleAds.offsetHeight === 0
     },
     clearFeedback () {
@@ -282,11 +286,12 @@ export default {
       }
     },
     handleSubmit () {
-       // eslint-disable-next-line
+    // eslint-disable-next-line
       emailjs.send('sendgrid', 'feedback', {
         feedback: this.feedback
       })
       .then(response => {
+        this.feedbackSent = true
         console.log('SUCCESS', response)
       })
       this.clearFeedback()
