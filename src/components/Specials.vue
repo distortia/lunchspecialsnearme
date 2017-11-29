@@ -78,10 +78,10 @@
         <b-col md="5" cols="12">
           <div class="restaurant-cards-list">
             <div class="ad-container">
-              <p>
+<!--               <p>
                 We try not to be intrusive with the ads.<br>Please consider disabling ad block.
                 <i class="fa fa-frown-o" aria-hidden="true"></i>
-              </p>
+              </p> -->
               <ins class="adsbygoogle"
                 style="display:block"
                 data-ad-client="ca-pub-1093990846577533"
@@ -270,10 +270,10 @@ export default {
     hideModal () {
       this.$refs.placeModal.hide()
     },
-    adblocked () {
-      // Simple chcek to see if the ad is displayed at all, kinda flakey, like biscuits
-      return this.$refs.googleAds.offsetHeight === 0
-    },
+    // adblocked () {
+    //   // Simple chcek to see if the ad is displayed at all, kinda flakey, like biscuits
+    //   return this.$refs.googleAds.offsetHeight === 0
+    // },
     clearFeedback () {
       this.feedback = ''
     },
