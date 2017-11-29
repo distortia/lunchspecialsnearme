@@ -299,7 +299,10 @@ export default {
     }
   },
   mounted () {
+    // eslint-disable-next-line func-call-spacing
     this.feedMe()
+    // eslint-disable-next-line no-unexpected-multiline
+    window.adsbygoogle = (window.adsbygoogle || []).push({})
   },
   computed: {
     hasPagination () {
