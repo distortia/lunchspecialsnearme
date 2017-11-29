@@ -5,14 +5,14 @@ import App from './App'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import VueResource from 'vue-resource'
-import VueAnalytics from 'vue-analytics'
+// import VueAnalytics from 'vue-analytics'
 
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
-Vue.use(VueAnalytics, {
-  id: 'UA-90321609-3',
-  checkDuplicatedScript: true
-})
+// Vue.use(VueAnalytics, {
+//   id: 'UA-90321609-3',
+//   checkDuplicatedScript: true
+// })
 
 Vue.config.productionTip = false
 // Google Places api key
