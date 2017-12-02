@@ -173,7 +173,7 @@ export default {
         path: 'specials',
         query: {
           // location: this.form.location.replace(/ /g, '+'),
-          keywords: encodeURIComponent(this.form.keywords),
+          keywords: this.form.keywords,
           radius: this.form.radius
         }
       })
