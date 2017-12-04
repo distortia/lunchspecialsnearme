@@ -91,29 +91,29 @@
               </ins>
             </div>
             <div v-for="(restaurant, index) in restaurants">
-                <b-card :title="`${index + 1}: ${restaurant.name}`"
-                        :sub-title="restaurant.vicinity">
-                    <div style="display: block;">
-                      <b-badge pill variant="warning">
-                        Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
-                      </b-badge>
-                      <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
-                    </div>
-                    <div class="button-group">
-                      <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`"
-                                target="_blank" 
-                                class="card-link"
-                                variant="outline-primary">
-                        <i class="fa fa-map-marker" aria-hidden="true"></i>
-                        Directions
-                      </b-button>
-                       <b-button variant="outline-info" @click="showModal(restaurant)">
-                          <i class="fa fa-info-circle" aria-hidden="true"></i>
-                          Info
-                       </b-button>
-                    </div>
-                </b-card>
-            </div> 
+              <b-card :title="`${index + 1}: ${restaurant.name}`"
+                      :sub-title="restaurant.vicinity">
+                  <div style="display: block;">
+                    <b-badge pill variant="warning">
+                      Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
+                    </b-badge>
+                    <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
+                  </div>
+                  <div class="button-group">
+                    <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`"
+                              target="_blank" 
+                              class="card-link"
+                              variant="outline-primary">
+                      <i class="fa fa-map-marker" aria-hidden="true"></i>
+                      Directions
+                    </b-button>
+                     <b-button variant="outline-info" @click="showModal(restaurant)">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        Info
+                     </b-button>
+                  </div>
+              </b-card>
+            </div>
           </div>
           <div class="pagination-container" v-if="hasPagination">
             <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
