@@ -69,3 +69,14 @@ knexfile.js
 
 ### Application Logs ###
 logs/
+
+/_build
+/deps
+/doc
+/tmp
+/node_modules
+
+/installer/_build
+/installer/tmp
+
+erl_crash.dump
