@@ -20217,9 +20217,108 @@ require.register("js/app.js", function(exports, require, module) {
 
 require("phoenix_html");
 
+var _map = require("./map");
+
+var Map = _interopRequireWildcard(_map);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+// Brunch automatically concatenates all files in your
+// watched paths. Those paths can be configured at
+// config.paths.watched in "brunch-config.js".
+//
+// However, those files will only be executed if
+// explicitly imported. The only exception are files
+// in vendor, which are never wrapped in imports and
+// therefore are always executed.
+
+// Import dependencies
+//
+// If you no longer want to use a dependency, remember
+// to also remove its path from "config.paths.watched".
+window.initMap = Map.initMap;
+
+// Import local files
+//
+// Local files can be imported directly using relative
+// paths "./socket" or full ones "web/static/js/socket".
+
+// import socket from "./socket"
+
+// Put the map into the global scope
+
 });
 
-require.register("js/socket.js", function(exports, require, module) {
+;require.register("js/geolocation.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function geoloction() {
+  navigator.geolocation.getCurrentPosition(function (position) {
+    return position.coords.latitude + "," + position.coords.longitude;
+  });
+};
+
+exports.geolocation = geolocation;
+
+});
+
+require.register("js/map.js", function(exports, require, module) {
+'use strict';
+
+function init_map() {
+  var myLocation = { lat: 39.8675784, lng: -82.7988644 };
+  var myOptions = {
+    zoom: 13,
+    center: myLocation
+  };
+  var map = new google.maps.Map(document.getElementById('map'), myOptions);
+  var marker = new google.maps.Marker({
+    map: map,
+    animation: google.maps.Animation.DROP,
+    position: myLocation,
+    icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+  });
+  // infowindow.open(map, marker);
+  // google.maps.event.addListener(marker, 'click', function() {
+  //     infowindow.open(map, marker);
+  // });
+}
+google.maps.event.addDomListener(window, 'load', init_map);
+
+function create_marker(place, index) {
+  var _this = this;
+
+  var marker = new google.maps.Marker({
+    map: document.getElementById('map'),
+    animation: google.maps.Animation.DROP,
+    label: '' + (index + 1), // add 1 to make them user friendly numbers
+    position: place.geometry.location
+  });
+
+  marker.addListener('click', function () {
+    _this.showModal(place);
+  });
+}
+
+function parsePlaces(places, status, pagination) {
+  var _this2 = this;
+
+  this.restaurants = this.restaurants === null ? places : this.restaurants.concat(places);
+  this.pagination = pagination;
+  // Draw the markers for the places
+  places.forEach(function (place, index) {
+    _this2.createMarker(place, index);
+  });
+}
+
+// export default initMap
+
+});
+
+;require.register("js/socket.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

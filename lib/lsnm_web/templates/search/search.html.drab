@@ -1,0 +1,34 @@
+<h1>Currently displaying <%= length(@results)%> place(s) near you</h1>
+<div class="test"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-7 col-12">
+      <div id="map"></div>
+    </div>
+    <div class="col-md-5 col-12">
+      <div class="restaurant-cards-list">
+      <%= for {result, index} <- Enum.with_index(@results) do %>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title"><%= index + 1 %>: <%= result["name"] %></h4>
+            <h6 class="card-subtitle mb-2 text-muted"><%= result["vicinity"]%></h6>
+            <p class="card-text">
+              <span class="badge badge-pill badge-warning">Rating: <%= result["rating"] %><i class="fa fa-star" aria-hidden="true"></i></span>
+              <span class="badge badge-pill badge-success">Price Level: <%= result["price_level"] || "Unknown" %></span>
+              <div class="button-group">
+                <div class="btn btn-outline-primary card-link" targer="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i> Directions</div>
+                <div class="btn btn-outline-info card-link"><i class="fa fa-info-circle" aria-hidden="true"></i> Info</div>
+              </div>
+            </p>            
+          </div>
+        </div>
+      <% end %>
+      </div>
+      <div style="display: none;">
+        <%= @next_page_token %>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" drab-click="show_more_places">Show More</button>
+    </div>
+  </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjQ8EaxN_kXUvdx0BHh055I1FeL18urPQ"></script>

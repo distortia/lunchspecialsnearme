@@ -16,19 +16,20 @@
           </div>
           <div class="col-md-6 col-12">
             <div class="card text-center">
-              <form>
-                <div class="card-body">
+              <div class="card-body">
+                <%= form_for @conn, search_path(@conn, :index), [as: :search, csrf_token: true], fn f -> %>
+                  <%= hidden_input f, :location, value: "39.8675784,-82.7988644" %>
                   <div class="form-group">
-                    <label for="radus">Search Radius(Miles)</label>
-                    <input type="number" id="radius" class="form-control" placeholder="5" required>
+                    <%= label f, :radius, "Radius(Miles)" %>
+                    <%= text_input f, :radius, placeholder: "5", class: "form-control", required: true %>
                   </div>
                   <div class="form-group">
-                    <label for="keywords">Categories</label>
-                    <input type="text" id="keywords" class="form-control" placeholder="Mexican" required>
+                    <%= label f, :categories, "Categories" %>
+                    <%= text_input f, :keyword, placeholder: "Mexican", class: "form-control", required: true %>
                   </div>
-                  <button class="btn btn-block btn-primary" type="submit">Search</button>                  
-                </div>
-              </form>
+                  <%= submit "Search", class: "btn btn-block btn-primary" %>
+                <% end %>                  
+              </div>
             </div>
           </div>
         </div>

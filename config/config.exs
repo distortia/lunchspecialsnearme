@@ -25,6 +25,9 @@ config :logger, :console,
 config :google_maps,
   api_key: "AIzaSyDjQ8EaxN_kXUvdx0BHh055I1FeL18urPQ"
 
+config :phoenix, :template_engines,
+  drab: Drab.Live.Engine
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

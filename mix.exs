@@ -20,7 +20,7 @@ defmodule Lsnm.Mixfile do
   def application do
     [
       mod: {Lsnm.Application, []},
-      extra_applications: [:logger, :runtime_tools, :google_maps]
+      extra_applications: [:logger, :runtime_tools, :google_maps, :drab]
     ]
   end
 
@@ -41,7 +41,8 @@ defmodule Lsnm.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:google_maps, "~> 0.8"}
+      {:google_maps, "~> 0.8"},
+      {:drab, "~> 0.6"}
     ]
   end
 

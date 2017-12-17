@@ -1,6 +1,6 @@
 defmodule LsnmWeb.UserSocket do
   use Phoenix.Socket
-
+  use Drab.Socket
   ## Channels
   # channel "room:*", LsnmWeb.RoomChannel
 

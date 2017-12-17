@@ -37,7 +37,7 @@ config :lsnm, LsnmWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/lsnm_web/views/.*(ex)$},
-      ~r{lib/lsnm_web/templates/.*(eex)$}
+      ~r{lib/lsnm_web/templates/.*(eex|drab)$}
     ]
   ]
 
