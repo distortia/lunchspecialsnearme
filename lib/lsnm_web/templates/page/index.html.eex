@@ -18,7 +18,10 @@
             <div class="card text-center">
               <div class="card-body">
                 <%= form_for @conn, search_path(@conn, :index), [as: :search, csrf_token: true], fn f -> %>
-                  <%= hidden_input f, :location, value: "39.8675784,-82.7988644" %>
+                  <div class="form-group">
+                    <%= label f, :location, "Address" %>
+                    <%= text_input f, :location, placeholder: "123 Park Place Ohio", class: "form-control" %>
+                  </div>
                   <div class="form-group">
                     <%= label f, :radius, "Radius(Miles)" %>
                     <%= text_input f, :radius, placeholder: "5", class: "form-control", required: true %>

@@ -3,9 +3,12 @@ defmodule LsnmWeb.SearchController do
   use Drab.Controller
 
   def index(conn, params = %{"search" => %{"location" => location, "radius" => radius, "keyword" => keyword}}) do
-    radius = String.to_integer(radius) * 1609
-    {:ok, response} = GoogleMaps.place_nearby(location, radius, [keyword: keyword, type: "restaurant", opennow: "true"])
-    render(conn, "search.html", next_page_token: response["next_page_token"], results: response["results"])
+    {:ok, geolocation} = GoogleMaps.geocode(location)
+    geocoords = "#{List.first(geolocation["results"])["geometry"]["location"]["lat"]},#{List.first(geolocation["results"])["geometry"]["location"]["lng"]}"
+    {:ok, response} =
+    geocoords
+    |> GoogleMaps.place_nearby(String.to_integer(radius) * 1609, [keyword: keyword, type: "restaurant", opennow: "true"])
+    render(conn, "search.html", next_page_token: response["next_page_token"], results: response["results"], geocoords: geocoords)
   end
 
 end

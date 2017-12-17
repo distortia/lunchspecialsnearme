@@ -22,4 +22,6 @@ import "phoenix_html"
 
 // Put the map into the global scope
 import * as Map from "./map"
+// import * as GeoLocation from "./geolocation"
+// window.geolocation = GeoLocation.geolocation
 window.initMap = Map.initMap

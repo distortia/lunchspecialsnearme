@@ -20223,6 +20223,8 @@ var Map = _interopRequireWildcard(_map);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+// import * as GeoLocation from "./geolocation"
+// window.geolocation = GeoLocation.geolocation
 // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
 // config.paths.watched in "brunch-config.js".
@@ -20249,72 +20251,51 @@ window.initMap = Map.initMap;
 
 });
 
-;require.register("js/geolocation.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-function geoloction() {
-  navigator.geolocation.getCurrentPosition(function (position) {
-    return position.coords.latitude + "," + position.coords.longitude;
-  });
-};
-
-exports.geolocation = geolocation;
-
-});
-
-require.register("js/map.js", function(exports, require, module) {
+;require.register("js/map.js", function(exports, require, module) {
 'use strict';
 
-function init_map() {
-  var myLocation = { lat: 39.8675784, lng: -82.7988644 };
-  var myOptions = {
-    zoom: 13,
-    center: myLocation
-  };
-  var map = new google.maps.Map(document.getElementById('map'), myOptions);
-  var marker = new google.maps.Marker({
-    map: map,
-    animation: google.maps.Animation.DROP,
-    position: myLocation,
-    icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
-  });
-  // infowindow.open(map, marker);
-  // google.maps.event.addListener(marker, 'click', function() {
-  //     infowindow.open(map, marker);
-  // });
-}
-google.maps.event.addDomListener(window, 'load', init_map);
+$(function () {
+    initMap = function initMap(lat, lng) {
+        var myLocation = { lat: parseFloat(lat), lng: parseFloat(lng) };
+        var myOptions = {
+            zoom: 13,
+            center: myLocation
+        };
+        var map = new google.maps.Map(document.getElementById('map'), myOptions);
+        var marker = new google.maps.Marker({
+            map: map,
+            animation: google.maps.Animation.DROP,
+            position: myLocation,
+            icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+        });
+        // infowindow.open(map, marker);
+        // google.maps.event.addListener(marker, 'click', function() {
+        //     infowindow.open(map, marker);
+        // });
+    };
+});
 
-function create_marker(place, index) {
-  var _this = this;
+// function create_marker(place, index) {
+//   let marker = new google.maps.Marker({
+//     map: document.getElementById('map'),
+//     animation: google.maps.Animation.DROP,
+//     label: `${index + 1}`, // add 1 to make them user friendly numbers
+//     position: place.geometry.location
+//   })
 
-  var marker = new google.maps.Marker({
-    map: document.getElementById('map'),
-    animation: google.maps.Animation.DROP,
-    label: '' + (index + 1), // add 1 to make them user friendly numbers
-    position: place.geometry.location
-  });
+//   marker.addListener('click', () => {
+//     this.showModal(place)
+//   })
+// }
 
-  marker.addListener('click', function () {
-    _this.showModal(place);
-  });
-}
-
-function parsePlaces(places, status, pagination) {
-  var _this2 = this;
-
-  this.restaurants = this.restaurants === null ? places : this.restaurants.concat(places);
-  this.pagination = pagination;
-  // Draw the markers for the places
-  places.forEach(function (place, index) {
-    _this2.createMarker(place, index);
-  });
-}
-
-// export default initMap
+// function parsePlaces (places, status, pagination) {
+//   this.restaurants = (this.restaurants === null) ? places : this.restaurants.concat(places)
+//   this.pagination = pagination
+//   // Draw the markers for the places
+//   places.forEach((place, index) => {
+//     this.createMarker(place, index)
+//   })
+// }
 
 });
 

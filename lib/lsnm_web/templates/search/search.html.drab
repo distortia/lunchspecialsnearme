@@ -26,9 +26,10 @@
       </div>
       <div style="display: none;">
         <%= @next_page_token %>
+        <%= @geocoords %>
       </div>
       <button type="button" class="btn btn-primary btn-block" drab-click="show_more_places">Show More</button>
     </div>
   </div>
 </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjQ8EaxN_kXUvdx0BHh055I1FeL18urPQ"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjQ8EaxN_kXUvdx0BHh055I1FeL18urPQ" async defer></script>

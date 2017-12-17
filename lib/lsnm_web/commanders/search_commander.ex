@@ -1,13 +1,5 @@
 defmodule LsnmWeb.SearchCommander do
   use Drab.Commander
-  # Place your event handlers here
-  #
-  # def button_clicked(socket, sender) do
-  #   set_prop socket, "#output_div", innerHTML: "Clicked the button!"
-  # end
-  #
-  # Place you callbacks here
-  #
 
   def show_more_places(socket, sender) do
     results = Drab.Live.peek(socket, :results)
@@ -18,7 +10,12 @@ defmodule LsnmWeb.SearchCommander do
 
   onload :page_loaded
   
+  def init_map(socket) do
+    [lat, lng] = String.split(Drab.Live.peek(socket, :geocoords), ",")
+    socket |> exec_js("initMap(#{lat}, #{lng})")
+  end
+
   def page_loaded(socket) do
-    set_prop socket, "div.test", innerText: "This page has been drabbed"
+    init_map(socket)
   end
 end

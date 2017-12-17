@@ -1,6 +1,8 @@
-function geoloction() {
+function geolocation() {
   navigator.geolocation.getCurrentPosition((position) => {
-    return `${position.coords.latitude},${position.coords.longitude}`
+    `${position.coords.latitude},${position.coords.longitude}`
+  }, err => {
+    console.log(err)
   })
 };
 
