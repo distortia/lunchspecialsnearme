@@ -20249,57 +20249,61 @@ window.initMap = Map.initMap;
 
 // Put the map into the global scope
 
+window.createMarker = Map.createMarker;
+
 });
 
-;require.register("js/map.js", function(exports, require, module) {
+require.register("js/geolocation.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function geolocation() {
+  navigator.geolocation.getCurrentPosition(function (position) {
+    position.coords.latitude + "," + position.coords.longitude;
+  }, function (err) {
+    console.log(err);
+  });
+};
+
+exports.geolocation = geolocation;
+
+});
+
+require.register("js/map.js", function(exports, require, module) {
 'use strict';
 
 $(function () {
-    initMap = function initMap(lat, lng) {
-        var myLocation = { lat: parseFloat(lat), lng: parseFloat(lng) };
-        var myOptions = {
-            zoom: 13,
-            center: myLocation
-        };
-        var map = new google.maps.Map(document.getElementById('map'), myOptions);
-        var marker = new google.maps.Marker({
-            map: map,
-            animation: google.maps.Animation.DROP,
-            position: myLocation,
-            icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
-        });
-        // infowindow.open(map, marker);
-        // google.maps.event.addListener(marker, 'click', function() {
-        //     infowindow.open(map, marker);
-        // });
+  initMap = function initMap(lat, lng) {
+    var myLocation = { lat: parseFloat(lat), lng: parseFloat(lng) };
+    var myOptions = {
+      zoom: 13,
+      center: myLocation
     };
+    var map = new google.maps.Map(document.getElementById('map'), myOptions);
+    var marker = new google.maps.Marker({
+      map: map,
+      animation: google.maps.Animation.DROP,
+      position: myLocation,
+      icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+    });
+    window.map = map;
+  };
+
+  createMarker = function createMarker(place, index) {
+    var marker = new google.maps.Marker({
+      map: map,
+      animation: google.maps.Animation.DROP,
+      label: '' + (index + 1), // add 1 to make them user friendly numbers
+      position: place.geometry.location
+    });
+  };
 });
-
-// function create_marker(place, index) {
-//   let marker = new google.maps.Marker({
-//     map: document.getElementById('map'),
-//     animation: google.maps.Animation.DROP,
-//     label: `${index + 1}`, // add 1 to make them user friendly numbers
-//     position: place.geometry.location
-//   })
-
-//   marker.addListener('click', () => {
-//     this.showModal(place)
-//   })
-// }
-
-// function parsePlaces (places, status, pagination) {
-//   this.restaurants = (this.restaurants === null) ? places : this.restaurants.concat(places)
-//   this.pagination = pagination
-//   // Draw the markers for the places
-//   places.forEach((place, index) => {
-//     this.createMarker(place, index)
-//   })
-// }
 
 });
 
-;require.register("js/socket.js", function(exports, require, module) {
+require.register("js/socket.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

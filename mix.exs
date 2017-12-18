@@ -42,7 +42,8 @@ defmodule Lsnm.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:google_maps, "~> 0.8"},
-      {:drab, "~> 0.6"}
+      {:drab, "~> 0.6"},
+      {:poison, "~> 3.1"}
     ]
   end
 

@@ -25,3 +25,4 @@ import * as Map from "./map"
 // import * as GeoLocation from "./geolocation"
 // window.geolocation = GeoLocation.geolocation
 window.initMap = Map.initMap
+window.createMarker = Map.createMarker
