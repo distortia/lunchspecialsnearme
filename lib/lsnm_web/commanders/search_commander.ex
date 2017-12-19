@@ -4,9 +4,16 @@ defmodule LsnmWeb.SearchCommander do
   def show_more_places(socket, sender) do
     results = Drab.Live.peek(socket, :results)
     next_page_token = Drab.Live.peek(socket, :next_page_token)
-    {:ok, new_response} = GoogleMaps.place_nearby("", 0, [pagetoken: next_page_token])
-    Drab.Live.poke(socket, results: results ++ new_response["results"])
-    create_markers(socket)
+    unless is_nil(next_page_token) do
+      {:ok, new_response} = GoogleMaps.place_nearby("", 0, [pagetoken: next_page_token])
+      Drab.Live.poke(socket, [results: results ++ new_response["results"], next_page_token: new_response["next_page_token"]])
+      create_markers(socket)
+      if is_nil(Drab.Live.peek(socket, :next_page_token)), do: no_next_page(socket)
+    end
+  end
+
+  def no_next_page(socket) do
+    set_prop socket, ".show-more-btn", innerHTML: "No More results", classList: "btn btn-block show-more-btn btn-warning", disabled: true
   end
 
   onload :page_loaded
@@ -28,5 +35,6 @@ defmodule LsnmWeb.SearchCommander do
   def page_loaded(socket) do
     init_map(socket)
     create_markers(socket)
+    if is_nil(Drab.Live.peek(socket, :next_page_token)), do: no_next_page(socket)
   end
 end

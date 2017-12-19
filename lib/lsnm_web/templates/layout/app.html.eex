@@ -12,6 +12,26 @@
   </head>
 
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">LSNM</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+        <%= form_for @conn, search_path(@conn, :index), [as: :search, csrf_token: true, class: "form-inline my-2 my-lg-0"], fn f -> %>
+          <%= text_input f, :location, placeholder: "123 Park Place Ohio", class: "form-control mr-sm-2" %>
+          <%= text_input f, :radius, placeholder: "Radius(Miles)", class: "form-control mr-sm-2" %>
+          <%= text_input f, :keyword, placeholder: "Mexican", class: "form-control mr-sm-2" %>
+          <%= submit "Search", class: "btn btn-outline-primary my-2 my-sm-0" %>
+          <% end %>
+      </div>
+    </nav>
     <main role="main">
       <%= render @view_module, @view_template, assigns %>
     </main>
