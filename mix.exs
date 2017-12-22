@@ -20,7 +20,7 @@ defmodule Lsnm.Mixfile do
   def application do
     [
       mod: {Lsnm.Application, []},
-      extra_applications: [:logger, :runtime_tools, :google_maps, :drab]
+      extra_applications: [:logger, :runtime_tools, :google_maps]
     ]
   end
 
@@ -42,7 +42,6 @@ defmodule Lsnm.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:google_maps, "~> 0.8"},
-      {:drab, "~> 0.6"},
       {:poison, "~> 3.1"}
     ]
   end

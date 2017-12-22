@@ -1,6 +1,5 @@
 defmodule LsnmWeb.SearchController do
   use LsnmWeb, :controller
-  use Drab.Controller
 
   def index(conn, params = %{"search" => %{"location" => location, "radius" => radius, "keyword" => keyword}}) do
     {:ok, geolocation} = GoogleMaps.geocode(location)

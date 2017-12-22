@@ -1,9 +1,11 @@
-function geolocation() {
-  navigator.geolocation.getCurrentPosition((position) => {
-    `${position.coords.latitude},${position.coords.longitude}`
-  }, err => {
-    console.log(err)
-  })
-};
-
-export { geolocation }
+$(() => {
+  _geolocation = function() {
+    let geocoords;
+    setTimeout(() => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.geocoords = `${position.coords.latitude},${position.coords.longitude}`
+      })
+    })
+    return geocoords
+  }
+})

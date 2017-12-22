@@ -20221,11 +20221,21 @@ var _map = require("./map");
 
 var Map = _interopRequireWildcard(_map);
 
+var _geolocation = require("./geolocation");
+
+var GeoLocation = _interopRequireWildcard(_geolocation);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-// import * as GeoLocation from "./geolocation"
-// window.geolocation = GeoLocation.geolocation
-// Brunch automatically concatenates all files in your
+// Import local files
+//
+// Local files can be imported directly using relative
+// paths "./socket" or full ones "web/static/js/socket".
+
+// import socket from "./socket"
+
+// Put the map into the global scope
+window._geolocation = GeoLocation._geolocation; // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
 // config.paths.watched in "brunch-config.js".
 //
@@ -20238,17 +20248,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
+
 window.initMap = Map.initMap;
-
-// Import local files
-//
-// Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
-
-// import socket from "./socket"
-
-// Put the map into the global scope
-
 window.createMarker = Map.createMarker;
 
 });
@@ -20256,18 +20257,19 @@ window.createMarker = Map.createMarker;
 require.register("js/geolocation.js", function(exports, require, module) {
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-function geolocation() {
-  navigator.geolocation.getCurrentPosition(function (position) {
-    position.coords.latitude + "," + position.coords.longitude;
-  }, function (err) {
-    console.log(err);
-  });
-};
+$(function () {
+  _geolocation = function _geolocation() {
+    var _this = this;
 
-exports.geolocation = geolocation;
+    var geocoords = void 0;
+    setTimeout(function () {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        _this.geocoords = position.coords.latitude + "," + position.coords.longitude;
+      });
+    });
+    return geocoords;
+  };
+});
 
 });
 

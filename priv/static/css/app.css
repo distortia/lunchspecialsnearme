@@ -8236,7 +8236,7 @@ a.text-dark:focus, a.text-dark:hover {
   height: 100% !important; }
 
 .restaurant-cards-list {
-  max-height: 80vh;
+  max-height: 76vh;
   overflow-y: scroll; }
 
 .button-group {
