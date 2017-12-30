@@ -1,0 +1,27 @@
+@import '_colors';
+.index-image-wrapper {
+ background-image: url(/static/bg.jpg) ;
+ background-position: center center;
+ background-repeat:  no-repeat;
+ background-attachment: fixed;
+ background-size: cover;
+}
+.index-wrapper {
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+}
+.home-container {
+  height: 100vh;
+  .row {
+    height: 100%;
+  }
+  .home-content {
+    color: $text-white;
+  }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0
+}
