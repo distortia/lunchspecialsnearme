@@ -10,12 +10,12 @@ defmodule LsnmWeb.SearchController do
     render(conn, "search.html", next_page_token: response["next_page_token"], results: response["results"], geocoords: geocoords)
   end
 
-  def results(conn, params) do
+  def results(conn, body) do
     {:ok, response} =
-    "#{params["location"]["lat"]},#{params["location"]["lng"]}"
+    body["location"]
     |> GoogleMaps.place_nearby(
-      String.to_integer(params["radius"]) * 1609,
-      [keyword: params["keyword"],
+      String.to_integer(body["radius"]) * 1609,
+      [keyword: body["keyword"],
       type: "restaurant",
       opennow: "true"])
     render(conn, "results.json", results: response)

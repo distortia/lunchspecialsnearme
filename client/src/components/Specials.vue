@@ -78,10 +78,6 @@
         <b-col md="5" cols="12">
           <div class="restaurant-cards-list">
             <div class="ad-container">
-<!--               <p>
-                We try not to be intrusive with the ads.<br>Please consider disabling ad block.
-                <i class="fa fa-frown-o" aria-hidden="true"></i>
-              </p> -->
               <ins class="adsbygoogle"
                 style="display:block"
                 data-ad-client="ca-pub-1093990846577533"
@@ -123,26 +119,10 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-modal 
-      v-model="feedbackModal"
-      title="Feedback"
-      @ok="handleOk"
-      @shown="clearFeedback"
-      ref="feedbackModal">
-      <form @submit.stop.prevent="handleSubmit">
-        <b-form-textarea
-          v-model.trim="feedback"
-          placeholder="Enter Feedback or recommendations"
-          rows="3">
-        </b-form-textarea>
-        </form>
-    </b-modal>
   </div>
 </template>
 
 <script>
-/* global google */
-
 export default {
 
   name: 'Specials',
@@ -150,10 +130,7 @@ export default {
     return {
       map: null,
       loading: false,
-      geocoords: {
-        lat: null,
-        lng: null
-      },
+      _geocoords: null,
       restaurants: null,
       pagination: null,
       placeModal: {},
@@ -181,39 +158,28 @@ export default {
     feedMe () {
       this.loading = true
       this.restaurants = null
-      // const geocoder = new google.maps.Geocoder()
-      // geocoder.geocode({ 'address': this.$route.query.location }, (results, status) => {
       navigator.geolocation.getCurrentPosition((position) => {
         const myGeocoords = { lat: position.coords.latitude, lng: position.coords.longitude }
-        // this.geocoords.lat = results[0].geometry.location.lat()
-        this.geocoords.lat = position.coords.latitude
-        // this.geocoords.lng = results[0].geometry.location.lng()
-        this.geocoords.lng = position.coords.longitude
+        this._geocords = `${position.coords.latitude},${position.coords.longitude}`
 
-        let map = new google.maps.Map(document.getElementById('map'), {
+        this.map = new google.maps.Map(document.getElementById('map'), {
           center: myGeocoords,
           zoom: 13})
-
+        
         // This map marker is different because we pass our lat/lng into it
         // instead of fetching it from the results
-        // eslint-disable-next-line no-unused-vars
         const myLocationMarker = new google.maps.Marker({
           position: myGeocoords,
           animation: google.maps.Animation.DROP,
           icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-          map: map
+          map: this.map
         })
-        this.map = map
 
-        let service = new google.maps.places.PlacesService(map)
-
-        service.nearbySearch({
-          location: { lat: position.coords.latitude, lng: position.coords.longitude },
-          radius: this.$route.query.radius * 1509,
-          type: ['restaurant'],
-          openNow: true,
-          keyword: this.$route.query.keywords
-        }, this.parsePlaces)
+        this.$http.post('results', {location: this._geocords, keyword: this.$route.query.keywords, radius: this.$route.query.radius})
+          .then(response => {
+            this.loading = false
+            this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
+        })
       })
     },
     createMarker (place, index) {
@@ -270,39 +236,9 @@ export default {
     hideModal () {
       this.$refs.placeModal.hide()
     },
-    // adblocked () {
-    //   // Simple chcek to see if the ad is displayed at all, kinda flakey, like biscuits
-    //   return this.$refs.googleAds.offsetHeight === 0
-    // },
-    clearFeedback () {
-      this.feedback = ''
-    },
-    handleOk (evt) {
-      evt.preventDefault()
-      if (!this.feedback) {
-        alert('Please enter feedback')
-      } else {
-        this.handleSubmit()
-      }
-    },
-    handleSubmit () {
-    // eslint-disable-next-line
-      emailjs.send('sendgrid', 'feedback', {
-        feedback: this.feedback
-      })
-      .then(response => {
-        this.feedbackSent = true
-        console.log('SUCCESS', response)
-      })
-      this.clearFeedback()
-      this.$refs.feedbackModal.hide()
-    }
   },
   mounted () {
-    // eslint-disable-next-line func-call-spacing
     this.feedMe()
-    // eslint-disable-next-line no-unexpected-multiline
-    window.adsbygoogle = (window.adsbygoogle || []).push({})
   },
   computed: {
     hasPagination () {

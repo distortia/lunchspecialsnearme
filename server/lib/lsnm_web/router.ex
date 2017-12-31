@@ -10,6 +10,7 @@ defmodule LsnmWeb.Router do
   end
 
   pipeline :api do
+    plug CORSPlug, [origin: "http://localhost:8080"]
     plug :accepts, ["json"]
   end
 
@@ -24,6 +25,7 @@ defmodule LsnmWeb.Router do
   scope "/api", LsnmWeb do
     pipe_through :api
 
-    get "/results", SearchController, :results
+    post "/results", SearchController, :results
+    options "/results", SearchController, :results
   end
 end

@@ -11,6 +11,9 @@ Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
+Vue.http.options.root = (process.env.API_BASE_URL || 'http://localhost:4000') + '/api/'
+Vue.http.headers.common['Content-Type'] = 'application/json'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

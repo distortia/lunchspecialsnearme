@@ -43,7 +43,8 @@ defmodule Lsnm.Mixfile do
       {:cowboy, "~> 1.0"},
       {:google_maps, "~> 0.8"},
       {:poison, "~> 3.1"},
-      {:bamboo, "~> 0.8"}
+      {:bamboo, "~> 0.8"},
+      {:cors_plug, "~> 1.2"}
     ]
   end
 
