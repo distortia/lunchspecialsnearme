@@ -41,7 +41,7 @@ defmodule Lsnm.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:google_maps, "~> 0.8"},
+      {:google_maps, git: "https://github.com/sntran/ex_maps.git"},
       {:poison, "~> 3.1"},
       {:bamboo, "~> 0.8"},
       {:cors_plug, "~> 1.2"}
