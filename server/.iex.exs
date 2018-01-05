@@ -1,0 +1,1 @@
+alias Lsnm.{Specials, Specials.Special}
