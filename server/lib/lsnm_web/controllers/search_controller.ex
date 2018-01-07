@@ -51,4 +51,9 @@ defmodule LsnmWeb.SearchController do
     end
   end
 
+  def delete(conn, body) do
+    Specials.delete(body)
+    json(conn, %{:body => %{"status" => "ok"}})
+  end
+
 end

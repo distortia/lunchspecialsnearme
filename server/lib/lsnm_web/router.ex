@@ -31,6 +31,8 @@ defmodule LsnmWeb.Router do
     options "/special/add", SearchController, :nothing
     put "/special/edit/:id", SearchController, :edit
     options "/special/edit/:id", SearchController, :nothing
+    delete "/special/delete/:id", SearchController, :delete
+    options "/special/delete/:id", SearchController, :nothing
     post "/results", SearchController, :results
     options "/results", SearchController, :nothing
   end

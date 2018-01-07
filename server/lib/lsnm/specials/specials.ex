@@ -28,4 +28,9 @@ defmodule Lsnm.Specials do
     |> Special.changeset(special)
     |> Repo.update
   end
+
+  def delete(special) do
+    Repo.get!(Special, special["id"])
+    |> Repo.delete!
+  end
 end
