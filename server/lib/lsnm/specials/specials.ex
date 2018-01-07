@@ -22,4 +22,10 @@ defmodule Lsnm.Specials do
     |> Special.changeset(special)
     |> Repo.insert
   end
+
+  def edit(special) do
+    Repo.get!(Special, special["id"])
+    |> Special.changeset(special)
+    |> Repo.update
+  end
 end

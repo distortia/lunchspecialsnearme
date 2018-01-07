@@ -42,4 +42,13 @@ defmodule LsnmWeb.SearchController do
     end
   end
 
+  def edit(conn, body) do
+    case Specials.edit(body) do
+      {:ok, special} ->
+        json(conn, %{:body => %{"status" => "ok"}})
+      {:error, %Ecto.Changeset{} = changeset} ->
+        json(conn, %{:body => %{"status" => "error", changeset: changeset}})
+    end
+  end
+
 end
