@@ -54,6 +54,14 @@
                       {{hours}}
                     </li>
                   </ul>
+                  <hr>
+                  <h3>Specials</h3>
+                  <div v-if="placeModal.special">
+                    if
+                  </div>
+                  <div v-else>
+                    else
+                  </div>
                   <b-button-group class="modal-button-group">
                     <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
                       <i class="fa fa-mobile" aria-hidden="true"></i>
@@ -213,20 +221,8 @@ export default {
       }, 2000)
     },
     placeDetails (placeId) {
-      let service = new google.maps.places.PlacesService(this.map)
-      service.getDetails({ placeId: placeId }, place => {
-        this.placeModal = {
-          phoneNumber: place.international_phone_number,
-          address: place.formatted_address,
-          title: place.name,
-          price_level: place.price_level,
-          rating: place.rating,
-          website: place.website,
-          reviews: place.reviews,
-          photos: place.photos,
-          url: place.url,
-          openingHours: place.opening_hours.weekday_text
-        }
+      this.$http.get(`results/details/${placeId}`).then(resp => {
+        this.placeModal = resp.body.data
       })
     },
     showModal (place) {

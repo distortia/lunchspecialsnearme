@@ -19,4 +19,20 @@ defmodule LsnmWeb.SearchView do
       }}
   end
 
+  def render("details.json", %{details: details}) do
+    details = details["result"]
+    %{data: %{
+        :phoneNumber => details["international_phone_number"],
+        :address => details["formatted_address"],
+        :title => details["name"],
+        :price_level => details["price_level"],
+        :rating => details["rating"],
+        :website => details["website"],
+        :review => details["reviews"],
+        :photos => details["photos"],
+        :url => details["url"],
+        :openingHours => details["opening_hours"]["weekday_text"]
+      }}
+  end
+
 end

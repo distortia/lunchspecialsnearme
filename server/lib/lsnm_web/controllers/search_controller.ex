@@ -23,6 +23,16 @@ defmodule LsnmWeb.SearchController do
   end
 
   @doc """
+  Fetchs the place detials for the given place_id
+  """
+  def details(conn, body) do
+    {:ok, response} =
+    body["place_id"]
+    |> GoogleMaps.place_details()
+    render(conn, "details.json", details: response)
+  end
+
+  @doc """
   Fetches the special for the given `place_id`.
 
   Returns the json response for the place if it exists
