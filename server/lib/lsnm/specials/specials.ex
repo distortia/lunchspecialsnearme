@@ -12,4 +12,8 @@ defmodule Lsnm.Specials do
   def list_specials do
     Repo.all(Special)
   end
+
+  def special(place_id) do
+    Repo.get_by!(Special, place_id: place_id)
+  end
 end

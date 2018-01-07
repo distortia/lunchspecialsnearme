@@ -1,5 +1,6 @@
 defmodule LsnmWeb.SearchController do
   use LsnmWeb, :controller
+  alias Lsnm.Specials
 
   def index(conn, params = %{"search" => %{"location" => location, "radius" => radius, "keyword" => keyword}}) do
     {:ok, geolocation} = GoogleMaps.geocode(location)
@@ -19,6 +20,17 @@ defmodule LsnmWeb.SearchController do
       type: "restaurant",
       opennow: "true"])
     render(conn, "results.json", results: response)
+  end
+
+  @doc """
+  Fetches the special for the given `place_id`.
+
+  Returns the json response for the place if it exists
+
+  Or 404 if it doesnt.
+  """
+  def special(conn, body) do
+    render(conn, "special.json", Specials.special(body["place_id"]))
   end
 
 end
