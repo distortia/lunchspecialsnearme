@@ -41,7 +41,18 @@
             <div id="map"></div>
             <b-modal ref="placeModal" hide-footer :title="placeModal.title" lazy>
               <div class="d-block text-center">
-                <p>{{placeModal.address}}</p>
+                <h3>Specials</h3>
+                <div v-if="hasSpecial">
+                  {{ special.info }}
+                  {{ special.days_of_week }}
+                  {{ special.reoccuring }}
+                </div>
+                <div v-else>
+                  No specials here, yet!
+                  Be a gyro and add a special!
+                </div>
+                <hr>
+                <p>{{ placeModal.address }}</p>
                   <p>
                     <b-badge pill variant="warning">
                       Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
@@ -54,14 +65,6 @@
                       {{hours}}
                     </li>
                   </ul>
-                  <hr>
-                  <h3>Specials</h3>
-                  <div v-if="placeModal.special">
-                    if
-                  </div>
-                  <div v-else>
-                    else
-                  </div>
                   <b-button-group class="modal-button-group">
                     <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
                       <i class="fa fa-mobile" aria-hidden="true"></i>
@@ -142,6 +145,8 @@ export default {
       restaurants: null,
       pagination: null,
       placeModal: {},
+      hasSpecial: false,
+      special: {},
       form: {
         location: null,
         radius: this.$route.query.radius || null,
@@ -223,6 +228,12 @@ export default {
     placeDetails (placeId) {
       this.$http.get(`results/details/${placeId}`).then(resp => {
         this.placeModal = resp.body.data
+        this.$http.get(`special/${placeId}`).then(res => {
+          this.hasSpecial = true
+          this.special = res.body.data
+        }, err => {
+          this.hasSpecial = false
+        })
       })
     },
     showModal (place) {

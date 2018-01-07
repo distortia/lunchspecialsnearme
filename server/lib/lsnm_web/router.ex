@@ -25,8 +25,8 @@ defmodule LsnmWeb.Router do
   scope "/api", LsnmWeb do
     pipe_through :api
 
-    post "/special", SearchController, :special
-    options "/special", SearchController, :nothing
+    get "/special/:place_id", SearchController, :special
+    options "/special/:place_id", SearchController, :nothing
     post "/special/add", SearchController, :add
     options "/special/add", SearchController, :nothing
     put "/special/edit/:id", SearchController, :edit
