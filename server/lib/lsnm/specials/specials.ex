@@ -16,4 +16,10 @@ defmodule Lsnm.Specials do
   def special(place_id) do
     Repo.get_by!(Special, place_id: place_id)
   end
+
+  def add(special) do
+    %Special{}
+    |> Special.changeset(special)
+    |> Repo.insert
+  end
 end

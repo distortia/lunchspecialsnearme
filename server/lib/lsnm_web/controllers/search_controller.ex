@@ -33,4 +33,13 @@ defmodule LsnmWeb.SearchController do
     render(conn, "special.json", Specials.special(body["place_id"]))
   end
 
+  def add(conn, body) do
+    case Specials.add(body) do
+      {:ok, special} ->
+        json(conn, %{:body => %{"status" => "ok"}})
+      {:error, %Ecto.Changeset{} = changeset} ->
+        json(conn, %{:body => %{"status" => "error", changeset: changeset}})
+    end
+  end
+
 end
