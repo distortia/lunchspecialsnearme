@@ -24,7 +24,8 @@ defmodule LsnmWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", LsnmWeb do
     pipe_through :api
-
+    post "/email/feedback", EmailController, :feedback
+    options "/email/feedback", EmailController, :nothing
     get "/special/:place_id", SearchController, :special
     options "/special/:place_id", SearchController, :nothing
     post "/special/add", SearchController, :add
