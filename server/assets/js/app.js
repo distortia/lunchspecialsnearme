@@ -19,10 +19,3 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
-
-// Put the map into the global scope
-import * as Map from "./map"
-import * as GeoLocation from "./geolocation"
-window._geolocation = GeoLocation._geolocation
-window.initMap = Map.initMap
-window.createMarker = Map.createMarker
