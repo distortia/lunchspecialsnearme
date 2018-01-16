@@ -7,3 +7,4 @@ server/assets/node_modules/
 server/node_modules/
 server/priv/static/
 server/deps/
+server/package-lock.json
