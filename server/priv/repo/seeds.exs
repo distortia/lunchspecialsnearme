@@ -11,8 +11,8 @@
 # and so on) as they will fail if something goes wrong.
 
 Lsnm.Repo.insert!(%Lsnm.Specials.Special{
-  place_id: "ChIJFbswm717OIgRsFuHAFsC9r8",
-  days_of_week: ["monday"],
-  info: "Buy one get one nachos",
+  place_id: "ChIJp607bnR8OIgRPt44VnN-9LQ",
+  days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  info: "Free drink with pizza purchase",
   reoccuring: true 
   })
