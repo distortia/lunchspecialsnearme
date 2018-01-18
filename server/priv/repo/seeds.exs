@@ -14,5 +14,11 @@ Lsnm.Repo.insert!(%Lsnm.Specials.Special{
   place_id: "ChIJFbswm717OIgRsFuHAFsC9r8",
   days_of_week: ["monday"],
   info: "Buy one get one nachos",
-  reoccuring: true 
+  reoccuring: true
+  })
+
+Lsnm.Repo.insert(%Lsnm.Users.User{
+  username: "somebody",
+  email: "once@toldme.theworldisgona",
+  password_hash: Comeonin.Bcrypt.hashpwsalt("rollme")
   })

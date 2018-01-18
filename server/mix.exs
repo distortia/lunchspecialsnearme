@@ -44,7 +44,9 @@ defmodule Lsnm.Mixfile do
       {:google_maps, git: "https://github.com/sntran/ex_maps.git"},
       {:poison, "~> 3.1"},
       {:bamboo, "~> 0.8"},
-      {:cors_plug, "~> 1.2"}
+      {:cors_plug, "~> 1.2"},
+      {:guardian, "~> 1.0"},
+      {:comeonin, "~> 3.2"}
     ]
   end
 

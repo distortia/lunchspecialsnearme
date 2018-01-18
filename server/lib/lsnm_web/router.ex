@@ -37,5 +37,9 @@ defmodule LsnmWeb.Router do
     options "/results", SearchController, :nothing
     get "/results/details/:place_id", SearchController, :details
     options "/results/details/:place_id", SearchController, :nothing
+    post "/login", AuthController, :login
+    options "/login", AuthController, :nothing
+    post "/logout", AuthController, :logout
+    options "/logout", AuthController, :nothing
   end
 end

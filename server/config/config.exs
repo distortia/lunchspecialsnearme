@@ -30,6 +30,12 @@ config :lsnm, LsnmWeb.Mailer,
   adapter: Bamboo.SendgridAdapter,
   api_key: "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"
 
+# guardian config
+config :lsnm, LsnmWeb.Guardian,
+  issuer: "LSNM",
+  secret_key: "You really don't understand Ugandan culture, do you? You think it's all about 'de way' because you saw a stupid fucking shitty video made by a 12 year old on YouTube. Ugandan people don't deserve your white trash so-called 'memes' meant to continue the harassment and oppression of Africans. Fuck you and your white supremacy. When Oprah is president, I honest to God hope she vows to make white people a minority in your own fucking country. Or wherever you dumb little 'edgy' cunts are living. Either your country will drown by higher fertility rate by minorities or you will be fucked in the ass by your own backwards redneck culture. Now you're going to reply about how mad I am. Surprising, I am. I am INSULTED by your racist 'memes'. You think Uganada is all about shitty action movies, big black cock, and poor black people right? WRONG. Uganda is really one of the most culturally diverse and enriched places on Earth. And you just made a grave mistake by poking fun at the wrong culture. You want to 'kno de way', come meet me outside bitch.",
+  ttl: { 30, :days }
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
