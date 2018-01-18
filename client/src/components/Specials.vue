@@ -130,6 +130,20 @@
         </b-col>
       </b-row>
     </b-container>
+    <b-modal 
+      v-model="feedbackModal"
+      title="Feedback"
+      @ok="handleOk"
+      @shown="clearFeedback"
+      ref="feedbackModal">
+      <form @submit.stop.prevent="handleSubmit">
+        <b-form-textarea
+          v-model.trim="feedback"
+          placeholder="Enter Feedback or recommendations"
+          rows="3">
+        </b-form-textarea>
+      </form>
+    </b-modal>
   </div>
 </template>
 
@@ -243,6 +257,24 @@ export default {
     hideModal () {
       this.$refs.placeModal.hide()
     },
+    clearFeedback () {
+      this.feedback = ''
+    },
+    handleOk (event) {
+      event.preventDefault ()
+      if (!this.feedback) {
+        alert('Please enter your feedback')
+      } else {
+        this.handleSubmit()
+      }
+    },
+    handleSubmit () {
+      this.$http.post('email/feedback',{feedback: this.feedback}).then(response => {
+        this.feedbackSent = true
+      })
+      this.clearFeedback ()
+      this.$refs.feedbackModal.hide()
+    }
   },
   mounted () {
     this.feedMe()

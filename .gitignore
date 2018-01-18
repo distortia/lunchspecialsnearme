@@ -1,6 +1,10 @@
+
+client/yarn.lock
+client/node_modules/
 server/_build/
 server/mix.lock
 server/assets/node_modules/
 server/node_modules/
 server/priv/static/
 server/deps/
+server/package-lock.json
