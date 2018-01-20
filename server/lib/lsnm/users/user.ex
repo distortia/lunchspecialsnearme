@@ -26,7 +26,7 @@ defmodule Lsnm.Users.User do
     |> put_pass_hash
   end
 
-  defp password_changeset(%User{} = user, attrs) do
+  defp password_changeset(user, attrs) do
     user
     |> cast(attrs, [:password])
     |> validate_length(:password, min: 8)

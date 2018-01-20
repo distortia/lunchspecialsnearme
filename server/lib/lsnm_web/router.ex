@@ -41,5 +41,7 @@ defmodule LsnmWeb.Router do
     options "/login", AuthController, :nothing
     post "/logout", AuthController, :logout
     options "/logout", AuthController, :nothing
+    post "/user/register", UserController, :register
+    options "/user/register", UserController, :nothing
   end
 end
