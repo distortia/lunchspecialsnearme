@@ -249,7 +249,7 @@ export default {
     parsePlaces (places, status, pagination) {
       this.loading = false
       this.restaurants = (this.restaurants === null) ? places : this.restaurants.concat(places)
-      this.pagination = pagination
+      this.pagination = (pagination || false)
       // Draw the markers for the places
       places.forEach((place, index) => {
         this.createMarker(place, index)
@@ -320,7 +320,7 @@ export default {
     hasPagination () {
       let result = false
       if (this.restaurants) {
-        result = this.pagination.hasNextPage
+        result = this.pagination.hasNextPage || false
       }
       return result
     }
