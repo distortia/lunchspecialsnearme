@@ -35,6 +35,7 @@ defmodule LsnmWeb.SearchController do
   end
 
   def add(conn, body) do
+    IO.inspect body
     case Specials.add(body) do
       {:ok, special} ->
         json(conn, %{:body => %{"status" => "ok"}})

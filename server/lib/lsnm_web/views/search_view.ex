@@ -31,6 +31,7 @@ defmodule LsnmWeb.SearchView do
         :review => details["reviews"],
         :photos => details["photos"],
         :url => details["url"],
+        :place_id => details["place_id"],
         :openingHours => details["opening_hours"]["weekday_text"]
       }}
   end

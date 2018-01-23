@@ -39,25 +39,44 @@
         <b-col cols="12" md="7">
           <div class="map-container">
             <div id="map"></div>
-            <b-modal ref="placeModal" hide-footer :title="placeModal.title" lazy>
+            <b-modal ref="placeModal" hide-footer size="lg" :title="placeModal.title" lazy>
               <div class="d-block text-center">
                 <h3>Specials</h3>
                 <div v-if="hasSpecial">
-                  {{ special.info }}
-                  {{ special.days_of_week }}
-                  {{ special.reoccuring }}
+                  <b-card no-body>
+                    <b-tabs card>
+                      <b-tab v-for="day in special.days_of_week" :title="day" :key="day" :active="dayOfWeeek(day)">
+                        {{ special.info }}
+                      </b-tab>
+                    </b-tabs>
+                  </b-card>
                 </div>
                 <div v-else>
                   No specials here, yet!
                   Be a gyro and add a special!
+                  <b-form @submit.prevent="addSpecial">
+                    <b-form-group label="Day(s) of the Week">
+                      <b-form-checkbox-group buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek">
+                      </b-form-checkbox-group>
+                    </b-form-group>
+                    <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
+                    <b-form-checkbox
+                      v-model="addSpecialForm.reoccuring"
+                      value="true"
+                      unchecked-value="false">
+                      Reoccuring?
+                    </b-form-checkbox>
+                    <div>
+                      <b-button type="submit" variant="primary">Submit</b-button>
+                    </div>
+                  </b-form>
+                  <hr>
                 </div>
-                <hr>
-                <p>{{ placeModal.address }}</p>
                   <p>
                     <b-badge pill variant="warning">
                       Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
                     </b-badge>
-                    <b-badge pill variant="success">Price Level: {{placeModal.price_level | expensivity }}</b-badge>
+                    <b-badge pill variant="success">Price Level: {{ placeModal.price_level | expensivity }}</b-badge>
                   </p>
                   <h4>Hours</h4>
                    <ul class="modal-address">
@@ -168,7 +187,13 @@ export default {
       },
       feedbackModal: false,
       feedback: '',
-      feedbackSent: false
+      feedbackSent: false,
+      addSpecialForm: {
+        days_of_week: [],
+        info: null,
+        reoccuring: false
+      },
+      daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     }
   },
   methods: {
@@ -274,6 +299,18 @@ export default {
       })
       this.clearFeedback ()
       this.$refs.feedbackModal.hide()
+    },
+    dayOfWeeek(day) {
+      let weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      let date = new Date
+      return day === weekday[date.getDay()]
+    },
+    addSpecial() {
+      let special = Object.assign({place_id: this.placeModal.place_id}, this.addSpecialForm)
+      console.log(special)
+      this.$http.post('special/add', special).then(response => {
+        this.$refs.placeModal.hide()
+      })
     }
   },
   mounted () {
