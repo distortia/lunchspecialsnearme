@@ -2,14 +2,17 @@
   <div id="app">
     <b-navbar toggleable="md" type="dark" variant="primary">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-      <b-navbar-brand to="/" exact>LSNM</b-navbar-brand>
+      <b-navbar-brand to="/">LSNM</b-navbar-brand>
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
-          <b-nav-item to="/" exact>Home</b-nav-item>
+          <b-nav-item to="/">Home</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item to="/login">Login</b-nav-item>
-          <b-nav-item to="/register">Register</b-nav-item>
+          <div id="user-header-wrapper" v-if="isLoggedIn">
+            <b-nav-item>Hello {{user.email}}</b-nav-item>
+            <b-nav-item @click.prevent="logout">Logout</b-nav-item>
+          </div>
+          <b-nav-item v-else to="/login">Login</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -23,6 +26,7 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import UserService from './services/userService';
 
 export default {
   name: 'app',
@@ -32,8 +36,16 @@ export default {
         location: null,
         radius: null,
         keywords: null
-      }
+      },
+      user: UserService.getUser(),
+      isLoggedIn: UserService.isLoggedIn()
     }
+  },
+  created() {
+    this.$on('login:success', () => {
+      this.user = UserService.getUser();
+      this.isLoggedIn = UserService.isLoggedIn();
+    });
   },
   methods: {
     search () {
@@ -45,6 +57,15 @@ export default {
           radius: this.form.radius
         }
       })
+    },
+    logout() {
+      this.$http.post('logout', {"user": this.credentials})
+        .then(data => {
+          UserService.removeUser();
+          this.user = null;
+          this.isLoggedIn = false;
+          this.$router.push('/');
+        });
     }
   }
 }
@@ -52,4 +73,7 @@ export default {
 
 <style lang="scss">
 @import './assets/sass/app';
+#user-header-wrapper {
+  display: inherit;
+}
 </style>

@@ -8,13 +8,13 @@
               header-text-variant="white"
               class="login-card">
           <p class="card-text">
-            <b-form @submit="login">
+            <b-form action="">
               <b-form-group id="emailGroup"
                       label="Email address:"
                       label-for="email">
                 <b-form-input id="email"
                         type="email"
-                        v-model="form.email"
+                        v-model="credentials.email"
                         required
                         placeholder="Enter email">
                 </b-form-input>
@@ -24,15 +24,14 @@
                       label-for="password">
                 <b-form-input id="password"
                         type="password"
-                        v-model="form.password"
+                        v-model="credentials.password"
                         required
                         placeholder="Enter Password">
                 </b-form-input>
               </b-form-group>
-              <b-button type="submit" variant="primary" block>Login</b-button>
+              <b-button type="submit" variant="primary" @click.prevent="login" block>Login</b-button>
             </b-form>
           </p>
-          <router-link to="/register" class="card-link">Or Register</router-link>
         </b-card>
       </b-col>
     </b-row>
@@ -40,13 +39,14 @@
 </template>
 
 <script>
+import UserService from '../services/userService';
 export default {
 
   name: 'Login',
 
   data () {
     return {
-      form: {
+      credentials: {
         email: null,
         password: null
       }
@@ -54,8 +54,13 @@ export default {
   },
   methods: {
     login() {
-      console.log('Fill me out')
-    }
+      this.$http.post('login', {"user": this.credentials})
+        .then(data => {
+          UserService.addUser(data.body);
+          this.$parent.$emit('login:success');
+          this.$router.push('/');
+        });
+      }
   }
 }
 </script>

@@ -8,8 +8,8 @@ defmodule LsnmWeb.AuthController do
   def login(conn, %{"user" => %{"email" => email, "password" => password}}) do
     user = Users.user(email)
     case AuthHandler.login_by_email_and_pass(user, password) do
-      {:ok, _user} ->
-        new_conn = Guardian.Plug.sign_in(conn, %{id: 2})
+      {:ok, user} ->
+        new_conn = Guardian.Plug.sign_in(conn, user)
         jwt = Guardian.Plug.current_token(new_conn)
         %{"exp" => exp} = Guardian.Plug.current_claims(new_conn)
 

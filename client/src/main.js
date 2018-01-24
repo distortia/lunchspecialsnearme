@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import VueResource from 'vue-resource'
+import UserService from './services/userService';
 
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
@@ -13,6 +14,15 @@ Vue.config.productionTip = false
 
 Vue.http.options.root = (process.env.API_BASE_URL || 'http://localhost:4000') + '/api/'
 Vue.http.headers.common['Content-Type'] = 'application/json'
+
+Vue.http.interceptors.push((request, next) => {
+  const jwt = UserService.getJwt();
+  debugger;
+  if(jwt){
+    request.headers.set('Authorization', `Bearer ${jwt}`);
+  }
+  next();
+});
 
 /* eslint-disable no-new */
 new Vue({
