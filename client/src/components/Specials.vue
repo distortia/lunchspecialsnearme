@@ -39,69 +39,76 @@
         <b-col cols="12" md="7">
           <div class="map-container">
             <div id="map"></div>
-            <b-modal ref="placeModal" hide-footer size="lg" :title="placeModal.title" lazy>
-              <div class="d-block text-center">
-                <h3>Specials</h3>
-                <div v-if="hasSpecial">
-                  <b-card no-body>
-                    <b-tabs card>
-                      <b-tab v-for="day in special.days_of_week" :title="day" :key="day" :active="dayOfWeeek(day)">
-                        {{ special.info }}
-                      </b-tab>
-                    </b-tabs>
-                  </b-card>
-                </div>
-                <div v-else>
-                  No specials here, yet!
-                  Be a gyro and add a special!
-                  <b-form @submit.prevent="addSpecial">
-                    <b-form-group label="Day(s) of the Week">
-                      <b-form-checkbox-group buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek">
-                      </b-form-checkbox-group>
-                    </b-form-group>
-                    <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
-                    <b-form-checkbox
-                      v-model="addSpecialForm.reoccuring"
-                      value="true"
-                      unchecked-value="false">
-                      Reoccuring?
-                    </b-form-checkbox>
-                    <div>
-                      <b-button type="submit" variant="primary">Submit</b-button>
+            <b-modal ref="placeModal" hide-footer size="lg" :title="placeModal.title" @shown="clearAddSpecialForm" lazy>
+              <b-card no-body border-variant="light" class="text-center">
+                <b-tabs card pills>
+                  <b-tab title="Specials" active>
+                    <div v-if="hasSpecial">
+                      <b-card no-body>
+                        <b-tabs card>
+                          <b-tab v-for="day in special.days_of_week" :title="day" :key="day" :active="dayOfWeeek(day)">
+                            {{ special.info }}
+                          </b-tab>
+                        </b-tabs>
+                      </b-card>
                     </div>
-                  </b-form>
-                  <hr>
-                </div>
-                  <p>
-                    <b-badge pill variant="warning">
-                      Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
-                    </b-badge>
-                    <b-badge pill variant="success">Price Level: {{ placeModal.price_level | expensivity }}</b-badge>
-                  </p>
-                  <h4>Hours</h4>
-                   <ul class="modal-address">
-                    <li v-for="hours in placeModal.openingHours">
-                      {{hours}}
-                    </li>
-                  </ul>
-                  <b-button-group class="modal-button-group">
-                    <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
-                      <i class="fa fa-mobile" aria-hidden="true"></i>
-                      Call
-                    </b-button>
-                    <b-button :href="placeModal.url"
-                              target="_blank" 
-                              variant="outline-primary">
-                      <i class="fa fa-map-marker" aria-hidden="true"></i>
-                      Directions
-                    </b-button>
-                    <b-button variant="outline-primary" :href="placeModal.website" target="_blank">
-                      <i class="fa fa-globe" aria-hidden="true"></i>
-                      Website
-                    </b-button>
-                </b-button-group>
-              </div>
-              <b-btn variant="outline-danger" block @click="hideModal">Close</b-btn>
+                    <div v-else>
+                      No specials here, yet!
+                      Be a gyro and add a special!
+                      <b-form @submit.prevent="addSpecial">
+                        <b-form-group label="Day(s) of the Week">
+                          <b-form-checkbox-group buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek">
+                          </b-form-checkbox-group>
+                        </b-form-group>
+                        <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
+                        <b-form-checkbox
+                          v-model="addSpecialForm.reoccuring"
+                          value="true"
+                          unchecked-value="false">
+                          Reoccuring?
+                        </b-form-checkbox>
+                        <div>
+                          <b-button type="submit" variant="primary">Submit</b-button>
+                        </div>
+                      </b-form>
+                    </div>
+                  </b-tab>
+                  <b-tab title="Info">
+                    <h5>{{ placeModal.title }}</h5>
+                    <p>
+                      <b-badge pill variant="warning">
+                        Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
+                      </b-badge>
+                      <b-badge pill variant="success">Price Level: {{ placeModal.price_level | expensivity }}</b-badge>
+                    </p>
+                    <p>
+                      {{placeModal.address}}
+                    </p>
+                    <h4>Hours</h4>
+                    <ul class="modal-address">
+                      <li v-for="hours in placeModal.openingHours">
+                        {{hours}}
+                      </li>
+                    </ul>
+                    <b-button-group class="modal-button-group">
+                      <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
+                        <i class="fa fa-mobile" aria-hidden="true"></i>
+                        Call
+                      </b-button>
+                      <b-button :href="placeModal.url"
+                                target="_blank" 
+                                variant="outline-primary">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        Directions
+                      </b-button>
+                      <b-button variant="outline-primary" :href="placeModal.website" target="_blank">
+                        <i class="fa fa-globe" aria-hidden="true"></i>
+                        Website
+                      </b-button>
+                    </b-button-group>
+                  </b-tab>
+                </b-tabs>
+              </b-card>
           </b-modal>
           </div>
         </b-col>
@@ -311,6 +318,11 @@ export default {
       this.$http.post('special/add', special).then(response => {
         this.$refs.placeModal.hide()
       })
+    },
+    clearAddSpecialForm() {
+        this.addSpecialForm.days_of_week =  []
+        this.addSpecialForm.info =  null
+        this.addSpecialForm.reoccuring =  false
     }
   },
   mounted () {
