@@ -8,15 +8,16 @@ defmodule LsnmWeb.SearchView do
   @doc """
   Renders the special data we want from the database into json format.
   """
-  def render("special.json", special) do
-    %{data: %{
-      :days_of_week => special.days_of_week,
-      :info => special.info,
-      :inserted_at => special.inserted_at,
-      :place_id => special.place_id,
-      :reoccuring => special.reoccuring,
-      :updated_at => special.updated_at
-      }}
+  def render("specials.json", %{specials: specials}) do
+   %{data: render_many(specials, LsnmWeb.SearchView, "special.json")}
+  end
+
+  def render("special.json", %{search: search}) do
+     %{
+      :day_of_week => search.day_of_week,
+      :info => search.info,
+      :place_id => search.place_id
+      }
   end
 
   def render("details.json", %{details: details}) do

@@ -12,9 +12,14 @@
 
 Lsnm.Repo.insert!(%Lsnm.Specials.Special{
   place_id: "ChIJp607bnR8OIgRPt44VnN-9LQ",
-  days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-  info: "Free drink with pizza purchase",
-  reoccuring: true
+  day_of_week: "Monday",
+  info: "Free drink with pizza purchase"
+  })
+
+Lsnm.Repo.insert!(%Lsnm.Specials.Special{
+  place_id: "ChIJp607bnR8OIgRPt44VnN-9LQ",
+  day_of_week: "Tuesday",
+  info: "Free drink with pizza purchase"
   })
 
 Lsnm.Repo.insert(%Lsnm.Users.User{

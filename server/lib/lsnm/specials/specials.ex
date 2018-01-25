@@ -14,13 +14,21 @@ defmodule Lsnm.Specials do
   end
 
   def special(place_id) do
-    Repo.get_by!(Special, place_id: place_id)
+    Repo.all(from s in "specials",
+            where: s.place_id == ^place_id,
+            select: %{day_of_week: s.day_of_week,
+                      place_id: s.place_id,
+                      info: s.info})
   end
 
   def add(special) do
-    %Special{}
-    |> Special.changeset(special)
-    |> Repo.insert
+    Enum.each(special["days_of_week"], fn day -> 
+      daily_special = %{day_of_week: day, place_id: special["place_id"], info: special["info"]}
+      %Special{}
+      |> Special.changeset(daily_special)
+      |> Repo.insert
+    end)
+    {:ok, special}
   end
 
   def edit(special) do

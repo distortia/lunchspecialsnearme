@@ -14,7 +14,7 @@ defmodule Lsnm.Repo.Migrations.MainMigration do
     create table(:specials) do
 
       add :place_id, :string
-      add :days_of_week, {:array, :string}, default: []
+      add :day_of_week, :string 
       add :info, :text
       add :reoccuring, :boolean
 

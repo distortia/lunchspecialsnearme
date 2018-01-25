@@ -17,13 +17,15 @@
                     <div v-show="hasSpecial">
                       <b-card no-body>
                         <b-tabs card>
-                          <b-tab v-for="day in special.days_of_week" :title="day" :key="day" :active="dayOfWeeek(day)">
-                            {{ special.info }}
+                          <b-tab v-for="special in specials" :title="special.day_of_week" :key="special.day_of_week" :active="dayOfWeek(special.day_of_week)">
+                            <b-list-group>
+                              <b-list-group-item v-for="info in special.info" :key="info">{{info}}</b-list-group-item>
+                          </b-list-group>
                           </b-tab>
                         </b-tabs>
                       </b-card>
+                      <hr>
                     </div>
-                    <hr>
                     <div>
                       Not seeing what you are after?
                       Be a gyro and add a special!
@@ -178,7 +180,7 @@ export default {
       pagination: null,
       placeModal: {},
       hasSpecial: false,
-      special: {},
+      specials: [],
       form: {
         location: null,
         radius: this.$route.query.radius || null,
@@ -264,7 +266,7 @@ export default {
         this.placeModal = resp.body.data
         this.$http.get(`special/${placeId}`).then(res => {
           this.hasSpecial = true
-          this.special = res.body.data
+          this.specials = this.formatSpecials(res.body.data)
         }, err => {
           this.hasSpecial = false
         })
@@ -277,14 +279,13 @@ export default {
     hideModal () {
       this.$refs.placeModal.hide()
     },
-    dayOfWeeek(day) {
+    dayOfWeek(day) {
       let weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
       let date = new Date
       return day === weekday[date.getDay()]
     },
     addSpecial() {
       let special = Object.assign({place_id: this.placeModal.place_id}, this.addSpecialForm)
-      console.log(special)
       this.$http.post('special/add', special).then(response => {
         this.$refs.placeModal.hide()
       })
@@ -302,6 +303,28 @@ export default {
           radius: this.form.radius
         }
       })
+    },
+    // Combines multiple specials under one day into a list of specials under that day
+    formatSpecials(specials) {
+      var output = [];
+      specials.forEach((special) => {
+        var existing = output.filter((v, i) => {
+          return v.day_of_week == special.day_of_week;
+        });
+        if (existing.length) {
+          var existingIndex = output.indexOf(existing[0]);
+          output[existingIndex].info = output[existingIndex].info.concat(special.info);
+        } else {
+          if (typeof special.info == 'string')
+            special.info = [special.info];
+          output.push(special);
+        }
+      });
+      // in place sort based on day of the week.
+      output.sort((a, b) => {
+        return this.daysOfWeek.indexOf(a.day_of_week) > this.daysOfWeek.indexOf(b.day_of_week)
+      })
+      return output
     }
   },
   mounted () {
