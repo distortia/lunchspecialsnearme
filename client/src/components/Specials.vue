@@ -43,7 +43,7 @@
               <b-card no-body border-variant="light" class="text-center">
                 <b-tabs card pills>
                   <b-tab title="Specials" active>
-                    <div v-if="hasSpecial">
+                    <div v-show="hasSpecial">
                       <b-card no-body>
                         <b-tabs card>
                           <b-tab v-for="day in special.days_of_week" :title="day" :key="day" :active="dayOfWeeek(day)">
@@ -52,8 +52,9 @@
                         </b-tabs>
                       </b-card>
                     </div>
-                    <div v-else>
-                      No specials here, yet!
+                    <hr>
+                    <div>
+                      Not seeing what you are after?
                       Be a gyro and add a special!
                       <b-form @submit.prevent="addSpecial">
                         <b-form-group label="Day(s) of the Week">
@@ -61,12 +62,6 @@
                           </b-form-checkbox-group>
                         </b-form-group>
                         <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
-                        <b-form-checkbox
-                          v-model="addSpecialForm.reoccuring"
-                          value="true"
-                          unchecked-value="false">
-                          Reoccuring?
-                        </b-form-checkbox>
                         <div>
                           <b-button type="submit" variant="primary">Submit</b-button>
                         </div>
@@ -81,9 +76,8 @@
                       </b-badge>
                       <b-badge pill variant="success">Price Level: {{ placeModal.price_level | expensivity }}</b-badge>
                     </p>
-                    <p>
-                      {{placeModal.address}}
-                    </p>
+                    <p>{{placeModal.address}}</p>
+                    <p>Phone: <span>{{ placeModal.phoneNumber }}</span></p>
                     <h4>Hours</h4>
                     <ul class="modal-address">
                       <li v-for="hours in placeModal.openingHours">
@@ -106,6 +100,18 @@
                         Website
                       </b-button>
                     </b-button-group>
+                  </b-tab>
+                  <b-tab title="Reviews">
+                    <b-list-group> 
+                      <b-list-group-item v-for="review in placeModal.review" :key="review.id">
+                        <b-media>
+                          <b-img slot="aside" :src="review.profile_photo_url" width="125" alt="placeholder" />
+                          <p>{{ review.text }}</p>
+                          <p><b-badge pill variant="warning">Rating: {{ review.rating }} <i class="fa fa-star" aria-hidden="true"></i></b-badge></p>
+                          <p>By: <span><a :href="review.author_url">{{ review.author_name }}</a> about {{ review.relative_time_description }}</span></p>
+                        </b-media>
+                      </b-list-group-item>
+                    </b-list-group> 
                   </b-tab>
                 </b-tabs>
               </b-card>
@@ -198,9 +204,8 @@ export default {
       addSpecialForm: {
         days_of_week: [],
         info: null,
-        reoccuring: false
       },
-      daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+      daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     }
   },
   methods: {
