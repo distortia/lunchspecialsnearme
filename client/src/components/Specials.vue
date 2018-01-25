@@ -3,7 +3,6 @@
     <b-navbar toggleable="md" type="light" variant="light" sticky @submit.prevent="search">
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-navbar-brand href="/">LSNM</b-navbar-brand>
-      <b-button size="sm" class="my-2 my-sm-0" @click="feedbackModal = !feedbackModal" variant="outline-primary">Feedback</b-button>
       <b-collapse is-nav id="nav-collapse">
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
@@ -33,7 +32,6 @@
       <span class="sr-only">Loading...</span>
     </div>
     <h1 v-if="restaurants">Currently displaying {{restaurants.length}} place(s) near you </h1>
-    <b-alert variant="success" :show="feedbackSent" dismissible>Thanks for your feedback! We appreciate it!</b-alert>
     <b-container fluid>
       <b-row>
         <b-col cols="12" md="7">
@@ -67,7 +65,7 @@
                         </div>
                       </b-form>
                     </div>
-                  </b-tab>
+                  </b-tab> 
                   <b-tab title="Info">
                     <h5>{{ placeModal.title }}</h5>
                     <p>
@@ -162,20 +160,6 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-modal 
-      v-model="feedbackModal"
-      title="Feedback"
-      @ok="handleOk"
-      @shown="clearFeedback"
-      ref="feedbackModal">
-      <form @submit.stop.prevent="handleSubmit">
-        <b-form-textarea
-          v-model.trim="feedback"
-          placeholder="Enter Feedback or recommendations"
-          rows="3">
-        </b-form-textarea>
-      </form>
-    </b-modal>
   </div>
 </template>
 
@@ -198,9 +182,6 @@ export default {
         radius: this.$route.query.radius || null,
         keywords: this.$route.query.keywords || null
       },
-      feedbackModal: false,
-      feedback: '',
-      feedbackSent: false,
       addSpecialForm: {
         days_of_week: [],
         info: null,
@@ -293,24 +274,6 @@ export default {
     },
     hideModal () {
       this.$refs.placeModal.hide()
-    },
-    clearFeedback () {
-      this.feedback = ''
-    },
-    handleOk (event) {
-      event.preventDefault ()
-      if (!this.feedback) {
-        alert('Please enter your feedback')
-      } else {
-        this.handleSubmit()
-      }
-    },
-    handleSubmit () {
-      this.$http.post('email/feedback',{feedback: this.feedback}).then(response => {
-        this.feedbackSent = true
-      })
-      this.clearFeedback ()
-      this.$refs.feedbackModal.hide()
     },
     dayOfWeeek(day) {
       let weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]

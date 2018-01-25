@@ -8,15 +8,30 @@
           <b-nav-item to="/" exact>Home</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
+          <b-button size="sm" class="my-2 my-sm-0" @click="feedbackModal = !feedbackModal" variant="outline-light">Feedback</b-button>
           <b-nav-item to="/login">Login</b-nav-item>
           <b-nav-item to="/register">Register</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-
     <transition name="fade">
       <router-view></router-view>
     </transition>
+    <b-modal 
+      v-model="feedbackModal"
+      title="Feedback"
+      @ok="handleOk"
+      @shown="clearFeedback"
+      ref="feedbackModal">
+      <b-alert variant="success" :show="feedbackSent" dismissible>Thanks for your feedback! We appreciate it!</b-alert>
+      <form @submit.stop.prevent="handleSubmit">
+        <b-form-textarea
+          v-model="feedback"
+          placeholder="Enter Feedback or recommendations"
+          rows="3">
+        </b-form-textarea>
+      </form>
+    </b-modal>
   </div>
 </template>
 
@@ -32,7 +47,10 @@ export default {
         location: null,
         radius: null,
         keywords: null
-      }
+      },
+      feedbackModal: false,
+      feedback: '',
+      feedbackSent: false,
     }
   },
   methods: {
@@ -45,7 +63,24 @@ export default {
           radius: this.form.radius
         }
       })
-    }
+    },
+    clearFeedback () {
+      this.feedback = ''
+    },
+    handleOk (event) {
+      event.preventDefault ()
+      if (!this.feedback) {
+        alert('Please enter your feedback')
+      } else {
+        this.handleSubmit()
+      }
+    },
+    handleSubmit () {
+      this.$http.post('email/feedback',{feedback: this.feedback}).then(response => {
+        this.feedbackSent = true
+      })
+      this.clearFeedback ()
+    },
   }
 }
 </script>
