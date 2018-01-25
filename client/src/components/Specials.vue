@@ -1,38 +1,12 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="light" variant="light" sticky @submit.prevent="search">
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse is-nav id="nav-collapse">
-        <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <b-form-input
-              id="radius"
-              type="number"
-              v-model="form.radius"
-              placeholder="Radius(miles)"
-              size="sm"
-              class="mr-sm-2"
-              required></b-form-input>
-            <b-form-input 
-              id="keywords"
-              type="text"
-              v-model="form.keywords"
-              placeholder="Mexican"
-              class="mr-sm-2"
-              size="sm"
-              required></b-form-input>
-            <b-button size="sm" type="submit" variant="outline-success">Search</b-button>
-          </b-nav-form>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
     <div class="loading" v-show="loading">
       <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
       <span class="sr-only">Loading...</span>
     </div>
     <h1 v-if="restaurants">Currently displaying {{restaurants.length}} place(s) near you </h1>
     <b-container fluid>
-      <b-row>
+      <b-row class="specials-container">
         <b-col cols="12" md="7">
           <div class="map-container">
             <div id="map"></div>
@@ -115,7 +89,31 @@
           </b-modal>
           </div>
         </b-col>
-        <b-col md="5" cols="12">
+        <b-col md="5" cols="12" @submit.prevent="updateSearch">
+          <b-card title="Search">
+            <b-form class="card-text">
+              <b-form-group
+                label="Search Radius"
+                label-for="radius">
+              <b-form-input
+                id="radius"
+                type="number"
+                v-model="form.radius"
+                placeholder="Radius(miles)"
+                required></b-form-input>
+              </b-form-group>
+              <b-form-group
+                label="Keywords">
+                <b-form-input 
+                  id="keywords"
+                  type="text"
+                  v-model="form.keywords"
+                  placeholder="Mexican"
+                  required></b-form-input>
+                </b-form-group>
+              <b-button type="submit" variant="success" block>Search</b-button>
+            </b-form>
+          </b-card>
           <div class="restaurant-cards-list">
             <div class="ad-container">
               <ins class="adsbygoogle"
@@ -127,7 +125,7 @@
               </ins>
             </div>
             <b-list-group>
-              <b-list-group-item v-for="(restaurant, index) in restaurants" class="flex-column align-items-start">
+              <b-list-group-item v-for="(restaurant, index) in restaurants" :key="index" class="flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{index + 1}}: {{restaurant.name}}</h5>
                   <small>{{restaurant.vicinity}}</small>
@@ -295,6 +293,15 @@ export default {
         this.addSpecialForm.days_of_week =  []
         this.addSpecialForm.info =  null
         this.addSpecialForm.reoccuring =  false
+    },
+    updateSearch() {
+     this.$router.push({
+        path: 'specials',
+        query: {
+          keywords: encodeURIComponent(this.form.keywords),
+          radius: this.form.radius
+        }
+      })
     }
   },
   mounted () {
