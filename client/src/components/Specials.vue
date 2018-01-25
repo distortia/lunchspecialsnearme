@@ -306,18 +306,18 @@ export default {
     },
     // Combines multiple specials under one day into a list of specials under that day
     formatSpecials(specials) {
-      var output = [];
+      let output = []
       specials.forEach((special) => {
-        var existing = output.filter((v, i) => {
-          return v.day_of_week == special.day_of_week;
+        let existing = output.filter((v, i) => {
+          return v.day_of_week === special.day_of_week
         });
         if (existing.length) {
-          var existingIndex = output.indexOf(existing[0]);
-          output[existingIndex].info = output[existingIndex].info.concat(special.info);
+          let existingIndex = output.indexOf(existing[0])
+          output[existingIndex].info = output[existingIndex].info.concat(special.info)
         } else {
           if (typeof special.info == 'string')
-            special.info = [special.info];
-          output.push(special);
+            special.info = [special.info]
+          output.push(special)
         }
       });
       // in place sort based on day of the week.
