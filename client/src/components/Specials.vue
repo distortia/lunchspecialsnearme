@@ -2,7 +2,6 @@
   <div>
     <b-navbar toggleable="md" type="light" variant="light" sticky @submit.prevent="search">
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-navbar-brand href="/">LSNM</b-navbar-brand>
       <b-collapse is-nav id="nav-collapse">
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
@@ -127,9 +126,13 @@
                 ref="googleAds">
               </ins>
             </div>
-            <div v-for="(restaurant, index) in restaurants">
-              <b-card :title="`${index + 1}: ${restaurant.name}`"
-                      :sub-title="restaurant.vicinity">
+            <b-list-group>
+              <b-list-group-item v-for="(restaurant, index) in restaurants" class="flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{index + 1}}: {{restaurant.name}}</h5>
+                  <small>{{restaurant.vicinity}}</small>
+                </div>
+                <p class="mb-1">
                   <div style="display: block;">
                     <b-badge pill variant="warning">
                       Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
@@ -148,9 +151,10 @@
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                         Info
                      </b-button>
-                  </div>
-              </b-card>
-            </div>
+                   </div>
+                </p>
+              </b-list-group-item>
+            </b-list-group>
           </div>
           <div class="pagination-container" v-if="hasPagination">
             <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
