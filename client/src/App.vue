@@ -8,6 +8,7 @@
           <b-nav-item to="/">Home</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
+          <b-button size="sm" class="my-2 my-sm-0" @click="feedbackModal = !feedbackModal" variant="outline-light">Feedback</b-button>
           <div id="user-header-wrapper" v-if="isLoggedIn">
             <b-nav-item>Hello {{user.username || user.email}}</b-nav-item>
             <b-nav-item @click.prevent="logout">Logout</b-nav-item>
@@ -22,6 +23,21 @@
     <transition name="fade">
       <router-view></router-view>
     </transition>
+    <b-modal
+      v-model="feedbackModal"
+      title="Feedback"
+      @ok="handleOk"
+      @shown="clearFeedback"
+      ref="feedbackModal">
+      <b-alert variant="success" :show="feedbackSent" dismissible>Thanks for your feedback! We appreciate it!</b-alert>
+      <form @submit.stop.prevent="handleSubmit">
+        <b-form-textarea
+          v-model="feedback"
+          placeholder="Enter Feedback or recommendations"
+          rows="3">
+        </b-form-textarea>
+      </form>
+    </b-modal>
   </div>
 </template>
 
@@ -42,6 +58,9 @@ export default {
       user: UserService.getUser(),
       isLoggedIn: UserService.isLoggedIn(),
       successMessage: null,
+      feedbackModal: false,
+      feedback: '',
+      feedbackSent: false,
     }
   },
   created() {
@@ -72,7 +91,25 @@ export default {
           this.isLoggedIn = false;
           this.$router.push('/');
         });
-    }
+    },
+
+    clearFeedback () {
+      this.feedback = ''
+    },
+    handleOk (event) {
+      event.preventDefault ()
+      if (!this.feedback) {
+        alert('Please enter your feedback')
+      } else {
+        this.handleSubmit()
+      }
+    },
+    handleSubmit () {
+      this.$http.post('email/feedback',{feedback: this.feedback}).then(response => {
+        this.feedbackSent = true
+      })
+      this.clearFeedback ()
+    },
   }
 }
 </script>

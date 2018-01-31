@@ -1,92 +1,121 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="light" variant="light" sticky @submit.prevent="search">
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-navbar-brand href="/">LSNM</b-navbar-brand>
-      <b-button size="sm" class="my-2 my-sm-0" @click="feedbackModal = !feedbackModal" variant="outline-primary">Feedback</b-button>
-      <b-collapse is-nav id="nav-collapse">
-        <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <b-form-input
-              id="radius"
-              type="number"
-              v-model="form.radius"
-              placeholder="Radius(miles)"
-              size="sm"
-              class="mr-sm-2"
-              required></b-form-input>
-            <b-form-input 
-              id="keywords"
-              type="text"
-              v-model="form.keywords"
-              placeholder="Mexican"
-              class="mr-sm-2"
-              size="sm"
-              required></b-form-input>
-            <b-button size="sm" type="submit" variant="outline-success">Search</b-button>
-          </b-nav-form>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
     <div class="loading" v-show="loading">
       <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
       <span class="sr-only">Loading...</span>
     </div>
     <h1 v-if="restaurants">Currently displaying {{restaurants.length}} place(s) near you </h1>
-    <b-alert variant="success" :show="feedbackSent" dismissible>Thanks for your feedback! We appreciate it!</b-alert>
     <b-container fluid>
-      <b-row>
+      <b-row class="specials-container">
         <b-col cols="12" md="7">
           <div class="map-container">
             <div id="map"></div>
-            <b-modal ref="placeModal" hide-footer :title="placeModal.title" lazy>
-              <div class="d-block text-center">
-                <h3>Specials</h3>
-                <div v-if="hasSpecial">
-                  {{ special.info }}
-                  {{ special.days_of_week }}
-                  {{ special.reoccuring }}
-                </div>
-                <div v-else>
-                  No specials here, yet!
-                  Be a gyro and add a special!
-                </div>
-                <hr>
-                <p>{{ placeModal.address }}</p>
-                  <p>
-                    <b-badge pill variant="warning">
-                      Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
-                    </b-badge>
-                    <b-badge pill variant="success">Price Level: {{placeModal.price_level | expensivity }}</b-badge>
-                  </p>
-                  <h4>Hours</h4>
-                   <ul class="modal-address">
-                    <li v-for="hours in placeModal.openingHours">
-                      {{hours}}
-                    </li>
-                  </ul>
-                  <b-button-group class="modal-button-group">
-                    <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
-                      <i class="fa fa-mobile" aria-hidden="true"></i>
-                      Call
-                    </b-button>
-                    <b-button :href="placeModal.url"
-                              target="_blank" 
-                              variant="outline-primary">
-                      <i class="fa fa-map-marker" aria-hidden="true"></i>
-                      Directions
-                    </b-button>
-                    <b-button variant="outline-primary" :href="placeModal.website" target="_blank">
-                      <i class="fa fa-globe" aria-hidden="true"></i>
-                      Website
-                    </b-button>
-                </b-button-group>
-              </div>
-              <b-btn variant="outline-danger" block @click="hideModal">Close</b-btn>
+            <b-modal ref="placeModal" hide-footer size="lg" :title="placeModal.title" @shown="clearAddSpecialForm" lazy>
+              <b-card no-body border-variant="light" class="text-center">
+                <b-tabs card pills>
+                  <b-tab title="Specials" active>
+                    <div v-show="hasSpecial">
+                      <b-card no-body>
+                        <b-tabs card>
+                          <b-tab v-for="special in specials" :title="special.day_of_week" :key="special.day_of_week" :active="dayOfWeek(special.day_of_week)">
+                            <b-list-group>
+                              <b-list-group-item v-for="info in special.info" :key="info">{{info}}</b-list-group-item>
+                          </b-list-group>
+                          </b-tab>
+                        </b-tabs>
+                      </b-card>
+                      <hr>
+                    </div>
+                    <div>
+                      Not seeing what you are after?
+                      Be a gyro and add a special!
+                      <b-form @submit.prevent="addSpecial">
+                        <b-form-group label="Day(s) of the Week">
+                          <b-form-checkbox-group buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek">
+                          </b-form-checkbox-group>
+                        </b-form-group>
+                        <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
+                        <div>
+                          <b-button type="submit" variant="primary">Submit</b-button>
+                        </div>
+                      </b-form>
+                    </div>
+                  </b-tab> 
+                  <b-tab title="Info">
+                    <h5>{{ placeModal.title }}</h5>
+                    <p>
+                      <b-badge pill variant="warning">
+                        Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
+                      </b-badge>
+                      <b-badge pill variant="success">Price Level: {{ placeModal.price_level | expensivity }}</b-badge>
+                    </p>
+                    <p>{{placeModal.address}}</p>
+                    <p>Phone: <span>{{ placeModal.phoneNumber }}</span></p>
+                    <h4>Hours</h4>
+                    <ul class="modal-address">
+                      <li v-for="hours in placeModal.openingHours">
+                        {{hours}}
+                      </li>
+                    </ul>
+                    <b-button-group class="modal-button-group">
+                      <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
+                        <i class="fa fa-mobile" aria-hidden="true"></i>
+                        Call
+                      </b-button>
+                      <b-button :href="placeModal.url"
+                                target="_blank" 
+                                variant="outline-primary">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        Directions
+                      </b-button>
+                      <b-button variant="outline-primary" :href="placeModal.website" target="_blank">
+                        <i class="fa fa-globe" aria-hidden="true"></i>
+                        Website
+                      </b-button>
+                    </b-button-group>
+                  </b-tab>
+                  <b-tab title="Reviews">
+                    <b-list-group> 
+                      <b-list-group-item v-for="review in placeModal.review" :key="review.id">
+                        <b-media>
+                          <b-img slot="aside" :src="review.profile_photo_url" width="125" alt="placeholder" />
+                          <p>{{ review.text }}</p>
+                          <p><b-badge pill variant="warning">Rating: {{ review.rating }} <i class="fa fa-star" aria-hidden="true"></i></b-badge></p>
+                          <p>By: <span><a :href="review.author_url">{{ review.author_name }}</a> about {{ review.relative_time_description }}</span></p>
+                        </b-media>
+                      </b-list-group-item>
+                    </b-list-group> 
+                  </b-tab>
+                </b-tabs>
+              </b-card>
           </b-modal>
           </div>
         </b-col>
-        <b-col md="5" cols="12">
+        <b-col md="5" cols="12" @submit.prevent="updateSearch">
+          <b-card title="Search">
+            <b-form class="card-text">
+              <b-form-group
+                label="Search Radius"
+                label-for="radius">
+              <b-form-input
+                id="radius"
+                type="number"
+                v-model="form.radius"
+                placeholder="Radius(miles)"
+                required></b-form-input>
+              </b-form-group>
+              <b-form-group
+                label="Keywords">
+                <b-form-input 
+                  id="keywords"
+                  type="text"
+                  v-model="form.keywords"
+                  placeholder="Mexican"
+                  required></b-form-input>
+                </b-form-group>
+              <b-button type="submit" variant="success" block>Search</b-button>
+            </b-form>
+          </b-card>
           <div class="restaurant-cards-list">
             <div class="ad-container">
               <ins class="adsbygoogle"
@@ -97,9 +126,13 @@
                 ref="googleAds">
               </ins>
             </div>
-            <div v-for="(restaurant, index) in restaurants">
-              <b-card :title="`${index + 1}: ${restaurant.name}`"
-                      :sub-title="restaurant.vicinity">
+            <b-list-group>
+              <b-list-group-item v-for="(restaurant, index) in restaurants" :key="index" class="flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{index + 1}}: {{restaurant.name}}</h5>
+                  <small>{{restaurant.vicinity}}</small>
+                </div>
+                <p class="mb-1">
                   <div style="display: block;">
                     <b-badge pill variant="warning">
                       Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
@@ -118,9 +151,10 @@
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                         Info
                      </b-button>
-                  </div>
-              </b-card>
-            </div>
+                   </div>
+                </p>
+              </b-list-group-item>
+            </b-list-group>
           </div>
           <div class="pagination-container" v-if="hasPagination">
             <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
@@ -130,20 +164,6 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-modal 
-      v-model="feedbackModal"
-      title="Feedback"
-      @ok="handleOk"
-      @shown="clearFeedback"
-      ref="feedbackModal">
-      <form @submit.stop.prevent="handleSubmit">
-        <b-form-textarea
-          v-model.trim="feedback"
-          placeholder="Enter Feedback or recommendations"
-          rows="3">
-        </b-form-textarea>
-      </form>
-    </b-modal>
   </div>
 </template>
 
@@ -160,15 +180,17 @@ export default {
       pagination: null,
       placeModal: {},
       hasSpecial: false,
-      special: {},
+      specials: [],
       form: {
         location: null,
         radius: this.$route.query.radius || null,
         keywords: this.$route.query.keywords || null
       },
-      feedbackModal: false,
-      feedback: '',
-      feedbackSent: false
+      addSpecialForm: {
+        days_of_week: [],
+        info: null,
+      },
+      daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     }
   },
   methods: {
@@ -224,7 +246,7 @@ export default {
     parsePlaces (places, status, pagination) {
       this.loading = false
       this.restaurants = (this.restaurants === null) ? places : this.restaurants.concat(places)
-      this.pagination = pagination
+      this.pagination = (pagination || false)
       // Draw the markers for the places
       places.forEach((place, index) => {
         this.createMarker(place, index)
@@ -244,7 +266,7 @@ export default {
         this.placeModal = resp.body.data
         this.$http.get(`special/${placeId}`).then(res => {
           this.hasSpecial = true
-          this.special = res.body.data
+          this.specials = this.formatSpecials(res.body.data)
         }, err => {
           this.hasSpecial = false
         })
@@ -257,23 +279,52 @@ export default {
     hideModal () {
       this.$refs.placeModal.hide()
     },
-    clearFeedback () {
-      this.feedback = ''
+    dayOfWeek(day) {
+      let weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      let date = new Date
+      return day === weekday[date.getDay()]
     },
-    handleOk (event) {
-      event.preventDefault ()
-      if (!this.feedback) {
-        alert('Please enter your feedback')
-      } else {
-        this.handleSubmit()
-      }
-    },
-    handleSubmit () {
-      this.$http.post('email/feedback',{feedback: this.feedback}).then(response => {
-        this.feedbackSent = true
+    addSpecial() {
+      let special = Object.assign({place_id: this.placeModal.place_id}, this.addSpecialForm)
+      this.$http.post('special/add', special).then(response => {
+        this.$refs.placeModal.hide()
       })
-      this.clearFeedback ()
-      this.$refs.feedbackModal.hide()
+    },
+    clearAddSpecialForm() {
+        this.addSpecialForm.days_of_week =  []
+        this.addSpecialForm.info =  null
+        this.addSpecialForm.reoccuring =  false
+    },
+    updateSearch() {
+     this.$router.push({
+        path: 'specials',
+        query: {
+          keywords: encodeURIComponent(this.form.keywords),
+          radius: this.form.radius
+        }
+      })
+    },
+    // Combines multiple specials under one day into a list of specials under that day
+    formatSpecials(specials) {
+      let output = []
+      specials.forEach((special) => {
+        let existing = output.filter((v, i) => {
+          return v.day_of_week === special.day_of_week
+        });
+        if (existing.length) {
+          let existingIndex = output.indexOf(existing[0])
+          output[existingIndex].info = output[existingIndex].info.concat(special.info)
+        } else {
+          if (typeof special.info == 'string')
+            special.info = [special.info]
+          output.push(special)
+        }
+      });
+      // in place sort based on day of the week.
+      output.sort((a, b) => {
+        return this.daysOfWeek.indexOf(a.day_of_week) > this.daysOfWeek.indexOf(b.day_of_week)
+      })
+      return output
     }
   },
   mounted () {
@@ -283,7 +334,7 @@ export default {
     hasPagination () {
       let result = false
       if (this.restaurants) {
-        result = this.pagination.hasNextPage
+        result = this.pagination.hasNextPage || false
       }
       return result
     }

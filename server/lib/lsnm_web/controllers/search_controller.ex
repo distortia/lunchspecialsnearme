@@ -31,10 +31,15 @@ defmodule LsnmWeb.SearchController do
   Or 404 if it doesnt.
   """
   def special(conn, body) do
-    render(conn, "special.json", Specials.special(body["place_id"]))
+    specials = Specials.special(body["place_id"])
+    case length(specials) do
+      0 -> send_resp(conn, 404, "Not found")
+      _ -> render(conn, "specials.json", specials: specials)
+    end
   end
 
   def add(conn, body) do
+    IO.inspect body
     case Specials.add(body) do
       {:ok, special} ->
         json(conn, %{:body => %{"status" => "ok"}})
