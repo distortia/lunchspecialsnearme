@@ -17,7 +17,6 @@ Vue.http.headers.common['Content-Type'] = 'application/json'
 
 Vue.http.interceptors.push((request, next) => {
   const jwt = UserService.getJwt();
-  debugger;
   if(jwt){
     request.headers.set('Authorization', `Bearer ${jwt}`);
   }

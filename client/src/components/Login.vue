@@ -8,7 +8,11 @@
               header-text-variant="white"
               class="login-card">
           <p class="card-text">
-            <b-form action="">
+            <b-form @submit="login">
+              <b-alert variant="danger"
+                       :show="this.loginFailure">
+                       Invalid Credentials, please try again
+              </b-alert>
               <b-form-group id="emailGroup"
                       label="Email address:"
                       label-for="email">
@@ -16,7 +20,7 @@
                         type="email"
                         v-model="credentials.email"
                         required
-                        placeholder="Enter email">
+                        placeholder="Enter email" required>
                 </b-form-input>
               </b-form-group>
               <b-form-group id="passwordGroup"
@@ -29,7 +33,7 @@
                         placeholder="Enter Password">
                 </b-form-input>
               </b-form-group>
-              <b-button type="submit" variant="primary" @click.prevent="login" block>Login</b-button>
+              <b-button type="submit" variant="primary" block>Login</b-button>
             </b-form>
           </p>
         </b-card>
@@ -49,16 +53,20 @@ export default {
       credentials: {
         email: null,
         password: null
-      }
+      },
+      loginFailure: false,
     }
   },
   methods: {
-    login() {
+    login(event) {
+      event.preventDefault();
       this.$http.post('login', {"user": this.credentials})
-        .then(data => {
-          UserService.addUser(data.body);
+        .then(({body}) => {
+          UserService.addUser(body);
           this.$parent.$emit('login:success');
           this.$router.push('/');
+        }).catch(error => {
+          this.loginFailure = true;
         });
       }
   }

@@ -9,6 +9,10 @@
               class="register-card">
           <p class="card-text">
             <b-form @submit="register">
+              <b-alert variant="danger"
+                       v-if="this.registerError">
+                       {{registerError}}
+              </b-alert>
               <b-form-group id="emailGroup"
                       label="Email address:"
                       label-for="email">
@@ -19,17 +23,32 @@
                         placeholder="Enter email">
                 </b-form-input>
               </b-form-group>
-              <b-form-group id="passwordGroup"
-                      label="Password:"
-                      label-for="password">
-                <b-form-input id="password"
-                        type="password"
-                        v-model="form.password"
-                        required
-                        placeholder="Enter Password">
-                </b-form-input>
-              </b-form-group>
-              <b-button type="submit" variant="primary" block>Register</b-button>
+                <b-form-group id="passwordGroup"
+                        label="Password: "
+                        label-for="password">
+                  <b-form-input id="password"
+                          pattern=".{8,}"
+                          type="password"
+                          v-model="form.password"
+                          required title="8 characters minimum"
+                          placeholder="Enter Password"
+                          :state="doPasswordsMatch()">
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group id="confirmPasswordGroup"
+                        label="Confirm Password:"
+                        label-for="confirm-password">
+                  <b-form-input id="confirm-password"
+                          pattern=".{8,}"
+                          type="password"
+                          v-model="form.confirmPassword"
+                          required title="8 characters minimum"
+                          placeholder="Confirm Password"
+                          :state="doPasswordsMatch()">
+                  </b-form-input>
+                  <span v-if="doPasswordsMatch() === false" class="password-text">Passwords Must Match</span>
+                </b-form-group>
+              <b-button :disabled="doPasswordsMatch() === false" type="submit" variant="primary" block>Register</b-button>
             </b-form>
           </p>
           <router-link to="/login" class="card-link">Or Login</router-link>
@@ -48,13 +67,32 @@ export default {
     return {
       form: {
         email: null,
-        password: null
-      }
+        password: null,
+        confirmPassword: null,
+      },
+      registerError: null,
     }
   },
   methods: {
-    register() {
-      console.log('fill me in')
+    register(event) {
+      event.preventDefault();
+      const {email, password} = this.form;
+      this.$http.post('user/register', {"user": { email, password } }).then(({body}) => {
+        this.$parent.$emit('register:success');
+        this.$router.push('/');
+      }).catch(error=> {
+        if(error.status === 422){
+            const { body: { errors } } = error;
+            const errorKey = Object.keys(errors)[0];
+            this.registerError = `${errorKey} ${errors[errorKey][0]}`;
+        }
+      });
+    },
+    doPasswordsMatch() {
+      if(this.form.password || this.form.confirmPassword){
+        return this.form.password === this.form.confirmPassword ? null : false;
+      }
+      return null;
     }
   }
 }
@@ -62,4 +100,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/sass/login';
+.password-text {
+  font-size: 12px;
+  color: red;
+}
+.alert::first-letter {
+  text-transform: capitalize;
+}
 </style>

@@ -9,14 +9,16 @@
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <div id="user-header-wrapper" v-if="isLoggedIn">
-            <b-nav-item>Hello {{user.email}}</b-nav-item>
+            <b-nav-item>Hello {{user.username || user.email}}</b-nav-item>
             <b-nav-item @click.prevent="logout">Logout</b-nav-item>
           </div>
           <b-nav-item v-else to="/login">Login</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-
+    <div class="success-alert" v-if="successMessage">
+      <b-alert dismissible variant="success" show>{{successMessage}}</b-alert>
+    </div>
     <transition name="fade">
       <router-view></router-view>
     </transition>
@@ -38,13 +40,17 @@ export default {
         keywords: null
       },
       user: UserService.getUser(),
-      isLoggedIn: UserService.isLoggedIn()
+      isLoggedIn: UserService.isLoggedIn(),
+      successMessage: null,
     }
   },
   created() {
     this.$on('login:success', () => {
       this.user = UserService.getUser();
       this.isLoggedIn = UserService.isLoggedIn();
+    });
+    this.$on('register:success', () => {
+      this.successMessage = "Registration Successful! You may now log in!"
     });
   },
   methods: {
@@ -75,5 +81,11 @@ export default {
 @import './assets/sass/app';
 #user-header-wrapper {
   display: inherit;
+}
+.success-alert{
+  text-align: center;
+  .alert {
+    margin: 0;
+  }
 }
 </style>
