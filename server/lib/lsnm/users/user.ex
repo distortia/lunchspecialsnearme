@@ -30,10 +30,6 @@ defmodule Lsnm.Users.User do
     user
     |> cast(attrs, [:password])
     |> validate_length(:password, min: 8)
-    |> validate_format(:password, ~r/[a-z]/)
-    |> validate_format(:password, ~r/[A-Z]/)
-    |> validate_format(:password, ~r/[0-9]/)
-    |> validate_format(:password, ~r/[!@#$%^&+=]/)
   end
 
   defp put_pass_hash(changeset) do
