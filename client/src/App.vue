@@ -10,7 +10,7 @@
         <b-navbar-nav class="ml-auto">
           <b-button size="sm" class="my-2 my-sm-0" @click="feedbackModal = !feedbackModal" variant="outline-light">Feedback</b-button>
           <div id="user-header-wrapper" v-if="isLoggedIn">
-            <b-nav-item>Hello {{user.username || user.email}}</b-nav-item>
+            <b-nav-item to="/profile">Hello, {{user.username || user.email}}!</b-nav-item>
             <b-nav-item @click.prevent="logout">Logout</b-nav-item>
           </div>
           <b-nav-item v-else to="/login">Login</b-nav-item>
