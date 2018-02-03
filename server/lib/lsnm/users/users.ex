@@ -18,4 +18,10 @@ defmodule Lsnm.Users do
     |> Repo.insert
   end
 
+  def update(user) do
+    Repo.get(User, user["id"])
+    |> User.update_user_changeset(user)
+    |> Repo.update
+  end
+
 end

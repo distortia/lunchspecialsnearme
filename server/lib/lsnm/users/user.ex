@@ -18,6 +18,21 @@ defmodule Lsnm.Users.User do
     |> cast(attrs, [:email, :stats])
   end
 
+  def update_user_changeset(%User{}  = user, attrs) do
+    case attrs["password"] do
+      nil -> 
+        user
+        |> cast(attrs, [:email])
+        |> email_changeset(attrs)
+      _ ->
+        user
+        |> cast(attrs, [:email])
+        |> password_changeset(attrs)
+        |> put_pass_hash()
+        |> email_changeset(attrs)
+    end
+  end
+
   def register_user_changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, [:email, :password])
@@ -30,6 +45,10 @@ defmodule Lsnm.Users.User do
     user
     |> cast(attrs, [:password])
     |> validate_length(:password, min: 8)
+  #   |> validate_format(:password, ~r/[a-z]/)
+  #   |> validate_format(:password, ~r/[A-Z]/)
+  #   |> validate_format(:password, ~r/[0-9]/)
+  #   |> validate_format(:password, ~r/[!@#$%^&+=]/)
   end
 
   defp put_pass_hash(changeset) do
@@ -41,6 +60,13 @@ defmodule Lsnm.Users.User do
     end
   end
 
-
+  defp email_changeset(user, attrs) do
+      user
+      |> cast(attrs, ~w(email), [])
+      |> validate_length(:email, min: 1)
+      |> validate_format(:email, ~r/@/) # Checks for @ sign in email
+      |> update_change(:email, &String.downcase/1) # Normalize all emails
+      |> unique_constraint(:email)
+  end
 
 end

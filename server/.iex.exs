@@ -1,2 +1,2 @@
-alias Lsnm.{Specials, Specials.Special, Repo}
-alias LsnmWeb.{SearchController, Endpoint}
+alias Lsnm.{Specials, Specials.Special, Repo, Users, Users.User}
+alias LsnmWeb.{SearchController, Endpoint, AuthController}

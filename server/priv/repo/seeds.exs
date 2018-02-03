@@ -27,3 +27,12 @@ Lsnm.Repo.insert(%Lsnm.Users.User{
   email: "once@toldme.theworldisgona",
   password_hash: Comeonin.Bcrypt.hashpwsalt("rollme")
   })
+
+Lsnm.Repo.insert(%Lsnm.Users.User{
+  username: "dummy",
+  email: "dummy@user",
+  password_hash: Comeonin.Bcrypt.hashpwsalt("test"),
+  stats: %{
+    specials_added: 5
+  }
+  })

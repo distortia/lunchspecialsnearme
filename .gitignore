@@ -8,3 +8,4 @@ server/node_modules/
 server/priv/static/
 server/deps/
 server/package-lock.json
+npm-debug.log

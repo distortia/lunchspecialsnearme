@@ -53,6 +53,11 @@
                   height="4px">
               </b-progress>
             </b-alert>
+            <b-alert :show="showErrorAlert" variant="danger" @dismissed="showErrorAlert=false" dismissible>
+              <div v-for="(error, errorType) in message">
+                {{errorType}} - {{error}}
+              </div>
+            </b-alert>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -71,19 +76,25 @@ export default {
       user: {},
       message: null,
       dismissSecs: 5,
-      dismissCountDown: 0
+      dismissCountDown: 0,
+      showErrorAlert: false
     }
   },
   methods: {
     populateProfile() {
-      // this.$http.get('/user/' {user: {}})
-      // Merge the users together and save into the localstorage
       this.user = UserService.getUser()
     },
     updateUser() {
-      console.log(this.user)
-      this.showAlert()
-      this.message = "Profile Updated!"
+      this.showErrorAlert = false
+      this.$http.put('user', {'user': this.user}).then(response => {
+        UserService.addUser(response.body.data)
+        this.showAlert()
+        this.message = "Profile Updated!"
+      }, err => {
+        this.showErrorAlert = true
+        this.message = err.body.errors
+      })
+
     },
     countDownChanged (dismissCountDown) {
       this.dismissCountDown = dismissCountDown
