@@ -25,6 +25,8 @@ defmodule LsnmWeb.Router do
     pipe_through :api
     post "/email/feedback", EmailController, :feedback
     options "/email/feedback", EmailController, :nothing
+    post "/email/request", EmailController, :invite
+    options "/email/request", EmailController, :nothing
     get "/special/:place_id", SearchController, :special
     options "/special/:place_id", SearchController, :nothing
     post "/special/add", SearchController, :add

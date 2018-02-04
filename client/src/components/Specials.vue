@@ -29,16 +29,37 @@
                     <div>
                       Not seeing what you are after?
                       Be a gyro and add a special!
-                      <b-form @submit.prevent="addSpecial">
-                        <b-form-group label="Day(s) of the Week">
-                          <b-form-checkbox-group buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek">
-                          </b-form-checkbox-group>
-                        </b-form-group>
-                        <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
-                        <div>
-                          <b-button type="submit" variant="primary">Submit</b-button>
-                        </div>
-                      </b-form>
+                      <div v-if="userAuthenticated">
+                        <b-form @submit.prevent="addSpecial">
+                          <b-form-group label="Day(s) of the Week">
+                            <b-form-checkbox-group buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek">
+                            </b-form-checkbox-group>
+                          </b-form-group>
+                          <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
+                          <div>
+                            <b-button type="submit" variant="primary">Submit</b-button>
+                          </div>
+                        </b-form>
+                      </div>
+                      <div v-else>
+                        <p>We are currently in early alpha. Contact us to request access!</p>
+                        <p>If you already have an account. Please <b-link to="login">log in</b-link>.</p>
+                        <b-form @submit.prevent="requestAccess">
+                          <b-form-group
+                            id="requestAccessGroup"
+                            label="Email"
+                            label-for="requestAccessEmail">
+                            <b-form-input
+                              id="requestAccessEmail"
+                              type="email"
+                              v-model="requestAccessForm.email"
+                              required
+                              placeholder="Email Address">
+                            </b-form-input>
+                            <b-button type="submit" variant="primary">Submit</b-button>
+                          </b-form-group>
+                        </b-form>
+                      </div>
                     </div>
                   </b-tab> 
                   <b-tab title="Info">
@@ -88,6 +109,7 @@
                   </b-tab>
                 </b-tabs>
               </b-card>
+              <b-alert :variant="modalAlert.variant" dismissible :show="modalAlert.show">{{modalAlert.message}}</b-alert>
           </b-modal>
           </div>
         </b-col>
@@ -168,6 +190,7 @@
 </template>
 
 <script>
+import UserService from '@/services/userService'
 export default {
 
   name: 'Specials',
@@ -191,6 +214,14 @@ export default {
         info: null,
       },
       daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      requestAccessForm: {
+        email: null
+      },
+      modalAlert: {
+        show: false,
+        message: null,
+        variant: null
+      }
     }
   },
   methods: {
@@ -287,7 +318,11 @@ export default {
     addSpecial() {
       let special = Object.assign({place_id: this.placeModal.place_id}, this.addSpecialForm)
       this.$http.post('special/add', special).then(response => {
-        this.$refs.placeModal.hide()
+        this.placeDetails(this.placeModal.place_id)
+        this.clearAddSpecialForm()
+        this.modalAlert.show = true
+        this.modalAlert.variant = 'primary'
+        this.modalAlert.message = 'Special added! Thanks for your help! 👍 👍 👍'
       })
     },
     clearAddSpecialForm() {
@@ -325,6 +360,18 @@ export default {
         return this.daysOfWeek.indexOf(a.day_of_week) > this.daysOfWeek.indexOf(b.day_of_week)
       })
       return output
+    },
+    requestAccess () {
+      this.$http.post('email/request', {email: this.requestAccessForm.email}).then(response => {
+        this.requestAccessForm.email = ''
+        this.modalAlert.show = true
+        this.modalAlert.variant = 'success'
+        this.modalAlert.message = 'We have recieved your request. Expect an email from Alphaity.io'
+      }, err => {
+        this.modalAlert.show = true
+        this.modalAlert.variant = 'danger'
+        this.modalAlert.message = 'Something happened on our end. Please try again or email Alphaity.io'
+      })
     }
   },
   mounted () {
@@ -337,6 +384,9 @@ export default {
         result = this.pagination.hasNextPage || false
       }
       return result
+    },
+    userAuthenticated() {
+      return UserService.getUser()
     }
   },
   watch: {

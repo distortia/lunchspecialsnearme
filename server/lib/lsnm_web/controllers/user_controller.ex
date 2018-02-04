@@ -26,4 +26,3 @@ defmodule LsnmWeb.UserController do
     end
   end
 end
-

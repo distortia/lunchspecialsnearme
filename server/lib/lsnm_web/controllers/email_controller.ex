@@ -28,5 +28,15 @@ defmodule LsnmWeb.EmailController do
     |> Mailer.deliver_now
     json(conn, %{:body => %{"status" => "ok"}})
   end
-end
 
+  def invite(conn, params) do
+    new_email
+    # |> to("alphaity.io")
+    |> to("nickstalter@gmail.com")
+    |> from("request@lunchspecialsnearme.com")
+    |> subject("New user request!")
+    |> text_body("Email: #{params["email"]}")
+    |> Mailer.deliver_now
+    json(conn, %{:body => %{"status" => "ok"}})
+  end
+end
