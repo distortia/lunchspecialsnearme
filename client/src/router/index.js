@@ -5,15 +5,31 @@ import Specials from '@/components/Specials'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Profile from '@/components/Profile'
+import UserService from '@/services/userService.js'
 
-Vue.use(Router)
+const requireAuth = (to, _from, next) => {
+  if(UserService.getUser()) {
+    next() 
+  } else {
+    next({ path: 'login' })
+  }
+}
 
-export default new Router({
-  routes: [
+const afterAuth = (_to, from, next) => {
+  if(getUser()) {
+    next(from.path)
+  } else {
+    next()
+  }
+}
+
+const routes = [
     { path: '/', name: 'index', component: Index },
     { path: '/specials', name: 'Specials', component: Specials },
     { path: '/login', name: 'Login', component: Login },
     { path: '/register', name: 'Register', component: Register },
-    { path: '/profile', name: 'Profile', component: Profile }
+    { path: '/profile', name: 'Profile', component: Profile, beforeEnter: requireAuth },
+    { path: '*', redirect: '/'}
   ]
-})
+
+export default routes
