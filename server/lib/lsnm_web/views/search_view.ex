@@ -16,7 +16,9 @@ defmodule LsnmWeb.SearchView do
      %{
       :day_of_week => search.day_of_week,
       :info => search.info,
-      :place_id => search.place_id
+      :place_id => search.place_id,
+      :name => search.name,
+      :id => search.id
       }
   end
 

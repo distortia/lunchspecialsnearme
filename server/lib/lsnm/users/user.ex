@@ -9,6 +9,7 @@ defmodule Lsnm.Users.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :stats, :map, default: %{}
+    has_many :specials, Lsnm.Specials.Special
 
     timestamps()
   end

@@ -27,6 +27,8 @@ defmodule LsnmWeb.Router do
     options "/email/feedback", EmailController, :nothing
     post "/email/request", EmailController, :invite
     options "/email/request", EmailController, :nothing
+    get "/special/user/:user_id", SearchController, :user_specials
+    options "/special/user/:user_id", SearchController, :nothing
     get "/special/:place_id", SearchController, :special
     options "/special/:place_id", SearchController, :nothing
     post "/special/add", SearchController, :add

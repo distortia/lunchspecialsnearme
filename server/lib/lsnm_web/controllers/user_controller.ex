@@ -1,6 +1,7 @@
 defmodule LsnmWeb.UserController do
   use LsnmWeb, :controller
   alias Lsnm.Users
+  alias Lsnm.Specials
 
   def register(conn, %{"user" => user_params}) do
      case Users.add(user_params) do

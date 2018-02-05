@@ -12,8 +12,8 @@
               <div>Email: {{user.email}}</div>
               <div>
                 Stats: 
-                <div v-for="stat in user.stats">
-                  stat
+                <div v-for="(value, stat) in user.stats">
+                  {{ stat | formatStatTitle }}- {{ value }}
                 </div>
               </div>
             </div>
@@ -41,7 +41,17 @@
               </b-form-group>
               <b-button type="submit" variant="primary">Update</b-button>
             </b-form>
-            <b-alert :show="dismissCountDown"
+          </b-tab>
+          <b-tab title="Specials">
+            List of all currently active specials
+            <b-table striped hover :items="[...specials]" :fields="fields">
+              <template slot="support" slot-scope="data">
+                <b-button size="sm" variant="info" class="mr-2" @click="showEditSpecialModal(data.item)">Edit</b-button>
+                <b-button size="sm" variant="danger" @click.stop="deleteSpecial(data.item.id)" class="mr-2">Delete</b-button>
+              </template>
+            </b-table>
+          </b-tab>
+          <b-alert :show="dismissCountDown"
                      dismissible
                      variant="success"
                      @dismissed="dismissCountdown=0"
@@ -57,10 +67,22 @@
               <div v-for="(error, errorType) in message">
                 {{errorType}} - {{error}}
               </div>
-            </b-alert>
-          </b-tab>
+          </b-alert>
         </b-tabs>
       </b-card>
+      <b-modal ref="editSpecialModal" title="Editing Special" hide-footer lazy>
+        <b-form @submit.prevent="editSpecial" class="text-center">
+          <b-form-group label="Day(s) of the Week">
+            <b-form-select v-model="specialForm.day_of_week" :options="daysOfWeek" class="mb-3"/>
+          </b-form-group>
+          <b-form-group label="Special Info">
+            <b-form-textarea v-model="specialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
+          </b-form-group>
+          <div>
+            <b-button type="submit" variant="primary" class="btn-block">Submit</b-button>
+          </div>
+        </b-form>
+      </b-modal>
     </b-row>
   </b-container>
 </template>
@@ -77,7 +99,25 @@ export default {
       message: null,
       dismissSecs: 5,
       dismissCountDown: 0,
-      showErrorAlert: false
+      showErrorAlert: false,
+      specials: {},
+      fields: [
+        { key: 'place_id', label: 'Place Id' },
+        'id',
+        'name',
+        'info',
+        { key: 'day_of_week', label: 'Day Of Week' },
+        { key: 'support', label: 'Support'}
+      ],
+      showModal: false,
+      specialForm: {
+        place_id: null,
+        name: null,
+        info: null,
+        day_of_week: null,
+        id: null
+      },
+      daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     }
   },
   methods: {
@@ -94,17 +134,53 @@ export default {
         this.showErrorAlert = true
         this.message = err.body.errors
       })
-
+    },
+    fetchSpecials() {
+      this.$http.get(`special/user/${this.user.id}`).then(response => {
+        this.specials = response.body.data
+      })
     },
     countDownChanged (dismissCountDown) {
       this.dismissCountDown = dismissCountDown
     },
     showAlert () {
       this.dismissCountDown = this.dismissSecs
+    },
+    editSpecial() {
+      console.log(this.specialForm)
+      this.$http.put(`special/edit/${this.specialForm.id}`, this.specialForm).then(response => {
+          this.showAlert()
+          this.message = "Special Edited!"
+          this.fetchSpecials()
+          this.hideEditSpecialModal()
+      })
+    },
+    deleteSpecial(id) {
+      if (confirm('Are you sure you want to delete this special?')) {
+        this.$http.delete(`special/delete/${id}`).then(response => {
+          this.showAlert()
+          this.message = "Special Deleted!"
+          this.fetchSpecials()
+        })
+      }
+    },
+    showEditSpecialModal(special) {
+      this.specialForm = Object.assign(this.specialForm, special)
+      this.$refs.editSpecialModal.show()
+    },
+    hideEditSpecialModal() {
+      this.$refs.editSpecialModal.hide()
     }
   },
   created() {
     this.populateProfile()
+    this.fetchSpecials()
+  },
+  filters: {
+    formatStatTitle(statTitle) {
+      statTitle = statTitle.replace(/_/, ' ')
+      return statTitle.split(' ').map((str) => str.charAt(0).toUpperCase() + str.substr(1)).join(' ')
+    }
   }
 }
 </script>

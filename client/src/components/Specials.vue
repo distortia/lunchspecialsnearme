@@ -316,7 +316,7 @@ export default {
       return day === weekday[date.getDay()]
     },
     addSpecial() {
-      let special = Object.assign({place_id: this.placeModal.place_id}, this.addSpecialForm)
+      let special = Object.assign({place_id: this.placeModal.place_id, name: this.placeModal.title, user_id: UserService.getUser().id}, this.addSpecialForm)
       this.$http.post('special/add', special).then(response => {
         this.placeDetails(this.placeModal.place_id)
         this.clearAddSpecialForm()
@@ -329,6 +329,7 @@ export default {
         this.addSpecialForm.days_of_week =  []
         this.addSpecialForm.info =  null
         this.addSpecialForm.reoccuring =  false
+        this.modalAlert.show = false
     },
     updateSearch() {
      this.$router.push({

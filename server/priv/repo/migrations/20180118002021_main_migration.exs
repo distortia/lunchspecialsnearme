@@ -8,6 +8,7 @@ defmodule Lsnm.Repo.Migrations.MainMigration do
       add :password, :string
       add :password_hash, :string
       add :stats, :map
+      
       timestamps()
     end
 
@@ -17,6 +18,8 @@ defmodule Lsnm.Repo.Migrations.MainMigration do
       add :day_of_week, :string 
       add :info, :text
       add :reoccuring, :boolean
+      add :name, :string
+      add :user_id, references(:users)
 
       timestamps()
     end

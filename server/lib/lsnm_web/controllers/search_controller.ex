@@ -39,7 +39,6 @@ defmodule LsnmWeb.SearchController do
   end
 
   def add(conn, body) do
-    IO.inspect body
     case Specials.add(body) do
       {:ok, special} ->
         json(conn, %{:body => %{"status" => "ok"}})
@@ -57,9 +56,13 @@ defmodule LsnmWeb.SearchController do
     end
   end
 
-  def delete(conn, body) do
-    Specials.delete(body)
+  def delete(conn, %{"id" => id}) do
+    Specials.delete(id)
     json(conn, %{:body => %{"status" => "ok"}})
+  end
+
+  def user_specials(conn, user_id) do
+    render(conn, "specials.json", specials: Specials.user_specials(user_id))
   end
 
 end

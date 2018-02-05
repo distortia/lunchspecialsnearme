@@ -10,29 +10,35 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-Lsnm.Repo.insert!(%Lsnm.Specials.Special{
-  place_id: "ChIJp607bnR8OIgRPt44VnN-9LQ",
-  day_of_week: "Monday",
-  info: "Free drink with pizza purchase"
-  })
 
-Lsnm.Repo.insert!(%Lsnm.Specials.Special{
-  place_id: "ChIJp607bnR8OIgRPt44VnN-9LQ",
-  day_of_week: "Tuesday",
-  info: "Free drink with pizza purchase"
-  })
 
-Lsnm.Repo.insert(%Lsnm.Users.User{
+{:ok, user1} = Lsnm.Repo.insert(%Lsnm.Users.User{
   username: "somebody",
   email: "once@toldme.theworldisgona",
   password_hash: Comeonin.Bcrypt.hashpwsalt("rollme")
   })
 
-Lsnm.Repo.insert(%Lsnm.Users.User{
+{:ok, user2} = Lsnm.Repo.insert(%Lsnm.Users.User{
   username: "dummy",
   email: "dummy@user",
   password_hash: Comeonin.Bcrypt.hashpwsalt("test"),
   stats: %{
     specials_added: 5
   }
+  })
+
+Lsnm.Repo.insert!(%Lsnm.Specials.Special{
+  place_id: "ChIJp607bnR8OIgRPt44VnN-9LQ",
+  day_of_week: "Monday",
+  info: "Free drink with pizza purchase",
+  name: "The Olive Branch Coffee & Pizzeria",
+  user_id: user1.id
+  })
+
+Lsnm.Repo.insert!(%Lsnm.Specials.Special{
+  place_id: "ChIJp607bnR8OIgRPt44VnN-9LQ",
+  day_of_week: "Tuesday",
+  info: "Free drink with pizza purchase",
+  name: "The Olive Branch Coffee & Pizzeria",
+  user_id: user2.id
   })
