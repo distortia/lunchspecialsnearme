@@ -8,7 +8,7 @@ defmodule Lsnm.Users.User do
     field :email, :string
     field :password, :string, virtual: true
     field :password_hash, :string
-    field :stats, :map, default: %{}
+    field :stats, :map, default: %{specials_added: 0}
     has_many :specials, Lsnm.Specials.Special
 
     timestamps()

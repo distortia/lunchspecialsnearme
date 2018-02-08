@@ -13,7 +13,7 @@
               <div>
                 Stats: 
                 <div v-for="(value, stat) in user.stats">
-                  {{ stat | formatStatTitle }}- {{ value }}
+                  {{ stat | formatStatTitle }} - {{ value }}
                 </div>
               </div>
             </div>
@@ -122,7 +122,11 @@ export default {
   },
   methods: {
     populateProfile() {
-      this.user = UserService.getUser()
+      let localUser = UserService.getUser()
+      this.$http.get(`user/${localUser.id}`).then(response => {
+        this.user = response.body.data
+        this.fetchSpecials()
+      })
     },
     updateUser() {
       this.showErrorAlert = false
@@ -147,7 +151,6 @@ export default {
       this.dismissCountDown = this.dismissSecs
     },
     editSpecial() {
-      console.log(this.specialForm)
       this.$http.put(`special/edit/${this.specialForm.id}`, this.specialForm).then(response => {
           this.showAlert()
           this.message = "Special Edited!"
@@ -174,7 +177,6 @@ export default {
   },
   created() {
     this.populateProfile()
-    this.fetchSpecials()
   },
   filters: {
     formatStatTitle(statTitle) {

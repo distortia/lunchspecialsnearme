@@ -4,6 +4,10 @@ defmodule Lsnm.Users do
 
   alias Lsnm.Users.User
 
+  def get_by_id(user_id) do
+    Repo.get!(User, user_id)
+  end
+
   def user(user_attribute) do
     if String.contains?(user_attribute, "@") do
       Repo.get_by!(User, email: user_attribute)
@@ -24,4 +28,11 @@ defmodule Lsnm.Users do
     |> Repo.update
   end
 
+  # TODO: Nick - flush this out and make more dynamic as we expand our stats
+  def update_stats(user_id, :specials_added, amount) do
+    user = Repo.get(User, user_id)
+    user
+    |> User.changeset(%{stats: %{"specials_added" => user.stats["specials_added"] + amount }})
+    |> Repo.update()
+  end
 end

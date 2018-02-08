@@ -3,6 +3,7 @@ defmodule Lsnm.Specials do
   alias Lsnm.Repo
 
   alias Lsnm.Specials.Special
+  alias Lsnm.Users
 
   @moduledoc """
   Specials is an abstraction over %Special{}.
@@ -24,7 +25,7 @@ defmodule Lsnm.Specials do
   end
 
   def add(special) do
-    Enum.each(special["days_of_week"], fn day -> 
+    Enum.all?(special["days_of_week"], fn day -> 
       daily_special = %{
         day_of_week: day,
         place_id: special["place_id"],
@@ -34,9 +35,8 @@ defmodule Lsnm.Specials do
       }
       %Special{}
       |> Special.changeset(daily_special)
-      |> Repo.insert
+      |> Repo.insert()
     end)
-    {:ok, special}
   end
 
   def edit(special) do

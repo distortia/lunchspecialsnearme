@@ -1,6 +1,7 @@
 defmodule LsnmWeb.SearchController do
   use LsnmWeb, :controller
   alias Lsnm.Specials
+  alias Lsnm.Users
 
   def results(conn, body) do
     {:ok, response} =
@@ -40,10 +41,11 @@ defmodule LsnmWeb.SearchController do
 
   def add(conn, body) do
     case Specials.add(body) do
-      {:ok, special} ->
+      true ->
+        Users.update_stats(body["user_id"], :specials_added, length(body["days_of_week"]))
         json(conn, %{:body => %{"status" => "ok"}})
-      {:error, %Ecto.Changeset{} = changeset} ->
-        json(conn, %{:body => %{"status" => "error", changeset: changeset}})
+      false ->
+        json(conn, %{:body => %{"status" => "error"}})
     end
   end
 

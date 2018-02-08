@@ -26,4 +26,9 @@ defmodule LsnmWeb.UserController do
         |> render(LsnmWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
+
+  def index(conn, %{"user_id" => user_id}) do
+    user = Users.get_by_id(user_id)
+    render(conn, "show.json", user: user)
+  end
 end
