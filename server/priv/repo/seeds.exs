@@ -15,16 +15,15 @@
 {:ok, user1} = Lsnm.Repo.insert(%Lsnm.Users.User{
   username: "somebody",
   email: "once@toldme.theworldisgona",
-  password_hash: Comeonin.Bcrypt.hashpwsalt("rollme")
+  password_hash: Comeonin.Bcrypt.hashpwsalt("rollme"),
+  stats: %{specials_added: 1}
   })
 
 {:ok, user2} = Lsnm.Repo.insert(%Lsnm.Users.User{
   username: "dummy",
   email: "dummy@user",
   password_hash: Comeonin.Bcrypt.hashpwsalt("test"),
-  stats: %{
-    specials_added: 5
-  }
+  stats: %{specials_added: 5}
   })
 
 Lsnm.Repo.insert!(%Lsnm.Specials.Special{
