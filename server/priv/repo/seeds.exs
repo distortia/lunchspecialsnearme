@@ -16,6 +16,7 @@
   username: "somebody",
   email: "once@toldme.theworldisgona",
   password_hash: Comeonin.Bcrypt.hashpwsalt("rollme"),
+  temp_id: nil,
   stats: %{specials_added: 1}
   })
 
@@ -23,7 +24,16 @@
   username: "dummy",
   email: "dummy@user",
   password_hash: Comeonin.Bcrypt.hashpwsalt("test"),
+  temp_id: nil,
   stats: %{specials_added: 5}
+  })
+
+Lsnm.Repo.insert(%Lsnm.Users.User{
+  username: "mizou",
+  email: "nickstalter@gmail.com",
+  password_hash: Comeonin.Bcrypt.hashpwsalt("test"),
+  temp_id: nil,
+  stats: %{specials_added: 0}
   })
 
 Lsnm.Repo.insert!(%Lsnm.Specials.Special{

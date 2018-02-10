@@ -48,6 +48,10 @@ defmodule LsnmWeb.Router do
     options "/login", AuthController, :nothing
     post "/user/register", UserController, :register
     options "/user/register", UserController, :nothing
+    post "/user/reset", UserController, :reset
+    options "/user/reset", UserController, :nothing
+    post "/user/reset/:temp_id", UserController, :update_reset_password
+    options "/user/reset/:temp_id", UserController, :nothing
 
     pipe_through :authorized
       get "/special/user/:user_id", SearchController, :user_specials

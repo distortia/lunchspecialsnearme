@@ -8,6 +8,7 @@ defmodule Lsnm.Repo.Migrations.MainMigration do
       add :password, :string
       add :password_hash, :string
       add :stats, :map
+      add :temp_id, :string
       
       timestamps()
     end

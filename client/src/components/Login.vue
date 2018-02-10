@@ -35,6 +35,7 @@
               </b-form-group>
               <b-button type="submit" variant="primary" block>Login</b-button>
             </b-form>
+            <b-link to="/reset">Reset Password</b-link>
           </p>
         </b-card>
       </b-col>

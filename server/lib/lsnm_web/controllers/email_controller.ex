@@ -39,4 +39,15 @@ defmodule LsnmWeb.EmailController do
     |> Mailer.deliver_now
     json(conn, %{:body => %{"status" => "ok"}})
   end
+
+  def reset(conn, params) do
+    IO.inspect params
+    new_email
+    |> to(params.email)
+    |> from("reset@lunchspecialsnearme.com")
+    |> subject("Reset Password")
+    |> html_body("Click the link to reset your password: <a href='http://localhost:8080/reset/#{params.temp_id}'>http://localhost:8080/reset/#{params.temp_id}</a>.")
+    |> Mailer.deliver_now
+    json(conn, %{:body => %{"status" => "ok"}})
+  end
 end

@@ -5,6 +5,8 @@ import Specials from '@/components/Specials'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Profile from '@/components/Profile'
+import ResetPassword from '@/components/ResetPassword'
+import ResetPasswordForm from '@/components/ResetPasswordForm'
 import UserService from '@/services/userService.js'
 
 const requireAuth = (to, _from, next) => {
@@ -28,6 +30,8 @@ const routes = [
     { path: '/specials', name: 'Specials', component: Specials },
     { path: '/login', name: 'Login', component: Login },
     { path: '/register', name: 'Register', component: Register },
+    { path: '/reset', name: 'ResetPassword', component: ResetPassword },
+    { path: '/reset/:temp_id', name: 'ResetPasswordForm', component: ResetPasswordForm },
     { path: '/profile', name: 'Profile', component: Profile, beforeEnter: requireAuth },
     { path: '*', redirect: '/'}
   ]

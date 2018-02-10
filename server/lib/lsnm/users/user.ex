@@ -9,6 +9,7 @@ defmodule Lsnm.Users.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :stats, :map, default: %{specials_added: 0}
+    field :temp_id, :string, default: nil
     has_many :specials, Lsnm.Specials.Special
 
     timestamps()
@@ -42,6 +43,20 @@ defmodule Lsnm.Users.User do
     |> put_pass_hash
   end
 
+  def reset_user_changeset(%User{} = user, attrs) do
+    user
+    |> cast(attrs, [:temp_id])
+    |> unique_constraint(:temp_id)
+  end
+
+  def update_reset_changeset(%User{} = user, attrs) do
+    user
+    |> cast(attrs, [:temp_id])
+    |> password_changeset(attrs)
+    |> put_pass_hash()
+    |> remove_temp_id()
+  end
+
   defp password_changeset(user, attrs) do
     user
     |> cast(attrs, [:password])
@@ -70,4 +85,7 @@ defmodule Lsnm.Users.User do
       |> unique_constraint(:email)
   end
 
+  defp remove_temp_id(changeset) do
+    Ecto.Changeset.change(changeset, temp_id: nil)
+  end
 end
