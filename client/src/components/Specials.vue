@@ -43,22 +43,7 @@
                       </div>
                       <div v-else>
                         <p>We are currently in early alpha. Contact us to request access!</p>
-                        <p>If you already have an account. Please <b-link to="login">log in</b-link>.</p>
-                        <b-form @submit.prevent="requestAccess">
-                          <b-form-group
-                            id="requestAccessGroup"
-                            label="Email"
-                            label-for="requestAccessEmail">
-                            <b-form-input
-                              id="requestAccessEmail"
-                              type="email"
-                              v-model="requestAccessForm.email"
-                              required
-                              placeholder="Email Address">
-                            </b-form-input>
-                            <b-button type="submit" variant="primary">Submit</b-button>
-                          </b-form-group>
-                        </b-form>
+                        <p>If you already have an account. Please <b-link to="login">log in</b-link>. Or <b-link to="register">register here</b-link></p>
                       </div>
                     </div>
                   </b-tab> 
@@ -214,9 +199,6 @@ export default {
         info: null,
       },
       daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      requestAccessForm: {
-        email: null
-      },
       modalAlert: {
         show: false,
         message: null,
@@ -361,18 +343,6 @@ export default {
         return this.daysOfWeek.indexOf(a.day_of_week) > this.daysOfWeek.indexOf(b.day_of_week)
       })
       return output
-    },
-    requestAccess () {
-      this.$http.post('email/request', {email: this.requestAccessForm.email}).then(response => {
-        this.requestAccessForm.email = ''
-        this.modalAlert.show = true
-        this.modalAlert.variant = 'success'
-        this.modalAlert.message = 'We have recieved your request. Expect an email from Alphaity.io'
-      }, err => {
-        this.modalAlert.show = true
-        this.modalAlert.variant = 'danger'
-        this.modalAlert.message = 'Something happened on our end. Please try again or email Alphaity.io'
-      })
     }
   },
   mounted () {

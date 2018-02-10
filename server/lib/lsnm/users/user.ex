@@ -37,8 +37,9 @@ defmodule Lsnm.Users.User do
 
   def register_user_changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:username, :email, :password])
     |> unique_constraint(:email)
+    |> unique_constraint(:username)
     |> password_changeset(attrs)
     |> put_pass_hash
   end

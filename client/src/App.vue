@@ -13,7 +13,10 @@
             <b-nav-item to="/profile">Hello, {{user.username || user.email}}!</b-nav-item>
             <b-nav-item @click.prevent="logout">Logout</b-nav-item>
           </div>
-          <b-nav-item v-else to="/login">Login</b-nav-item>
+          <template v-else>
+            <b-nav-item to="/login">Login</b-nav-item>
+            <b-nav-item to="/register">Register</b-nav-item>
+          </template>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

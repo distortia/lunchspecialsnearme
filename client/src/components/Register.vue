@@ -13,6 +13,16 @@
                        v-if="this.registerError">
                        {{registerError}}
               </b-alert>
+              <b-form-group id="usernameGroup"
+                      label="Username"
+                      label-for="username">
+                <b-form-input id="username"
+                        type="text"
+                        v-model="form.username"
+                        required
+                        placeholder="Enter Username">
+                </b-form-input>
+              </b-form-group>
               <b-form-group id="emailGroup"
                       label="Email address:"
                       label-for="email">
@@ -66,6 +76,7 @@ export default {
   data () {
     return {
       form: {
+        username: null,
         email: null,
         password: null,
         confirmPassword: null,
@@ -76,10 +87,10 @@ export default {
   methods: {
     register(event) {
       event.preventDefault();
-      const {email, password} = this.form;
-      this.$http.post('user/register', {"user": { email, password } }).then(({body}) => {
+      const {username, email, password} = this.form;
+      this.$http.post('user/register', {"user": { username, email, password } }).then(({body}) => {
         this.$parent.$emit('register:success');
-        this.$router.push('/');
+        this.$router.push('/login');
       }).catch(error=> {
         if(error.status === 422){
             const { body: { errors } } = error;
