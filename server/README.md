@@ -9,6 +9,8 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+For Prod: Set `API_SERVER_URL`, `API_SERVER_PORT`, `DATABASE_URL`, and `CLIENT_URL`
+
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
 ## Learn more

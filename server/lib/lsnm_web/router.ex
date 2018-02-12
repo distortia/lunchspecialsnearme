@@ -10,7 +10,7 @@ defmodule LsnmWeb.Router do
   end
 
   pipeline :api do
-    plug CORSPlug, [origin: "http://localhost:8080"]
+    plug CORSPlug, [origin: System.get_env("CLIENT_URL") || "http://localhost:8080"]
     plug :accepts, ["json"]
   end
 

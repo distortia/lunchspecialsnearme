@@ -18,4 +18,7 @@ yarn run build
 yarn run build --report
 ```
 
+Use `process.env.API_BASE_URL` to set the prod url
+
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
