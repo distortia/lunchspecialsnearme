@@ -32,12 +32,12 @@
                       <div v-if="userAuthenticated">
                         <b-form @submit.prevent="addSpecial">
                           <b-form-group label="Day(s) of the Week">
-                            <b-form-checkbox-group buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek">
+                            <b-form-checkbox-group :stacked="isMobile()" buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek" :class="{'w-100': isMobile()}">
                             </b-form-checkbox-group>
                           </b-form-group>
                           <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
                           <div>
-                            <b-button type="submit" variant="primary">Submit</b-button>
+                            <b-button type="submit" variant="primary" class="w-100">Submit</b-button>
                           </div>
                         </b-form>
                       </div>

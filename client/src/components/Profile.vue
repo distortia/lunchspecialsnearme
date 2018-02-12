@@ -44,7 +44,7 @@
           </b-tab>
           <b-tab title="Specials">
             List of all currently active specials
-            <b-table striped hover :items="[...specials]" :fields="fields">
+            <b-table striped hover :items="[...specials]" :fields="fields" :stacked="isMobile()">
               <template slot="support" slot-scope="data">
                 <b-button size="sm" variant="info" class="mr-2" @click="showEditSpecialModal(data.item)">Edit</b-button>
                 <b-button size="sm" variant="danger" @click.stop="deleteSpecial(data.item.id)" class="mr-2">Delete</b-button>

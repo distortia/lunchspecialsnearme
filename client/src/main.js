@@ -7,6 +7,7 @@ import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import UserService from './services/userService'
 import routes from './router/index'
+import mobileMixin from './util/mobileMixin'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -29,6 +30,8 @@ Vue.http.interceptors.push((request, next) => {
   }
   next();
 });
+
+Vue.mixin(mobileMixin)
 
 /* eslint-disable no-new */
 new Vue({
