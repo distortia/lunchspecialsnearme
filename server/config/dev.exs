@@ -52,7 +52,7 @@ config :phoenix, :stacktrace_depth, 20
 config :lsnm, Lsnm.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  password: System.get_env("PG_PASSWORD") || "postgres",
   database: "lsnm_dev",
   hostname: "localhost",
   pool_size: 10
