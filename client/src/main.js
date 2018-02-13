@@ -20,7 +20,7 @@ const router = new VueRouter({
 
 Vue.config.productionTip = false
 
-Vue.http.options.root = (process.env.HOST || 'http://localhost') + ':' + (process.env.PORT || '4000') + '/api/'
+Vue.http.options.root = (process.env.HOST || 'http://localhost') + ':' + (process.env.API_PORT || '4000') + '/api/'
 Vue.http.headers.common['Content-Type'] = 'application/json'
 
 Vue.http.interceptors.push((request, next) => {
