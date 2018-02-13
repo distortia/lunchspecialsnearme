@@ -15,6 +15,6 @@ config :lsnm, LsnmWeb.Endpoint,
 config :lsnm, Lsnm.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  password: System.get_env("PG_PASSWORD") || "postgres",
   database: "lsnm_prod",
   pool_size: 15
