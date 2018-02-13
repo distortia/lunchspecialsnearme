@@ -11,7 +11,7 @@ config :lsnm,
 
 # Configures the endpoint
 config :lsnm, LsnmWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: System.get_env("API_SERVER_HOST") || "localhost"],
   secret_key_base: "8kOv/wXh7pE8SFxVoxs8jSgTtg5Lbh82RtRusQJ64ZNUW6a2B+f3XMeASlDaQ1FJ",
   render_errors: [view: LsnmWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Lsnm.PubSub,
