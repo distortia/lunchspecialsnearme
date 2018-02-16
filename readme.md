@@ -2,16 +2,16 @@
 
 ### ENV Variables
 
-* `API_HOST` - front end url for api server - **external**
+* `API_HOST` - front end url for api server - **external** - 104.196.175.134
 
-* `API_PORT` - front end port for api server - **external**
+* `API_PORT` - front end port for api server - **external** - 4005
 
-* `HOST` - front end url - **internal**
+* `HOST` - front end url - **internal** - localhost
 
-* `PORT` - front end port - **internal**
+* `PORT` - front end port - **internal** - 4002
 
-* `API_SERVER_HOST` - api url - **internal**
+* `API_SERVER_HOST` - api url - **internal** - localhost
 
-* `API_SERVER_PORT` - api port - **internal**
+* `API_SERVER_PORT` - api port - **internal** - 4005
 
-* `PG_PASSWORD` - postgres password
+* `PG_PASSWORD` - postgres password - K0Fd1DJ8GwFKlFOa
