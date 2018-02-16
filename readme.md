@@ -15,3 +15,5 @@
 * `API_SERVER_PORT` - api port - **internal** - 4005
 
 * `PG_PASSWORD` - postgres password - K0Fd1DJ8GwFKlFOa
+
+* `CLIENT_URL` - internal - https://lunchspecialsnearme.com
