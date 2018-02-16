@@ -21,7 +21,8 @@ const router = new VueRouter({
 Vue.config.productionTip = false
 
 Vue.http.options.root = (process.env.API_HOST || 'http://localhost') + ':' + (process.env.API_PORT || '4000') + '/api'
-Vue.http.options.base =  Vue.http.headers.common['Content-Type'] = 'application/json'
+
+Vue.http.headers.common['Content-Type'] = 'application/json'
 
 Vue.http.interceptors.push((request, next) => {
   const jwt = UserService.getJwt();
