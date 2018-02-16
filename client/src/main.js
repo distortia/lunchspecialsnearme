@@ -19,7 +19,7 @@ const router = new VueRouter({
 })
 
 Vue.config.productionTip = false
-Vue.http.options.root = window.location.hostname === 'localhost' ? 'http://localhost:4000/api' : 'https://104.196.175.134:4005/api'
+Vue.http.options.root = window.location.hostname === 'localhost' ? 'http://localhost:4000/api' : 'https://api.alphaity.io/api'
 
 Vue.http.headers.common['Content-Type'] = 'application/json'
 
