@@ -18,14 +18,15 @@ defmodule LsnmWeb.EmailController do
     |> Mailer.deliver_now
   end
 
-  def feedback(conn, params) do
+  def feedback(conn, %{"feedback" => feedback}) do
     new_email
-    |> to("nickstalter@gmail.com")
+    |> to("incoming+distortia/lunchspecialsnearme+whSYtf15hG3AERW16wKM@gitlab.com")
     |> from("feedback@lunchspecialsnearme.com")
-    |> subject("Feedback!!!")
-    |> html_body("<strong>#{params["feedback"]}</strong>")
-    |> text_body(params["feedback"])
+    |> subject(feedback["info"])
+    |> html_body("<strong>#{feedback["info"]}</strong> by #{feedback["email"]} <br><br> /label feedback")
+    |> text_body("#{feedback["info"]} by #{feedback["email"]}\r\n\r\n/label feedback")
     |> Mailer.deliver_now
+
     json(conn, %{:body => %{"status" => "ok"}})
   end
 

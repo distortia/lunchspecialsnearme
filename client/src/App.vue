@@ -32,10 +32,20 @@
       @ok="handleOk"
       @shown="clearFeedback"
       ref="feedbackModal">
-      <b-alert variant="success" :show="feedbackSent" dismissible>Thanks for your feedback! We appreciate it!</b-alert>
+      <b-alert variant="success" :show="feedbackSent" @dismissed="feedbackSent=false" dismissible>Thanks for your feedback! We appreciate it!</b-alert>
       <form @submit.stop.prevent="handleSubmit">
+        <b-form-group id="emailGroup"
+                    label="Email address:"
+                    label-for="email">
+          <b-form-input id="email"
+                        type="email"
+                        v-model="feedback.email"
+                        required
+                        placeholder="Enter email">
+          </b-form-input>
+        </b-form-group>
         <b-form-textarea
-          v-model="feedback"
+          v-model="feedback.info"
           placeholder="Enter Feedback or recommendations"
           rows="3">
         </b-form-textarea>
@@ -62,8 +72,11 @@ export default {
       isLoggedIn: UserService.isLoggedIn(),
       successMessage: null,
       feedbackModal: false,
-      feedback: '',
       feedbackSent: false,
+      feedback: {
+        info: '',
+        email: ''
+      }
     }
   },
   created() {
@@ -97,18 +110,19 @@ export default {
     },
 
     clearFeedback () {
-      this.feedback = ''
+      this.feedback.info = ''
+      this.feedback.email = ''
     },
     handleOk (event) {
       event.preventDefault ()
-      if (!this.feedback) {
+      if (!this.feedback.info) {
         alert('Please enter your feedback')
       } else {
         this.handleSubmit()
       }
     },
     handleSubmit () {
-      this.$http.post('email/feedback',{feedback: this.feedback}).then(response => {
+      this.$http.post('email/feedback', {feedback: this.feedback}).then(response => {
         this.feedbackSent = true
       })
       this.clearFeedback ()
