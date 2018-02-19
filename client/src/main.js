@@ -33,6 +33,24 @@ Vue.http.interceptors.push((request, next) => {
 
 Vue.mixin(mobileMixin)
 
+Vue.filter('expensivity', (value) => {
+    switch (value) {
+      case 0:
+        return 'Free'
+      case 1:
+        return 'Inexpensive'
+      case 2:
+        return 'Moderate'
+      case 3:
+        return 'Expensive'
+      case 4:
+        return 'Very Expensive'
+      case undefined || null:
+        return 'Unknown'
+      default: 'Unknown'
+    }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -9,91 +9,9 @@
       <b-row class="specials-container">
         <b-col cols="12" md="7">
           <div class="map-container">
-            <div id="map"></div>
-            <b-modal ref="placeModal" hide-footer size="lg" :title="placeModal.title" @shown="clearAddSpecialForm" lazy>
-              <b-card no-body border-variant="light" class="text-center">
-                <b-tabs card pills>
-                  <b-tab title="Specials" active>
-                    <div v-show="hasSpecial">
-                      <b-card no-body>
-                        <b-tabs card>
-                          <b-tab v-for="special in specials" :title="special.day_of_week" :key="special.day_of_week" :active="dayOfWeek(special.day_of_week)">
-                            <b-list-group>
-                              <b-list-group-item v-for="info in special.info" :key="info">{{info}}</b-list-group-item>
-                          </b-list-group>
-                          </b-tab>
-                        </b-tabs>
-                      </b-card>
-                      <hr>
-                    </div>
-                    <div>
-                      Not seeing what you are after?
-                      Be a gyro and add a special!
-                      <div v-if="userAuthenticated">
-                        <b-form @submit.prevent="addSpecial">
-                          <b-form-group label="Day(s) of the Week">
-                            <b-form-checkbox-group :stacked="isMobile()" buttons button-variant="primary" v-model="addSpecialForm.days_of_week" :options="daysOfWeek" :class="{'w-100': isMobile()}">
-                            </b-form-checkbox-group>
-                          </b-form-group>
-                          <b-form-textarea v-model="addSpecialForm.info" placeholder="Enter Special Info Here :)" :rows="3" :max-rows="6" required></b-form-textarea>
-                          <div>
-                            <b-button type="submit" variant="primary" class="w-100">Submit</b-button>
-                          </div>
-                        </b-form>
-                      </div>
-                      <div v-else>
-                        <p>We are currently in early alpha. Contact us to request access!</p>
-                        <p>If you already have an account. Please <b-link to="login">log in</b-link>. Or <b-link to="register">register here</b-link></p>
-                      </div>
-                    </div>
-                  </b-tab> 
-                  <b-tab title="Info">
-                    <h5>{{ placeModal.title }}</h5>
-                    <p>
-                      <b-badge pill variant="warning">
-                        Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
-                      </b-badge>
-                      <b-badge pill variant="success">Price Level: {{ placeModal.price_level | expensivity }}</b-badge>
-                    </p>
-                    <p>{{placeModal.address}}</p>
-                    <p>Phone: <span>{{ placeModal.phoneNumber }}</span></p>
-                    <h4>Hours</h4>
-                    <ul class="modal-address">
-                      <li v-for="hours in placeModal.openingHours">
-                        {{hours}}
-                      </li>
-                    </ul>
-                    <b-button-group class="modal-button-group">
-                      <b-button variant="outline-primary" :href="`tel:${placeModal.phoneNumber}`">
-                        <i class="fa fa-mobile" aria-hidden="true"></i>
-                        Call
-                      </b-button>
-                      <b-button :href="placeModal.url"
-                                target="_blank" 
-                                variant="outline-primary">
-                        <i class="fa fa-map-marker" aria-hidden="true"></i>
-                        Directions
-                      </b-button>
-                      <b-button variant="outline-primary" :href="placeModal.website" target="_blank">
-                        <i class="fa fa-globe" aria-hidden="true"></i>
-                        Website
-                      </b-button>
-                    </b-button-group>
-                  </b-tab>
-                  <b-tab title="Reviews">
-                    <b-list-group> 
-                      <b-list-group-item v-for="review in placeModal.review" :key="review.id">
-                        <b-media>
-                          <b-img slot="aside" :src="review.profile_photo_url" width="125" alt="placeholder" />
-                          <p>{{ review.text }}</p>
-                          <p><b-badge pill variant="warning">Rating: {{ review.rating }} <i class="fa fa-star" aria-hidden="true"></i></b-badge></p>
-                          <p>By: <span><a :href="review.author_url">{{ review.author_name }}</a> about {{ review.relative_time_description }}</span></p>
-                        </b-media>
-                      </b-list-group-item>
-                    </b-list-group> 
-                  </b-tab>
-                </b-tabs>
-              </b-card>
+            <div id="map"></div>          
+            <b-modal ref="placeModal" hide-footer size="lg" :title="placeModal.title" lazy>
+              <place-modal :specials="specials" :hasSpecial="hasSpecial" :placeModal="placeModal" :daysOfWeek="daysOfWeek"></place-modal>
               <b-alert :variant="modalAlert.variant" dismissible :show="modalAlert.show">{{modalAlert.message}}</b-alert>
           </b-modal>
           </div>
@@ -133,35 +51,7 @@
                 ref="googleAds">
               </ins>
             </div>
-            <b-list-group>
-              <b-list-group-item v-for="(restaurant, index) in restaurants" :key="index" class="flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">{{index + 1}}: {{restaurant.name}}</h5>
-                  <small>{{restaurant.vicinity}}</small>
-                </div>
-                <p class="mb-1">
-                  <div style="display: block;">
-                    <b-badge pill variant="warning">
-                      Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
-                    </b-badge>
-                    <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
-                  </div>
-                  <div class="button-group">
-                    <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`"
-                              target="_blank" 
-                              class="card-link"
-                              variant="outline-primary">
-                      <i class="fa fa-map-marker" aria-hidden="true"></i>
-                      Directions
-                    </b-button>
-                     <b-button variant="outline-info" @click="showModal(restaurant)">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>
-                        Info
-                     </b-button>
-                   </div>
-                </p>
-              </b-list-group-item>
-            </b-list-group>
+            <restaurant-list :restaurants="restaurants"></restaurant-list>
           </div>
           <div class="pagination-container" v-if="hasPagination">
             <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
@@ -176,6 +66,9 @@
 
 <script>
 import UserService from '@/services/userService'
+import PlaceModal from '@/components/specials/PlaceModal'
+import RestaurantList from '@/components/specials/RestaurantList'
+
 export default {
 
   name: 'Specials',
@@ -194,10 +87,6 @@ export default {
         radius: this.$route.query.radius || null,
         keywords: this.$route.query.keywords || null
       },
-      addSpecialForm: {
-        days_of_week: [],
-        info: null,
-      },
       daysOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
       modalAlert: {
         show: false,
@@ -205,6 +94,10 @@ export default {
         variant: null
       }
     }
+  },
+  components: {
+    'place-modal': PlaceModal,
+    'restaurant-list': RestaurantList
   },
   methods: {
     search () {
@@ -292,27 +185,6 @@ export default {
     hideModal () {
       this.$refs.placeModal.hide()
     },
-    dayOfWeek(day) {
-      let weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-      let date = new Date
-      return day === weekday[date.getDay()]
-    },
-    addSpecial() {
-      let special = Object.assign({place_id: this.placeModal.place_id, name: this.placeModal.title, user_id: UserService.getUser().id}, this.addSpecialForm)
-      this.$http.post('special/add', special).then(response => {
-        this.placeDetails(this.placeModal.place_id)
-        this.clearAddSpecialForm()
-        this.modalAlert.show = true
-        this.modalAlert.variant = 'primary'
-        this.modalAlert.message = 'Special added! Thanks for your help! 👍 👍 👍'
-      })
-    },
-    clearAddSpecialForm() {
-        this.addSpecialForm.days_of_week =  []
-        this.addSpecialForm.info =  null
-        this.addSpecialForm.reoccuring =  false
-        this.modalAlert.show = false
-    },
     updateSearch() {
      this.$router.push({
         path: 'specials',
@@ -355,37 +227,25 @@ export default {
         result = this.pagination.hasNextPage || false
       }
       return result
-    },
-    userAuthenticated() {
-      return UserService.getUser()
     }
   },
   watch: {
-    // call again the method if the route changes
     '$route': 'feedMe'
   },
-  filters: {
-    expensivity: value => {
-      switch (value) {
-        case 0:
-          return 'Free'
-        case 1:
-          return 'Inexpensive'
-        case 2:
-          return 'Moderate'
-        case 3:
-          return 'Expensive'
-        case 4:
-          return 'Very Expensive'
-        case undefined:
-          return 'Unknown'
-        default: 'Unknown'
-      }
-    }
-  }
+  created() {
+    this.$root.$on('specialAdded', () => {
+      this.placeDetails(this.placeModal.place_id)
+      this.modalAlert.show = true
+      this.modalAlert.variant = 'primary'
+      this.modalAlert.message = 'Special added! Thanks for your help! 👍 👍 👍'
+    })
+    this.$root.$on('show-restaurant-modal', restaurant => {
+      this.showModal(restaurant)
+    })
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import './../assets/sass/specials.scss';
 </style>
