@@ -4,14 +4,14 @@ defmodule LsnmWeb.SearchController do
   alias Lsnm.Users
 
   def results(conn, body) do
-    {:ok, response} =
-    body["location"]
-    |> GoogleMaps.place_nearby(
-      String.to_integer(body["radius"]) * 1609,
-      [keyword: URI.decode_www_form(body["keyword"]),
-      type: "restaurant",
-      opennow: "true"])
-    render(conn, "results.json", results: response)
+    location = body["location"]
+    radius = String.to_integer(body["radius"]) * 1609
+    keyword = URI.decode_www_form(body["keyword"])
+    case place_search(location, radius, keyword) do
+      {:ok, response} -> render(conn, "results.json", results: response)
+      {:error, "ZERO_RESULTS"} -> json(conn, "ZERO_RESULTS")
+      _ -> send_resp(conn, 404, "Not found")
+    end   
   end
 
   @doc """
@@ -65,6 +65,10 @@ defmodule LsnmWeb.SearchController do
 
   def user_specials(conn, user_id) do
     render(conn, "specials.json", specials: Specials.user_specials(user_id))
+  end
+
+  defp place_search(location, radius, keyword) do
+    GoogleMaps.place_nearby(location, radius,[keyword: keyword, type: "restaurant", opennow: "true"])
   end
 
 end

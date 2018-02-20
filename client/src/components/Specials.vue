@@ -40,6 +40,7 @@
                 </b-form-group>
               <b-button type="submit" variant="success" block>Search</b-button>
             </b-form>
+            <b-alert :show="noResults" variant="danger" dismissible @dismissed="noResults = false">No Results - Try again</b-alert>
           </b-card>
           <div class="restaurant-cards-list">
             <div class="ad-container">
@@ -81,6 +82,7 @@ export default {
       pagination: null,
       placeModal: {},
       hasSpecial: false,
+      noResults: false,
       specials: [],
       form: {
         location: null,
@@ -133,7 +135,12 @@ export default {
         this.$http.post('results', {location: this._geocords, keyword: this.$route.query.keywords, radius: this.$route.query.radius})
           .then(response => {
             this.loading = false
-            this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
+            if (response.body === 'ZERO_RESULTS') {
+              this.noResults = true
+            } else {
+              this.noResults = false
+              this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
+            }
         })
       })
     },
