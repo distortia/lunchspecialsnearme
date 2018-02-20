@@ -9,8 +9,8 @@
       <b-row class="specials-container">
         <b-col cols="12" md="7">
           <div class="map-container">
-            <div id="map"></div>          
-            <b-modal ref="placeModal" hide-footer size="lg" :title="placeModal.title" lazy>
+            <div id="map"></div>      
+            <b-modal ref="placeModalref" hide-footer size="lg" :title="placeModal.title" lazy>
               <place-modal :specials="specials" :hasSpecial="hasSpecial" :placeModal="placeModal" :daysOfWeek="daysOfWeek"></place-modal>
               <b-alert :variant="modalAlert.variant" dismissible :show="modalAlert.show">{{modalAlert.message}}</b-alert>
           </b-modal>
@@ -30,12 +30,12 @@
                 required></b-form-input>
               </b-form-group>
               <b-form-group
-                label="Keywords">
+                label="Categories or Restaurant">
                 <b-form-input 
                   id="keywords"
                   type="text"
                   v-model="form.keywords"
-                  placeholder="Mexican"
+                  placeholder="Mexican or Tai's Asian Bistro"
                   required></b-form-input>
                 </b-form-group>
               <b-button type="submit" variant="success" block>Search</b-button>
@@ -57,7 +57,7 @@
             <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
           </div>
             <!-- Only show if there are restaurants and there is no more pagination -->
-            <b-alert show v-else v-show="restaurants" variant="warning">All results are displayed</b-alert>
+          <b-alert show v-else v-show="restaurants" variant="warning">All results are displayed</b-alert>
         </b-col>
       </b-row>
     </b-container>
@@ -180,10 +180,10 @@ export default {
     },
     showModal (place) {
       this.placeDetails(place.place_id)
-      this.$refs.placeModal.show()
+      this.$refs.placeModalref.show()
     },
     hideModal () {
-      this.$refs.placeModal.hide()
+      this.$refs.placeModalref.hide()
     },
     updateSearch() {
      this.$router.push({

@@ -8,7 +8,7 @@ defmodule LsnmWeb.SearchController do
     body["location"]
     |> GoogleMaps.place_nearby(
       String.to_integer(body["radius"]) * 1609,
-      [keyword: body["keyword"],
+      [keyword: URI.decode_www_form(body["keyword"]),
       type: "restaurant",
       opennow: "true"])
     render(conn, "results.json", results: response)

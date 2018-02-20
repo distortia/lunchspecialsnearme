@@ -8,7 +8,7 @@
               <h1>Lunch Specials Near Me</h1>
               <p>Linking Local Restaurants with Local Stomachs</p>
               <p>
-                LSNM is for the 9 to 5 heroes looking to change up their daily routines and expand their culinary tastes. Explore the best of what your city has to offer. Share some of your favorite places so other can indulge in the same.
+                LSNM is for the 9 to 5 heroes looking to change up their daily routines and expand their culinary tastes. Explore the best of what your city has to offer. Share some of your favorite places so others can indulge in the same.
               </p>
               <p>
                 What do your taste buds want to explore today?
@@ -45,13 +45,13 @@
                 </b-form-group>
                 <b-form-group 
                   id="keywordGroup"
-                  label="Categories" 
+                  label="Categories or Restaurant"
                   label-for="keywords">
                   <b-form-input 
                     id="keywords"
                     type="text" 
                     v-model="form.keywords"
-                    placeholder="Mexican"
+                    placeholder="Mexican or Tha's Asian Bistro"
                     required></b-form-input>
                   </b-form-group>
                 <b-button type="submit" variant="primary" class="btn-block">Search</b-button>
