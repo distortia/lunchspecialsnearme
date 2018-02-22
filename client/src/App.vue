@@ -36,8 +36,8 @@
       <form @submit.stop.prevent="handleSubmit">
         <b-form-group id="emailGroup"
                     label="Email address:"
-                    label-for="email">
-          <b-form-input id="email"
+                    label-for="feedbackEmail">
+          <b-form-input id="feedbackEmail"
                         type="email"
                         v-model="feedback.email"
                         required

@@ -5,6 +5,7 @@ import App from './App'
 import BootstrapVue from 'bootstrap-vue'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
+import Ads from 'vue-google-adsense'
 import UserService from './services/userService'
 import routes from './router/index'
 import mobileMixin from './util/mobileMixin'
@@ -12,6 +13,12 @@ import mobileMixin from './util/mobileMixin'
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
+
+Vue.use(require('vue-script2'))
+
+Vue.use(Ads.Adsense)
+Vue.use(Ads.InArticleAdsense)
+Vue.use(Ads.InFeedAdsense)
 
 const router = new VueRouter({
   routes,

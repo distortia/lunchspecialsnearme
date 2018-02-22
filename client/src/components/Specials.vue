@@ -12,6 +12,10 @@
             <div id="map"></div>
             <b-modal ref="placeModalref" hide-footer size="lg" :title="placeModal.title" lazy>
               <place-modal :specials="specials" :hasSpecial="hasSpecial" :placeModal="placeModal" :daysOfWeek="daysOfWeek"></place-modal>
+              <Adsense
+                data-ad-client="ca-pub-1093990846577533"
+                data-ad-slot="9354044408">
+              </Adsense>
               <b-alert :variant="modalAlert.variant" dismissible :show="modalAlert.show">{{modalAlert.message}}</b-alert>
           </b-modal>
           </div>
@@ -67,15 +71,6 @@
             <b-alert :show="noResults" variant="danger" dismissible @dismissed="noResults = false">No Results - Try again</b-alert>
           </b-card>
           <div class="restaurant-cards-list">
-            <div class="ad-container">
-              <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-1093990846577533"
-                data-ad-slot="9354044408"
-                data-ad-format="auto"
-                ref="googleAds">
-              </ins>
-            </div>
             <restaurant-list :restaurants="restaurants"></restaurant-list>
           </div>
           <div class="pagination-container" v-if="pagination">
@@ -94,6 +89,7 @@ import UserService from '@/services/userService'
 import LocationService from '@/services/locationService'
 import PlaceModal from '@/components/specials/PlaceModal'
 import RestaurantList from '@/components/specials/RestaurantList'
+// import VueAdsense from 'vue-adsense'
 
 export default {
 
@@ -126,7 +122,8 @@ export default {
   },
   components: {
     'place-modal': PlaceModal,
-    'restaurant-list': RestaurantList
+    'restaurant-list': RestaurantList,
+    // 'adsense', VueAdsense
   },
   methods: {
     feedMe () {
