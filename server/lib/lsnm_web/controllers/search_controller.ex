@@ -3,6 +3,11 @@ defmodule LsnmWeb.SearchController do
   alias Lsnm.Specials
   alias Lsnm.Users
 
+  def results(conn, %{"pagination_token" => pagination_token}) do
+    {:ok, response} = place_search(pagination_token)
+    render(conn, "paginated_results.json", results: response)
+  end
+
   def results(conn, body) do
     geocoords = geocoords_from_address(body["location"] |> String.replace(",", " "))
     radius = String.to_integer(body["radius"]) * 1609
@@ -77,6 +82,10 @@ defmodule LsnmWeb.SearchController do
     {:ok, %{"results" => [result|_]}} = GoogleMaps.geocode(location)
     %{"lat" => lat, "lng" => lng} = result["geometry"]["location"]
     "#{lat},#{lng}"
+  end
+
+  defp place_search(pagination_token) do
+    GoogleMaps.place_nearby("", "", [pagetoken: pagination_token])
   end
 
   defp place_search(geocoords, radius, keyword) do

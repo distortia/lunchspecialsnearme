@@ -78,7 +78,7 @@
             </div>
             <restaurant-list :restaurants="restaurants"></restaurant-list>
           </div>
-          <div class="pagination-container" v-if="hasPagination">
+          <div class="pagination-container" v-if="pagination">
             <b-button @click="paginate" variant="primary btn-block">Show More</b-button>
           </div>
             <!-- Only show if there are restaurants and there is no more pagination -->
@@ -152,7 +152,6 @@ export default {
       })
     },
     createMarker (place, index) {
-      console.log('create marker map ', this.map)
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
@@ -170,18 +169,15 @@ export default {
       this.pagination = (pagination || false)
       // Draw the markers for the places
       places.forEach((place, index) => {
-        console.log('place, ', place)
         this.createMarker(place, index)
       })
     },
     paginate () {
       this.loading = true
-      setTimeout(() => {
-        if (this.pagination.hasNextPage) {
-          this.pagination.nextPage()
-        }
+      this.$http.post('results', {pagination_token: this.pagination}).then(response => {
         this.loading = false
-      }, 2000)
+        this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
+      })
     },
     placeDetails (placeId) {
       this.$http.get(`results/details/${placeId}`).then(resp => {
@@ -264,15 +260,6 @@ export default {
   },
   mounted () {
     this.feedMe()
-  },
-  computed: {
-    hasPagination () {
-      let result = false
-      if (this.restaurants) {
-        result = this.pagination.hasNextPage || false
-      }
-      return result
-    }
   },
   watch: {
     '$route': 'feedMe'

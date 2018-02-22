@@ -5,6 +5,11 @@ defmodule LsnmWeb.SearchView do
     %{data: results, geocoords: geocoords}
   end
 
+
+  def render("paginated_results.json", %{results: results}) do
+    %{data: results}
+  end
+
   @doc """
   Renders the special data we want from the database into json format.
   """
