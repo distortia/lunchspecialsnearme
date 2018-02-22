@@ -138,19 +138,21 @@ export default {
         if (response.body.error === 'ZERO_RESULTS') {
           this.noResults = true
           this.geocoords = {lat: parseFloat(response.body.geocoords.split(',')[0]), lng: parseFloat(response.body.geocoords.split(',')[1])}
+          this.createMap()
+          this.createInitialMarker()
         } else {
           this.noResults = false
           this.geocoords = {lat: parseFloat(response.body.geocoords.split(',')[0]), lng: parseFloat(response.body.geocoords.split(',')[1])}
+          this.createMap()
+          this.createInitialMarker()
           this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
         }
       }, err => {
         //Throw an error to the front end
-      }).then(() => {
-        this.createMap()
-        this.createInitialMarker()
       })
     },
     createMarker (place, index) {
+      console.log('create marker map ', this.map)
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
@@ -168,6 +170,7 @@ export default {
       this.pagination = (pagination || false)
       // Draw the markers for the places
       places.forEach((place, index) => {
+        console.log('place, ', place)
         this.createMarker(place, index)
       })
     },
