@@ -4,12 +4,12 @@ defmodule LsnmWeb.SearchController do
   alias Lsnm.Users
 
   def results(conn, body) do
-    location = body["location"]
+    geocoords = geocoords_from_address(body["location"] |> String.replace(",", " "))
     radius = String.to_integer(body["radius"]) * 1609
     keyword = URI.decode_www_form(body["keyword"])
-    case place_search(location, radius, keyword) do
-      {:ok, response} -> render(conn, "results.json", results: response)
-      {:error, "ZERO_RESULTS"} -> json(conn, "ZERO_RESULTS")
+    case place_search(geocoords, radius, keyword) do
+      {:ok, response} -> render(conn, "results.json", results: response, geocoords: geocoords)
+      {:error, "ZERO_RESULTS"} -> json(conn, %{error: "ZERO_RESULTS", geocoords: geocoords})
       _ -> send_resp(conn, 404, "Not found")
     end   
   end
@@ -67,8 +67,20 @@ defmodule LsnmWeb.SearchController do
     render(conn, "specials.json", specials: Specials.user_specials(user_id))
   end
 
-  defp place_search(location, radius, keyword) do
-    GoogleMaps.place_nearby(location, radius,[keyword: keyword, type: "restaurant", opennow: "true"])
+  def location(conn, %{"location" => location}) do
+    {:ok, %{"results" => [result|_]}} = GoogleMaps.geocode(location)
+    address = result["formatted_address"] |> String.split(",") |> List.delete_at(-1) |> List.to_string
+    json(conn, %{:location => result["geometry"]["location"], :address => address})
+  end
+
+  defp geocoords_from_address(location) do
+    {:ok, %{"results" => [result|_]}} = GoogleMaps.geocode(location)
+    %{"lat" => lat, "lng" => lng} = result["geometry"]["location"]
+    "#{lat},#{lng}"
+  end
+
+  defp place_search(geocoords, radius, keyword) do
+    GoogleMaps.place_nearby(geocoords, radius,[keyword: keyword, type: "restaurant", opennow: "true"])
   end
 
 end

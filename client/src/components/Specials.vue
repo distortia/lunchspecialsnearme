@@ -9,7 +9,7 @@
       <b-row class="specials-container">
         <b-col cols="12" md="7">
           <div class="map-container">
-            <div id="map"></div>      
+            <div id="map"></div>
             <b-modal ref="placeModalref" hide-footer size="lg" :title="placeModal.title" lazy>
               <place-modal :specials="specials" :hasSpecial="hasSpecial" :placeModal="placeModal" :daysOfWeek="daysOfWeek"></place-modal>
               <b-alert :variant="modalAlert.variant" dismissible :show="modalAlert.show">{{modalAlert.message}}</b-alert>
@@ -19,6 +19,29 @@
         <b-col md="5" cols="12" @submit.prevent="updateSearch">
           <b-card title="Search">
             <b-form class="card-text">
+              <b-form-group
+                id="locationGroup"
+                label="Address or ZipCode"
+                label-for="location">
+                <b-input-group>
+                  <b-form-input
+                    id="location"
+                    type="text"
+                    v-model="form.location"
+                    placeholder="123 park place or 12345"
+                    required>
+                  </b-form-input>
+                   <b-input-group-button>
+                    <b-btn variant="outline-primary" @click="getAddress()">
+                      <i class="fa fa-location-arrow" v-if="!loadingLocation"></i>
+                      <div v-show="loadingLocation">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                        <span class="sr-only">Fetching Location...</span>
+                      </div>
+                    </b-btn>
+                  </b-input-group-button>
+                </b-input-group>
+              </b-form-group>
               <b-form-group
                 label="Search Radius"
                 label-for="radius">
@@ -40,6 +63,7 @@
                 </b-form-group>
               <b-button type="submit" variant="success" block>Search</b-button>
             </b-form>
+            <b-alert :show="noLocation" variant="warning" dismissible @dismissed="noLocation = false">Location fetching failed. Please enable location services and try again.</b-alert>
             <b-alert :show="noResults" variant="danger" dismissible @dismissed="noResults = false">No Results - Try again</b-alert>
           </b-card>
           <div class="restaurant-cards-list">
@@ -67,6 +91,7 @@
 
 <script>
 import UserService from '@/services/userService'
+import LocationService from '@/services/locationService'
 import PlaceModal from '@/components/specials/PlaceModal'
 import RestaurantList from '@/components/specials/RestaurantList'
 
@@ -77,15 +102,17 @@ export default {
     return {
       map: null,
       loading: false,
-      _geocoords: null,
+      loadingLocation: false,
+      noLocation: false,
       restaurants: null,
       pagination: null,
       placeModal: {},
       hasSpecial: false,
       noResults: false,
+      geocoords: null,
       specials: [],
       form: {
-        location: null,
+        location: this.$route.query.location.replace(/\+/g, ' ') || null,
         radius: this.$route.query.radius || null,
         keywords: this.$route.query.keywords || null
       },
@@ -102,46 +129,25 @@ export default {
     'restaurant-list': RestaurantList
   },
   methods: {
-    search () {
-      this.$router.push({
-        path: 'specials',
-        query: {
-          // location: this.form.location.replace(/ /g, '+'),
-          keywords: this.form.keywords,
-          radius: this.form.radius
-        }
-      })
-    },
     feedMe () {
       this.loading = true
       this.restaurants = null
-      navigator.geolocation.getCurrentPosition((position) => {
-        const myGeocoords = { lat: position.coords.latitude, lng: position.coords.longitude }
-        this._geocords = `${position.coords.latitude},${position.coords.longitude}`
-
-        this.map = new google.maps.Map(document.getElementById('map'), {
-          center: myGeocoords,
-          zoom: 13})
-        
-        // This map marker is different because we pass our lat/lng into it
-        // instead of fetching it from the results
-        const myLocationMarker = new google.maps.Marker({
-          position: myGeocoords,
-          animation: google.maps.Animation.DROP,
-          icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-          map: this.map
-        })
-
-        this.$http.post('results', {location: this._geocords, keyword: this.$route.query.keywords, radius: this.$route.query.radius})
-          .then(response => {
-            this.loading = false
-            if (response.body === 'ZERO_RESULTS') {
-              this.noResults = true
-            } else {
-              this.noResults = false
-              this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
-            }
-        })
+      this.$http.post('results', {location: this.form.location, keyword: this.$route.query.keywords, radius: this.$route.query.radius})
+      .then(response => {
+        this.loading = false
+        if (response.body.error === 'ZERO_RESULTS') {
+          this.noResults = true
+          this.geocoords = {lat: parseFloat(response.body.geocoords.split(',')[0]), lng: parseFloat(response.body.geocoords.split(',')[1])}
+        } else {
+          this.noResults = false
+          this.geocoords = {lat: parseFloat(response.body.geocoords.split(',')[0]), lng: parseFloat(response.body.geocoords.split(',')[1])}
+          this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
+        }
+      }, err => {
+        //Throw an error to the front end
+      }).then(() => {
+        this.createMap()
+        this.createInitialMarker()
       })
     },
     createMarker (place, index) {
@@ -196,6 +202,7 @@ export default {
      this.$router.push({
         path: 'specials',
         query: {
+          location: this.form.location.replace(/ /g, '+'),
           keywords: encodeURIComponent(this.form.keywords),
           radius: this.form.radius
         }
@@ -222,6 +229,34 @@ export default {
         return this.daysOfWeek.indexOf(a.day_of_week) > this.daysOfWeek.indexOf(b.day_of_week)
       })
       return output
+    },
+    createMap() {
+      this.map = new google.maps.Map(document.getElementById('map'), {
+        center: this.geocoords,
+        zoom: 13})
+    },
+    createInitialMarker() {
+      // This map marker is different because we pass our lat/lng into it
+      // instead of fetching it from the results
+     new google.maps.Marker({
+        position: this.geocoords,
+        animation: google.maps.Animation.DROP,
+        icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+        map: this.map
+      })
+    },
+    async getAddress () {
+      this.loadingLocation = true
+      if ('geolocation' in navigator) {
+        this.$http.post('location', {location: await LocationService.geolocation()}).then(response => {
+          this.form.location = response.body.address
+        }, err => {
+          this.noLocation = true
+        })
+        this.loadingLocation = false
+      } else {
+        this.noLocation = true  
+      }
     }
   },
   mounted () {
@@ -249,7 +284,7 @@ export default {
     this.$root.$on('show-restaurant-modal', restaurant => {
       this.showModal(restaurant)
     })
-  },
+  }
 }
 </script>
 

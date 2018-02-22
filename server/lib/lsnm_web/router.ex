@@ -53,6 +53,8 @@ defmodule LsnmWeb.Router do
     options "/user/reset", UserController, :nothing
     post "/user/reset/:temp_id", UserController, :update_reset_password
     options "/user/reset/:temp_id", UserController, :nothing
+    post "/location", SearchController, :location
+    options "/location", SearchController, :nothing
 
     pipe_through :authorized
       get "/special/user/:user_id", SearchController, :user_specials

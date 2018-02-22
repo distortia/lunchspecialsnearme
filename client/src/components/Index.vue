@@ -18,20 +18,29 @@
           <b-col cols="12" md="6">
             <b-card class="text-center">
               <b-form @submit.prevent="submit">
-            <!--     <b-form-group
+                <b-form-group
                   id="locationGroup"
-                  label="Location"
+                  label="Address or ZipCode"
                   label-for="location">
-                  <b-form-input
-                    id="location"
-                    type="input"
-                    v-model="form.location"
-                    placeholder="123 park place columbus oh"
-                    required></b-form-input>
-                  <b-input-group-button slot="right">
-                    <b-btn variant="info">Location</b-btn>
-                  </b-input-group-button>
-                </b-form-group> -->
+                  <b-input-group>
+                    <b-form-input
+                      id="location"
+                      type="text"
+                      v-model.lazy="form.location"
+                      placeholder="123 park place or 12345"
+                      required>
+                    </b-form-input>
+                     <b-input-group-button>
+                      <b-btn variant="outline-primary" @click="getAddress()">
+                        <i class="fa fa-location-arrow" v-if="!loadingLocation"></i>
+                        <div v-show="loadingLocation">
+                          <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                          <span class="sr-only">Fetching Location...</span>
+                        </div>
+                      </b-btn>
+                    </b-input-group-button>
+                  </b-input-group>
+                </b-form-group>
                 <b-form-group 
                   id="radiusGroup"
                   label="Search Radius(Miles)"
@@ -56,6 +65,7 @@
                   </b-form-group>
                 <b-button type="submit" variant="primary" class="btn-block">Search</b-button>
               </b-form>
+              <b-alert :show="noLocation" variant="warning" dismissible @dismissed="noLocation = false">Location fetching failed. Please enable location services and try again.</b-alert>
             </b-card>
           </b-col>
         </b-row>
@@ -63,34 +73,51 @@
     </div>
   </div>
 </template>
-  <script>
-    export default {
+<script>
+import LocationService from '@/services/locationService'
 
-      name: 'Index',
+  export default {
 
-      data () {
-        return {
-          form: {
-            location: null,
-            radius: null,
-            keywords: null
+    name: 'Index',
+
+    data () {
+      return {
+        form: {
+          location: null,
+          radius: null,
+          keywords: null
+        },
+        noLocation: false,
+        loadingLocation: false,
+      }
+    },
+    methods: {
+      submit () {
+        this.$router.push({
+          path: 'specials',
+          query: {
+            location: this.form.location.replace(/ /g, '+'),
+            keywords: this.form.keywords,
+            radius: this.form.radius
           }
-        }
+        })
       },
-      methods: {
-        submit () {
-          this.$router.push({
-            path: 'specials',
-            query: {
-              // location: this.form.location.replace(/ /g, '+'),
-              keywords: this.form.keywords,
-              radius: this.form.radius
-            }
+      async getAddress () {
+        this.loadingLocation = true
+        if ('geolocation' in navigator) {
+          this.$http.post('location', {location: await LocationService.geolocation()}).then(response => {
+            this.form.location = response.body.address
+          }, err => {
+            this.noLocation = true
           })
+          this.loadingLocation = false
+        } else {
+          this.noLocation = true  
         }
       }
     }
-  </script>
+  }
+</script>
 
 <style lang="scss" scoped>
 @import './../assets/sass/index.scss';
