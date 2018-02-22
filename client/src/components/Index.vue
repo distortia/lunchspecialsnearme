@@ -54,14 +54,14 @@
                 </b-form-group>
                 <b-form-group 
                   id="keywordGroup"
-                  label="Categories or Restaurant"
+                  label="Categories or Restaurant - Leave blank for all results"
                   label-for="keywords">
                   <b-form-input 
                     id="keywords"
                     type="text" 
                     v-model="form.keywords"
-                    placeholder="Mexican or Tha's Asian Bistro"
-                    required></b-form-input>
+                    placeholder="Mexican or Tai's Asian Bistro">
+                    </b-form-input>
                   </b-form-group>
                 <b-button type="submit" variant="primary" class="btn-block">Search</b-button>
               </b-form>
