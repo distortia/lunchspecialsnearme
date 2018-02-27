@@ -17,3 +17,6 @@
 * `PG_PASSWORD` - postgres password - K0Fd1DJ8GwFKlFOa
 
 * `CLIENT_URL` - internal - https://lunchspecialsnearme.com
+
+
+To connect to the remote node while SSHed into the machine `iex --name me@localhost --cookie lsnm --remsh "lsnm@localhost"`
