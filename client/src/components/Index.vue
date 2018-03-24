@@ -26,7 +26,7 @@
                     <b-form-input
                       id="location"
                       type="text"
-                      v-model.lazy="form.location"
+                      v-model.lazy.trim="form.location"
                       placeholder="123 park place or 12345"
                       required>
                     </b-form-input>
@@ -56,13 +56,25 @@
                   id="keywordGroup"
                   label="Categories or Restaurant - Leave blank for all results"
                   label-for="keywords">
-                  <b-form-input 
+                  <b-form-input
                     id="keywords"
                     type="text" 
-                    v-model="form.keywords"
+                    v-model.trim="form.keywords"
+                    @input="autocompleteList"
                     placeholder="Mexican or Tai's Asian Bistro">
                     </b-form-input>
                   </b-form-group>
+                  <b-list-group v-show="autocomplete.items.length > 1">
+                    <b-list-group-item
+                      button
+                      @click.prevent="setAsKeyWord(item.description)"
+                      class="autocomplete"
+                      v-for="(item, $item) in autocomplete.items"
+                      :key="$item">
+                      {{ item.description }}
+                    </b-list-group-item>
+                  </b-list-group>
+                </ul>
                 <b-button type="submit" variant="primary" class="btn-block">Search</b-button>
               </b-form>
               <b-alert :show="noLocation" variant="warning" dismissible @dismissed="noLocation = false">Location fetching failed. Please enable location services and try again.</b-alert>
@@ -89,6 +101,10 @@ import LocationService from '@/services/locationService'
         },
         noLocation: false,
         loadingLocation: false,
+        autocomplete: {
+          items: [],
+          visible: false
+        }
       }
     },
     methods: {
@@ -113,6 +129,20 @@ import LocationService from '@/services/locationService'
           this.loadingLocation = false
         } else {
           this.noLocation = true  
+        }
+      },
+      setAsKeyWord(keyword) {
+        this.form.keywords = keyword
+        this.autocomplete.items = []
+      }
+    },
+    computed: {
+      autocompleteList() {
+        if (this.form.keywords && this.form.radius) {
+          this.$http.post('autocomplete', {location: this.form.location, radius: this.form.radius, keyword: this.form.keywords}).then(resp => {
+            this.autocomplete.items = resp.body.data
+          }, err => {
+          })
         }
       }
     }

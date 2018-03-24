@@ -44,4 +44,11 @@ defmodule LsnmWeb.SearchView do
       }}
   end
 
+  def render("autocomplete_results.json", %{autocomplete_results: autocomplete_results}) do
+    %{data: render_many(autocomplete_results, LsnmWeb.SearchView, "autocomplete_result.json")}
+  end
+
+  def render("autocomplete_result.json", %{search: search}) do
+    %{:description => search["description"]}
+  end
 end

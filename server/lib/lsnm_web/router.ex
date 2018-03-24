@@ -10,8 +10,6 @@ defmodule LsnmWeb.Router do
   end
 
   pipeline :api do
-    # plug CORSPlug, [origin: System.get_env("CLIENT_URL") || "http://localhost:8080"]
-    # plug CORSPlug, [origin: "http://localhost:9001"]
     plug :accepts, ["json"]
   end
 
@@ -55,6 +53,8 @@ defmodule LsnmWeb.Router do
     options "/user/reset/:temp_id", UserController, :nothing
     post "/location", SearchController, :location
     options "/location", SearchController, :nothing
+    post "/autocomplete", SearchController, :autocomplete
+    options "/autocomplete", SearchController, :nothing
 
     pipe_through :authorized
       get "/special/user/:user_id", SearchController, :user_specials

@@ -10,9 +10,8 @@ defmodule LsnmWeb.SearchController do
 
   def results(conn, body) do
     geocoords = geocoords_from_address(body["location"] |> String.replace(",", " "))
-    radius = String.to_integer(body["radius"]) * 1609
     keyword = if (body["keyword"] == "null" || is_nil(body["keyword"])), do: "", else: body["keyword"]
-    case place_search(geocoords, radius, URI.decode_www_form(keyword)) do
+    case place_search(geocoords, radius_converter(body["radius"]), URI.decode_www_form(keyword)) do
       {:ok, response} -> render(conn, "results.json", results: response, geocoords: geocoords)
       {:error, "ZERO_RESULTS"} -> json(conn, %{error: "ZERO_RESULTS", geocoords: geocoords})
       _ -> send_resp(conn, 404, "Not found")
@@ -78,6 +77,19 @@ defmodule LsnmWeb.SearchController do
     json(conn, %{:location => result["geometry"]["location"], :address => address})
   end
 
+  def autocomplete(conn, %{"location" => location, "radius" => radius, "keyword" => keyword}) do
+    case autocomplete(geocoords_from_address(location), radius_converter(radius), keyword) do
+      {:ok, resp} ->
+        render(conn, "autocomplete_results.json", autocomplete_results: resp["predictions"])
+      _ ->
+        json(conn, %{:body => %{"status" => "error"}})
+    end
+  end
+
+  defp autocomplete(location, radius, keyword) do
+    {:ok, resp} = GoogleMaps.place_autocomplete(keyword, [location: location, radius: radius])
+  end
+
   defp geocoords_from_address(location) do
     {:ok, %{"results" => [result|_]}} = GoogleMaps.geocode(location)
     %{"lat" => lat, "lng" => lng} = result["geometry"]["location"]
@@ -90,6 +102,11 @@ defmodule LsnmWeb.SearchController do
 
   defp place_search(geocoords, radius, keyword) do
     GoogleMaps.place_nearby(geocoords, radius,[keyword: keyword, type: "restaurant", opennow: "true"])
+  end
+
+  defp radius_converter(radius) when is_bitstring(radius), do: radius_converter(String.to_integer(radius))
+  defp radius_converter(radius) do
+    radius * 1609
   end
 
 end
