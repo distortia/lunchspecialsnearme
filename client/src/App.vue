@@ -63,11 +63,6 @@ export default {
   name: 'app',
   data () {
     return {
-      form: {
-        location: null,
-        radius: null,
-        keywords: null
-      },
       user: UserService.getUser(),
       isLoggedIn: UserService.isLoggedIn(),
       successMessage: null,
@@ -89,16 +84,6 @@ export default {
     });
   },
   methods: {
-    search () {
-      this.$router.push({
-        path: 'specials',
-        query: {
-          // location: this.form.location.replace(/ /g, '+'),
-          keywords: encodeURIComponent(this.form.keywords),
-          radius: this.form.radius
-        }
-      })
-    },
     logout() {
       this.$http.post('logout', {"user": this.credentials})
         .then(data => {

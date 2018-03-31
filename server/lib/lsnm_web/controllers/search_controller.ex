@@ -55,7 +55,7 @@ defmodule LsnmWeb.SearchController do
 
   def edit(conn, body) do
     case Specials.edit(body) do
-      {:ok, special} ->
+      {:ok, _} ->
         json(conn, %{:body => %{"status" => "ok"}})
       {:error, %Ecto.Changeset{} = changeset} ->
         json(conn, %{:body => %{"status" => "error", changeset: changeset}})
@@ -87,7 +87,7 @@ defmodule LsnmWeb.SearchController do
   end
 
   defp autocomplete(location, radius, keyword) do
-    {:ok, resp} = GoogleMaps.place_autocomplete(keyword, [location: location, radius: radius])
+    GoogleMaps.place_autocomplete(keyword, [location: location, radius: radius, strictbounds: true])
   end
 
   defp geocoords_from_address(location) do
