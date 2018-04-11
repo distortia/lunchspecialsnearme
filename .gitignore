@@ -1,6 +1,7 @@
 
 client/yarn.lock
 client/node_modules/
+client/yarn-error.log
 server/_build/
 server/mix.lock
 server/assets/node_modules/
@@ -9,3 +10,5 @@ server/priv/static/
 server/deps/
 server/package-lock.json
 npm-debug.log
+node_modules/
+package-lock.json

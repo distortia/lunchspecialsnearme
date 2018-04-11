@@ -64,7 +64,7 @@
                     placeholder="Mexican or Tai's Asian Bistro">
                     </b-form-input>
                   </b-form-group>
-                  <b-list-group v-show="autocomplete.items.length >= 1">
+                  <b-list-group v-show="autocomplete.items">
                     <b-list-group-item
                       button
                       @click.prevent="setAsKeyWord(item.description)"

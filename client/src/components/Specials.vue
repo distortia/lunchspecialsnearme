@@ -66,7 +66,7 @@
                   placeholder="Mexican or Tai's Asian Bistro">
                   </b-form-input>
                 </b-form-group>
-                <b-list-group v-show="autocomplete.items.length >= 1">
+                <b-list-group v-show="autocomplete.items">
                   <b-list-group-item
                     button
                     @click.prevent="setAsKeyWord(item.description)"
@@ -76,7 +76,7 @@
                     {{ item.description }}
                   </b-list-group-item>
                 </b-list-group>
-              <b-button type="submit" variant="success" block>Search</b-button>
+              <b-button type="submit" variant="success" block  @click="autocomplete.items = []">Search</b-button>
             </b-form>
             <b-alert :show="noLocation" variant="warning" dismissible @dismissed="noLocation = false">Location fetching failed. Please enable location services and try again.</b-alert>
             <b-alert :show="noResults" variant="danger" dismissible @dismissed="noResults = false">No Results - Try again</b-alert>
@@ -157,6 +157,7 @@ export default {
           this.geocoords = {lat: parseFloat(response.body.geocoords.split(',')[0]), lng: parseFloat(response.body.geocoords.split(',')[1])}
           this.createMap()
           this.createInitialMarker()
+          this.restaurants = (this.restaurants === null) ? response.body.data.results : this.restaurants.concat(response.body.data.results)
           this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
         }
       }, err => {
@@ -177,7 +178,7 @@ export default {
     },
     parsePlaces (places, status, pagination) {
       this.loading = false
-      this.restaurants = (this.restaurants === null) ? places : this.restaurants.concat(places)
+      // this.restaurants = (this.restaurants === null) ? places : this.restaurants.concat(places)
       this.pagination = (pagination || false)
       // Draw the markers for the places
       places.forEach((place, index) => {
@@ -293,7 +294,6 @@ export default {
   },
   computed: {
     autocompleteList() {
-      console.log(this.form)
       if (this.form.keywords && this.form.radius) {
         this.$http.post('autocomplete', {location: this.form.location, radius: this.form.radius, keyword: this.form.keywords}).then(resp => {
           this.autocomplete.items = resp.body.data

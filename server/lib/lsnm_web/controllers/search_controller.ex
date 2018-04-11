@@ -2,6 +2,7 @@ defmodule LsnmWeb.SearchController do
   use LsnmWeb, :controller
   alias Lsnm.Specials
   alias Lsnm.Users
+  @multi_search_terms [" and ", " or ", ",", " with "]
 
   def results(conn, %{"pagination_token" => pagination_token}) do
     {:ok, response} = place_search(pagination_token)
@@ -12,7 +13,8 @@ defmodule LsnmWeb.SearchController do
     geocoords = geocoords_from_address(body["location"] |> String.replace(",", " "))
     keyword = if (body["keyword"] == "null" || is_nil(body["keyword"])), do: "", else: body["keyword"]
     case place_search(geocoords, radius_converter(body["radius"]), URI.decode_www_form(keyword)) do
-      {:ok, response} -> render(conn, "results.json", results: response, geocoords: geocoords)
+      {:ok, response} ->
+        render(conn, "results.json", results: response, geocoords: geocoords)
       {:error, "ZERO_RESULTS"} -> json(conn, %{error: "ZERO_RESULTS", geocoords: geocoords})
       _ -> send_resp(conn, 404, "Not found")
     end   
@@ -100,13 +102,28 @@ defmodule LsnmWeb.SearchController do
     GoogleMaps.place_nearby("", "", [pagetoken: pagination_token])
   end
 
-  defp place_search(geocoords, radius, keyword) do
-    GoogleMaps.place_nearby(geocoords, radius,[keyword: keyword, type: "restaurant", opennow: "true"])
+  def place_search(geocoords, radius, keyword) do
+    if String.contains?(keyword, @multi_search_terms) do
+      multi_place_search(geocoords, radius, keyword)
+     else
+      GoogleMaps.place_nearby(geocoords, radius,[keyword: keyword, type: "restaurant", opennow: "true"])
+    end
+  end
+
+  defp multi_place_search(geocoords, radius, keyword) do
+    results = 
+    String.split(keyword, @multi_search_terms)
+    |> Enum.flat_map(fn term -> 
+      case place_search(geocoords, radius, term) do
+        {:ok, results} -> results["results"]
+        {:error, "ZERO_RESULTS"} -> []
+      end
+    end)
+    |> Enum.shuffle()
+    {:ok, %{"results" => results, "status" => "OK", "html_attributions" => []}}
   end
 
   defp radius_converter(radius) when is_bitstring(radius), do: radius_converter(String.to_integer(radius))
-  defp radius_converter(radius) do
-    radius * 1609
-  end
+  defp radius_converter(radius), do: radius * 1609
 
 end
