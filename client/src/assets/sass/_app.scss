@@ -1,3 +1,5 @@
+@import 'colors';
+
 .loading i, .loading span {
   z-index: 100;
   position: absolute;
@@ -5,3 +7,19 @@
   left: 50%;
   margin: -50px 0px 0px -50px;
 }
+
+.form-control {
+  &::-webkit-input-placeholder{
+    color: $placeholder;
+  }
+  &::-moz-placeholder {
+    color: $placeholder;
+  }
+  &:-moz-placeholder { /* Older versions of Firefox */
+    color: $placeholder;
+  }
+  &:-ms-input-placeholder {
+    color: $placeholder;
+  }
+}
+
