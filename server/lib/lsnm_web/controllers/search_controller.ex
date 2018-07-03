@@ -106,7 +106,7 @@ defmodule LsnmWeb.SearchController do
     if String.contains?(keyword, @multi_search_terms) do
       multi_place_search(geocoords, radius, keyword)
      else
-      GoogleMaps.place_nearby(geocoords, radius,[keyword: keyword, type: "restaurant", opennow: "true"])
+      GoogleMaps.place_nearby(geocoords, radius,[keyword: keyword, type: "restaurant"])
     end
   end
 

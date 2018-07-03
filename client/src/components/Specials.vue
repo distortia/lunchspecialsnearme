@@ -4,12 +4,71 @@
       <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
       <span class="sr-only">Loading...</span>
     </div>
-    <h1 v-if="restaurants">Currently displaying {{restaurants.length}} place(s) near you </h1>
     <b-container fluid>
       <b-row class="specials-container">
-        <b-col cols="12" md="7">
-          <div class="map-container">
-            <div id="map"></div>
+        <b-col cols="12" md="4">
+          <div class="search-container">
+            <b-card title="Search">
+              <b-form class="card-text">
+                <b-form-group
+                  id="locationGroup"
+                  label="Address or ZipCode"
+                  label-for="location">
+                  <b-input-group>
+                    <b-form-input
+                      id="location"
+                      type="text"
+                      v-model="form.location"
+                      placeholder="123 park place or 12345"
+                      required>
+                    </b-form-input>
+                     <b-input-group-button>
+                      <b-btn variant="outline-primary" @click="getAddress()">
+                        <i class="fa fa-location-arrow" v-if="!loadingLocation"></i>
+                        <div v-show="loadingLocation">
+                          <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                          <span class="sr-only">Fetching Location...</span>
+                        </div>
+                      </b-btn>
+                    </b-input-group-button>
+                  </b-input-group>
+                </b-form-group>
+                <b-form-group
+                  label="Search Radius"
+                  label-for="radius">
+                <b-form-input
+                  id="radius"
+                  type="number"
+                  v-model="form.radius"
+                  placeholder="Radius(miles)"
+                  required></b-form-input>
+                </b-form-group>
+                <b-form-group
+                  label="Categories or Restaurant - Leave blank for all results">
+                  <b-form-input 
+                    id="keywords"
+                    type="text"
+                    v-model.trim="form.keywords"
+                    @input="autocompleteList"
+                    @blur.native="autocomplete.items = []"
+                    placeholder="Mexican or Tai's Asian Bistro">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-list-group v-show="autocomplete.items">
+                    <b-list-group-item
+                      button
+                      @click.prevent="setAsKeyWord(item.description)"
+                      class="autocomplete"
+                      v-for="(item, $item) in autocomplete.items"
+                      :key="$item">
+                      {{ item.description }}
+                    </b-list-group-item>
+                  </b-list-group>
+                <b-button type="submit" variant="success" block  @click="autocomplete.items = []">Search</b-button>
+              </b-form>
+              <b-alert :show="noLocation" variant="warning" dismissible @dismissed="noLocation = false">Location fetching failed. Please enable location services and try again.</b-alert>
+              <b-alert :show="noResults" variant="danger" dismissible @dismissed="noResults = false">No Results - Try again</b-alert>
+            </b-card>
             <b-modal ref="placeModalref" hide-footer size="lg" :title="placeModal.title" lazy>
               <place-modal :specials="specials" :hasSpecial="hasSpecial" :placeModal="placeModal" :daysOfWeek="daysOfWeek"></place-modal>
               <Adsense
@@ -20,68 +79,8 @@
           </b-modal>
           </div>
         </b-col>
-        <b-col md="5" cols="12" @submit.prevent="updateSearch">
-          <b-card title="Search">
-            <b-form class="card-text">
-              <b-form-group
-                id="locationGroup"
-                label="Address or ZipCode"
-                label-for="location">
-                <b-input-group>
-                  <b-form-input
-                    id="location"
-                    type="text"
-                    v-model="form.location"
-                    placeholder="123 park place or 12345"
-                    required>
-                  </b-form-input>
-                   <b-input-group-button>
-                    <b-btn variant="outline-primary" @click="getAddress()">
-                      <i class="fa fa-location-arrow" v-if="!loadingLocation"></i>
-                      <div v-show="loadingLocation">
-                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
-                        <span class="sr-only">Fetching Location...</span>
-                      </div>
-                    </b-btn>
-                  </b-input-group-button>
-                </b-input-group>
-              </b-form-group>
-              <b-form-group
-                label="Search Radius"
-                label-for="radius">
-              <b-form-input
-                id="radius"
-                type="number"
-                v-model="form.radius"
-                placeholder="Radius(miles)"
-                required></b-form-input>
-              </b-form-group>
-              <b-form-group
-                label="Categories or Restaurant - Leave blank for all results">
-                <b-form-input 
-                  id="keywords"
-                  type="text"
-                  v-model.trim="form.keywords"
-                  @input="autocompleteList"
-                  @blur.native="autocomplete.items = []"
-                  placeholder="Mexican or Tai's Asian Bistro">
-                  </b-form-input>
-                </b-form-group>
-                <b-list-group v-show="autocomplete.items">
-                  <b-list-group-item
-                    button
-                    @click.prevent="setAsKeyWord(item.description)"
-                    class="autocomplete"
-                    v-for="(item, $item) in autocomplete.items"
-                    :key="$item">
-                    {{ item.description }}
-                  </b-list-group-item>
-                </b-list-group>
-              <b-button type="submit" variant="success" block  @click="autocomplete.items = []">Search</b-button>
-            </b-form>
-            <b-alert :show="noLocation" variant="warning" dismissible @dismissed="noLocation = false">Location fetching failed. Please enable location services and try again.</b-alert>
-            <b-alert :show="noResults" variant="danger" dismissible @dismissed="noResults = false">No Results - Try again</b-alert>
-          </b-card>
+        <b-col md="8" cols="12" @submit.prevent="updateSearch">
+          <h1 v-if="restaurants">Currently displaying {{restaurants.length}} place(s) near you </h1>
           <div class="restaurant-cards-list">
             <restaurant-list :restaurants="restaurants"></restaurant-list>
           </div>
@@ -107,7 +106,6 @@ export default {
   name: 'Specials',
   data () {
     return {
-      map: null,
       loading: false,
       loadingLocation: false,
       noLocation: false,
@@ -149,13 +147,9 @@ export default {
         if (response.body.error === 'ZERO_RESULTS') {
           this.noResults = true
           this.geocoords = {lat: parseFloat(response.body.geocoords.split(',')[0]), lng: parseFloat(response.body.geocoords.split(',')[1])}
-          this.createMap()
-          this.createInitialMarker()
         } else {
           this.noResults = false
           this.geocoords = {lat: parseFloat(response.body.geocoords.split(',')[0]), lng: parseFloat(response.body.geocoords.split(',')[1])}
-          this.createMap()
-          this.createInitialMarker()
           this.restaurants = (this.restaurants === null) ? response.body.data.results : this.restaurants.concat(response.body.data.results)
           this.parsePlaces(response.body.data.results, response.body.data.status, response.body.data.next_page_token)
         }
@@ -163,26 +157,10 @@ export default {
         //Throw an error to the front end
       })
     },
-    createMarker (place, index) {
-      let marker = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        label: `${index + 1}`, // add 1 to make them user friendly numbers
-        position: place.geometry.location
-      })
-
-      marker.addListener('click', () => {
-        this.showModal(place)
-      })
-    },
     parsePlaces (places, status, pagination) {
       this.loading = false
       // this.restaurants = (this.restaurants === null) ? places : this.restaurants.concat(places)
       this.pagination = (pagination || false)
-      // Draw the markers for the places
-      places.forEach((place, index) => {
-        this.createMarker(place, index)
-      })
     },
     paginate () {
       this.loading = true
@@ -241,21 +219,6 @@ export default {
       })
       return output
     },
-    createMap() {
-      this.map = new google.maps.Map(document.getElementById('map'), {
-        center: this.geocoords,
-        zoom: 13})
-    },
-    createInitialMarker() {
-      // This map marker is different because we pass our lat/lng into it
-      // instead of fetching it from the results
-     new google.maps.Marker({
-        position: this.geocoords,
-        animation: google.maps.Animation.DROP,
-        icon: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-        map: this.map
-      })
-    },
     async getAddress () {
       this.loadingLocation = true
       if ('geolocation' in navigator) {
@@ -290,6 +253,12 @@ export default {
     this.$root.$on('show-restaurant-modal', restaurant => {
       this.showModal(restaurant)
     })
+    this.autocomplete.visible = false
+    this.autocomplete.items = []
+  },
+  beforeUpdated () {
+    this.autocomplete.visible = false
+    this.autocomplete.items = []
   },
   computed: {
     autocompleteList() {

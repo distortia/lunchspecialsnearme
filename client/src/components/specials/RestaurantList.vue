@@ -11,6 +11,7 @@
             Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
           </b-badge>
           <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
+          <b-badge pill :variant="restaurant.opening_hours.open_now ? 'info' : 'danger'">{{ restaurant.opening_hours.open_now ? 'Open Now' : 'Closed' }}</b-badge>
         </div>
         <div class="button-group">
           <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`"

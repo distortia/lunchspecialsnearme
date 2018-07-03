@@ -1,14 +1,13 @@
 /* map sizing taken from https://www.labnol.org/internet/embed-responsive-google-maps/28333/ */
-.specials-container {
-  height:90vh
-}
-#map {
-  height: 90vh;
+
+.search-container { 
+  position: inherit;
   width: auto;
-}
-.restaurant-cards-list {
-  height: 65vh;
-  overflow-y: scroll;
+  @media(min-width: 768px) {
+    position: fixed;
+    margin-top: 1.5%;
+    width: 30vw;
+  }
 }
 .button-group {
   margin-top: 2.5%;

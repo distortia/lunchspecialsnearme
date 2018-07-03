@@ -76,7 +76,7 @@
                     </b-list-group-item>
                   </b-list-group>
                 </ul>
-                <b-button type="submit" variant="primary" class="btn-block" @blur="resetAutocomplete()">Search</b-button>
+                <b-button type="submit" variant="primary" class="btn-block">Search</b-button>
               </b-form>
               <b-alert :show="noLocation" variant="warning" dismissible @dismissed="noLocation = false">Location fetching failed. Please enable location services and try again.</b-alert>
             </b-card>
@@ -136,9 +136,6 @@ import LocationService from '@/services/locationService'
         this.form.keywords = keyword
         this.autocomplete.items = []
       },
-      resetAutocomplete() {
-        this.autocomplete.visible = false
-      }
     },
     computed: {
       autocompleteList() {
