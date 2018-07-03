@@ -5,6 +5,14 @@
       <span class="sr-only">Loading...</span>
     </div>
     <b-container fluid>
+      <b-modal ref="placeModalref" hide-footer size="lg" :title="placeModal.title" lazy>
+        <place-modal :specials="specials" :hasSpecial="hasSpecial" :placeModal="placeModal" :daysOfWeek="daysOfWeek"></place-modal>
+        <Adsense
+          data-ad-client="ca-pub-1093990846577533"
+          data-ad-slot="9354044408">
+        </Adsense>
+        <b-alert :variant="modalAlert.variant" dismissible :show="modalAlert.show">{{modalAlert.message}}</b-alert>
+      </b-modal>
       <b-row class="specials-container">
         <b-col cols="12" md="4">
           <div class="search-container">
@@ -69,14 +77,6 @@
               <b-alert :show="noLocation" variant="warning" dismissible @dismissed="noLocation = false">Location fetching failed. Please enable location services and try again.</b-alert>
               <b-alert :show="noResults" variant="danger" dismissible @dismissed="noResults = false">No Results - Try again</b-alert>
             </b-card>
-            <b-modal ref="placeModalref" hide-footer size="lg" :title="placeModal.title" lazy>
-              <place-modal :specials="specials" :hasSpecial="hasSpecial" :placeModal="placeModal" :daysOfWeek="daysOfWeek"></place-modal>
-              <Adsense
-                data-ad-client="ca-pub-1093990846577533"
-                data-ad-slot="9354044408">
-              </Adsense>
-              <b-alert :variant="modalAlert.variant" dismissible :show="modalAlert.show">{{modalAlert.message}}</b-alert>
-          </b-modal>
           </div>
         </b-col>
         <b-col md="8" cols="12" @submit.prevent="updateSearch">
