@@ -61,7 +61,7 @@
                     type="text" 
                     v-model.trim="form.keywords"
                     @input="autocompleteList"
-                    @blur.native="autocompleteList.items = []"
+                    @blur.native="autocomplete.items = []"
                     placeholder="Mexican or Tai's Asian Bistro">
                     </b-form-input>
                   </b-form-group>
