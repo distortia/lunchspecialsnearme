@@ -6,6 +6,10 @@
  background-repeat:  no-repeat;
  background-attachment: fixed;
  background-size: cover;
+ height: 125vh;
+ @media(min-width: 768px) {
+  height: auto;
+ }
 }
 .index-wrapper {
   height: 100vh;

@@ -63,6 +63,7 @@
                   type="text"
                   v-model.trim="form.keywords"
                   @input="autocompleteList"
+                  @blur.native="autocomplete.items = []"
                   placeholder="Mexican or Tai's Asian Bistro">
                   </b-form-input>
                 </b-form-group>
@@ -100,7 +101,6 @@ import UserService from '@/services/userService'
 import LocationService from '@/services/locationService'
 import PlaceModal from '@/components/specials/PlaceModal'
 import RestaurantList from '@/components/specials/RestaurantList'
-// import VueAdsense from 'vue-adsense'
 
 export default {
 
@@ -138,7 +138,6 @@ export default {
   components: {
     'place-modal': PlaceModal,
     'restaurant-list': RestaurantList,
-    // 'adsense', VueAdsense
   },
   methods: {
     feedMe () {

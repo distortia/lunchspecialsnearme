@@ -41,9 +41,6 @@ export default {
     }
   },
   props: ['restaurants'],
-  mounted() {
-    console.log(this.restaurants)
-  }
 }
 </script>
 
