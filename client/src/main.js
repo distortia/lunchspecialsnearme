@@ -9,6 +9,7 @@ import Ads from 'vue-google-adsense'
 import UserService from './services/userService'
 import routes from './router/index'
 import mobileMixin from './util/mobileMixin'
+import specialsMixin from './util/specialsMixin'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -39,9 +40,9 @@ Vue.http.interceptors.push((request, next) => {
 });
 
 Vue.mixin(mobileMixin)
+Vue.mixin(specialsMixin)
 
 Vue.filter('expensivity', (value) => {
-  console.log(value)
     switch (value) {
       case 0:
         return 'Free'

@@ -38,10 +38,12 @@
       <b-tab title="Info">
         <h5>{{ placeModal.title }}</h5>
         <p>
-          <b-badge pill variant="warning">
+          <b-badge pill :variant="ratingVariant(placeModal.rating)">
             Rating: {{placeModal.rating}} <i class="fa fa-star" aria-hidden="true"></i>
           </b-badge>
-          <b-badge pill variant="success">Price Level: {{ placeModal.price_level | expensivity }}</b-badge>
+          <b-badge pill :variant="expensivityVariant(placeModal.price_level)">
+            Price Level: {{ placeModal.price_level | expensivity }}
+          </b-badge>
         </p>
         <p>{{placeModal.address}}</p>
         <p>Phone: <span>{{ placeModal.phoneNumber }}</span></p>
