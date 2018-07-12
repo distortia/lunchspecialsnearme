@@ -11,7 +11,7 @@
             Rating: {{restaurant.rating}} <i class="fa fa-star" aria-hidden="true"></i>
           </b-badge>
           <b-badge pill variant="success">Price Level: {{restaurant.price_level | expensivity }}</b-badge>
-          <b-badge pill :variant="restaurant.opening_hours.open_now ? 'info' : 'danger'">{{ restaurant.opening_hours.open_now ? 'Open Now' : 'Closed' }}</b-badge>
+          <b-badge pill :variant="openNowVariant(restaurant.opening_hours)">{{ openNowText(restaurant.opening_hours) }}</b-badge>
         </div>
         <div class="button-group">
           <b-button :href="`https://www.google.com/maps/place/${restaurant.vicinity}`"
@@ -42,6 +42,26 @@ export default {
     }
   },
   props: ['restaurants'],
+  methods: {
+    openNowVariant(opening_hours) {
+      if (opening_hours === undefined) {
+        return 'warning'
+      } else if(opening_hours.open_now) {
+        return 'info'
+      } else {
+        return 'danger'
+      }
+    }, 
+    openNowText(opening_hours) {
+      if (opening_hours === undefined) {
+        return 'Unknown Hours'
+      } else if(opening_hours.open_now) {
+        return 'Open Now'
+      } else {
+        return 'Closed'
+      }    
+    }
+  }
 }
 </script>
 

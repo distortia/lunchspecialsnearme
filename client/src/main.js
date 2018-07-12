@@ -41,6 +41,7 @@ Vue.http.interceptors.push((request, next) => {
 Vue.mixin(mobileMixin)
 
 Vue.filter('expensivity', (value) => {
+  console.log(value)
     switch (value) {
       case 0:
         return 'Free'
@@ -52,7 +53,9 @@ Vue.filter('expensivity', (value) => {
         return 'Expensive'
       case 4:
         return 'Very Expensive'
-      case undefined || null:
+      case undefined:
+        return 'Unknown'
+      case null:
         return 'Unknown'
       default: 'Unknown'
     }
